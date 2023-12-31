@@ -466,7 +466,7 @@ func _generate_statement_error_warning(statement: ESCStatement, event_name: Stri
 		% [statement.name, event_name]
 
 	if statement is ESCCommand and statement.parameters.size() > 0:
-		var statement_params: String = "[" + PackedStringArray(statement.", ".join(parameters)) + "]"
+		var statement_params: String = "[" + ", ".join(PackedStringArray(statement.parameters)) + "]"
 
 		warning_string += " with parameters: %s" % statement_params
 

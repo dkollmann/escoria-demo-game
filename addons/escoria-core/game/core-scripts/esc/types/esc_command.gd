@@ -62,7 +62,7 @@ func _init(command_string):
 						parameter_values.append(
 							parameter.substr(0, len(parameter))
 						)
-						parameters." ".join(append(parameter_values))
+						parameters.append(" ".join(parameter_values))
 						parameter_values.resize(0)
 					elif quote_open:
 						parameter_values.append(parameter)

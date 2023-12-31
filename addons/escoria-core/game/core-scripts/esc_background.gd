@@ -1,4 +1,5 @@
 @tool
+@icon("res://addons/escoria-core/design/esc_background.svg")
 # ESCBackground's purpose is to display a background image and receive input
 # events on the background. More precisely, the TextureRect under ESCBackground
 # does not receive events itself - if it did, it would also eat all events like
@@ -10,7 +11,7 @@
 # Area2D node under it. If the rect_size is wrongly set, the background may
 # receive no input.
 extends TextureRect
-class_name ESCBackground, "res://addons/escoria-core/design/esc_background.svg"
+class_name ESCBackground
 
 
 # The background was double clicked

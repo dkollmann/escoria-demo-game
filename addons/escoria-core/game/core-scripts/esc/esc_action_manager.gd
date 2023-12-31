@@ -25,7 +25,7 @@ enum ACTION_INPUT_STATE {
 	# After initial state, verb is defined
 	AWAITING_ITEM,
 	# Item defined requires combine, waiting for  target
-	AWAITING_TARGET_ITEM
+	AWAITING_TARGET_ITEM,
 	# After initial state, item is defined
 	AWAITING_VERB,
 	# Item was defined first, next verb, need verb confirmation
@@ -65,8 +65,9 @@ var current_tool: ESCObject
 var current_target: ESCObject
 
 # Current action input state
-var action_state = ACTION_INPUT_STATE.AWAITING_VERB_OR_ITEM \
-		setget set_action_input_state
+var action_state = ACTION_INPUT_STATE.AWAITING_VERB_OR_ITEM:
+	set(new_value):
+		set_action_input_state(new_value)
 
 
 # Run a generic action
@@ -388,16 +389,10 @@ func _get_event_to_queue(
 func _run_event(event: ESCEvent) -> int:
 	escoria.event_manager.queue_event(event)
 
-	var event_returned = yield(
-		escoria.event_manager,
-		"event_finished"
-	)
+	var event_returned = await escoria.event_manager.event_finished
 
 	while event_returned[1] != event.name:
-		event_returned = yield(
-			escoria.event_manager,
-			"event_finished"
-		)
+		event_returned = await escoria.event_manager.event_finished
 
 	clear_current_action()
 	emit_signal("action_finished")
@@ -725,10 +720,7 @@ func _walk_towards_object(
 )
 
 	# Wait for the player to arrive before continuing with action.
-	var context: ESCWalkContext = yield(
-		escoria.main.current_scene.player,
-		"arrived"
-	)
+	var context: ESCWalkContext = await escoria.main.current_scene.player.arrived
 
 	if context.target_object != obj:
 		escoria.logger.debug(

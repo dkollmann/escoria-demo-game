@@ -106,11 +106,11 @@ func _perform_plugins_checks():
 # - what: the notification constant received (usually defined in MainLoop)
 func _notification(what: int):
 	match what:
-		MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
+		NOTIFICATION_WM_CLOSE_REQUEST:
 			escoria.logger.close_logs()
 			escoria.is_quitting = true
 			get_tree().quit()
-		MainLoop.NOTIFICATION_WM_GO_BACK_REQUEST:
+		NOTIFICATION_WM_GO_BACK_REQUEST:
 			escoria.logger.close_logs()
 			escoria.is_quitting = true
 			get_tree().quit()
@@ -175,7 +175,7 @@ func new_game():
 
 # Function called to quit the game.
 func quit():
-	get_tree().notification(MainLoop.NOTIFICATION_WM_QUIT_REQUEST)
+	get_tree().notification(NOTIFICATION_WM_CLOSE_REQUEST)
 
 
 # Handle anything necessary if the game started a scene directly.

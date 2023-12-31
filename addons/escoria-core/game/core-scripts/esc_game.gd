@@ -32,7 +32,9 @@ enum EDITOR_GAME_DEBUG_DISPLAY {
 
 # Which (if any) debug mode for the editor is used
 @export var editor_debug_mode: EDITOR_GAME_DEBUG_DISPLAY = \
-		EDITOR_GAME_DEBUG_DISPLAY.NONE setget _set_editor_debug_mode
+		EDITOR_GAME_DEBUG_DISPLAY.NONE:
+		set(new_value):
+			_set_editor_debug_mode(new_value)
 
 # The Control node underneath which all UI must be placed.
 # This should be a Control node and NOT a CanvasLayer (or any other type of) node.
@@ -52,21 +54,9 @@ var hover_stack_displayer
 
 # Function called when ESCGame enters the scene tree.
 func _enter_tree():
-	escoria.event_manager.connect(
-		"event_finished",
-		self,
-		"_on_event_done"
-	)
-	escoria.action_manager.connect(
-		"action_finished",
-		self,
-		"_on_action_finished"
-	)
-	escoria.main.connect(
-		"room_ready",
-		self,
-		"_on_room_ready"
-	)
+	escoria.event_manager.event_finished.connect(_on_event_done)
+	escoria.action_manager.action_finished.connect(_on_action_finished)
+	escoria.main.room_ready.connect(_on_room_ready)
 
 	# Debug display for hover stack
 	if ProjectSettings.get_setting(ESCProjectSettingsManager.ENABLE_HOVER_STACK_VIEWER) and \
@@ -80,29 +70,21 @@ func _enter_tree():
 
 # Function called when ESCGame exits the scene tree.
 func _exit_tree():
-	escoria.event_manager.disconnect(
-		"event_finished",
-		self,
-		"_on_event_done"
-	)
-	escoria.action_manager.disconnect(
-		"action_finished",
-		self,
-		"_on_action_finished"
-	)
+	escoria.event_manager.event_finished.disconnect(_on_event_done)
+	escoria.action_manager.action_finished.disconnect(_on_action_finished)
 
-	escoria.main.disconnect(
-		"room_ready",
-		self,
-		"_on_room_ready"
-	)
+	escoria.main.room_ready.disconnect(_on_room_ready)
 
 
 # Ready function
 func _ready():
 	escoria.settings_manager.apply_settings()
-	connect("crash_popup_confirmed", escoria, "quit",
-		[], CONNECT_ONE_SHOT)
+	crash_popup_confirmed.connect(quit_game)
+
+
+# Quit callback
+func quit_game():
+	get_tree().quit()
 
 
 # Handle debugging visualizations
@@ -119,7 +101,7 @@ func _draw():
 		print("ESC {0}".format([mouse_limits]))
 
 		# Draw lines for tooltip limits
-		draw_rect(mouse_limits, ColorN("red"), false, 10.0)
+		draw_rect(mouse_limits, Color.RED, false, 10.0)
 
 
 # Clears the tooltip content (if an ESCTooltip node exists in UI)
