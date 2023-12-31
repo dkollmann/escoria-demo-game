@@ -48,16 +48,16 @@ func _init(p_item: ESCInventoryItem) -> void:
 
 
 func _process(_delta: float) -> void:
-	rect_size = ProjectSettings.get_setting("escoria/ui/inventory_item_size")
-	rect_min_size = ProjectSettings.get_setting(
+	size = ProjectSettings.get_setting("escoria/ui/inventory_item_size")
+	custom_minimum_size = ProjectSettings.get_setting(
 		"escoria/ui/inventory_item_size"
 	)
 
 # Connect input handlers
 func _ready():
-	connect("gui_input", self, "_on_inventory_item_gui_input")
-	connect("mouse_entered", self, "_on_inventory_item_mouse_enter")
-	connect("mouse_exited", self, "_on_inventory_item_mouse_exit")
+	connect("gui_input", Callable(self, "_on_inventory_item_gui_input"))
+	connect("mouse_entered", Callable(self, "_on_inventory_item_mouse_enter"))
+	connect("mouse_exited", Callable(self, "_on_inventory_item_mouse_exit"))
 
 
 # Handle the gui input and emit the respective signals
@@ -68,21 +68,21 @@ func _ready():
 func _on_inventory_item_gui_input(event: InputEvent):
 	if InputMap.has_action("switch_action_verb") \
 			and event.is_action_pressed("switch_action_verb"):
-		if event.button_index == BUTTON_WHEEL_UP:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			escoria.inputs_manager._on_mousewheel_action(-1)
-		elif event.button_index == BUTTON_WHEEL_DOWN:
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			escoria.inputs_manager._on_mousewheel_action(1)
 	if event is InputEventMouseButton:
 #		var p = get_global_mouse_position()
 		if event.doubleclick:
-			if event.button_index == BUTTON_LEFT:
+			if event.button_index == MOUSE_BUTTON_LEFT:
 				emit_signal(
 					"mouse_double_left_inventory_item",
 					global_id,
 					event
 				)
 			# Make sure fast right clicks in the inventory aren't ignored
-			elif event.button_index == BUTTON_RIGHT:
+			elif event.button_index == MOUSE_BUTTON_RIGHT:
 					emit_signal(
 						"mouse_right_inventory_item",
 						global_id,
@@ -90,13 +90,13 @@ func _on_inventory_item_gui_input(event: InputEvent):
 					)
 		else:
 			if event.is_pressed():
-				if event.button_index == BUTTON_LEFT:
+				if event.button_index == MOUSE_BUTTON_LEFT:
 					emit_signal(
 						"mouse_left_inventory_item",
 						global_id,
 						event
 					)
-				if event.button_index == BUTTON_RIGHT:
+				if event.button_index == MOUSE_BUTTON_RIGHT:
 					emit_signal(
 						"mouse_right_inventory_item",
 						global_id,

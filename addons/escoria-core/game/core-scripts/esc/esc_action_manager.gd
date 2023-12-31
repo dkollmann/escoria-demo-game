@@ -56,7 +56,7 @@ const ACTION_WALK = "walk"
 
 
 # Current verb used
-var current_action: String = "" setget set_current_action
+var current_action: String = "": set = set_current_action
 
 # Current tool (ESCItem/ESCInventoryItem) used
 var current_tool: ESCObject
@@ -588,7 +588,7 @@ func perform_inputevent_on_object(
 				)
 
 				if context is GDScriptFunctionState:
-					context = yield(context, "completed")
+					context = await context.completed
 
 				# In case of an interrupted walk, we don't want to proceed.
 				if context == null:

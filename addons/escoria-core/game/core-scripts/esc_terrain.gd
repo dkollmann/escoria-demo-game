@@ -1,5 +1,5 @@
+@tool
 # A walkable Terrains
-tool
 extends Navigation2D
 class_name ESCTerrain, "res://addons/escoria-core/design/esc_terrain.svg"
 
@@ -17,37 +17,37 @@ enum DebugMode {
 
 
 # Scaling texture
-export(Texture) var scales setget _set_scales
+@export var scales: Texture2D: set = _set_scales
 
 # Minimum scaling
-export(float) var scale_min = 0.3
+@export var scale_min: float = 0.3
 
 # Maximum scaling
-export(float) var scale_max = 1.0
+@export var scale_max: float = 1.0
 
 # Lightmap texture
-export(Texture) var lightmap setget _set_lightmap
+@export var lightmap: Texture2D: set = _set_lightmap
 
 # The scaling factor for the scale and light maps
-export(Vector2) var bitmaps_scale = Vector2(1,1) setget _set_bm_scale
+@export var bitmaps_scale: Vector2 = Vector2(1,1): set = _set_bm_scale
 
 # Multiplier applied to the player speed on this terrain
-export(float) var player_speed_multiplier = 1.0
+@export var player_speed_multiplier: float = 1.0
 
 # Multiplier how much faster the player will walk when fast mode is on
 # (double clicked)
-export(float) var player_doubleclick_speed_multiplier = 1.5
+@export var player_doubleclick_speed_multiplier: float = 1.5
 
 # Additional modulator to the lightmap texture
-export(Color) var lightmap_modulate = Color(1, 1, 1, 1)
+@export var lightmap_modulate: Color = Color(1, 1, 1, 1)
 
 # Currently selected debug visualize mode
-export(int, "None", "Scales", "Lightmap") var debug_mode = DebugMode.NONE \
+@export var debug_mode = DebugMode.NONE \ # (int, "None", "Scales", "Lightmap")
 		setget _set_debug_mode
 
 
 # The currently activ navigation polygon
-var current_active_navigation_instance: NavigationPolygonInstance = null
+var current_active_navigation_instance: NavigationRegion2D = null
 
 # Currently visualized texture for debug mode
 var _texture = null
@@ -59,13 +59,13 @@ var _lightmap_data
 var _texture_in_update = false
 
 # Logger instance
-onready var logger = Logger.ESCLoggerFile.new()
+@onready var logger = Logger.ESCLoggerFile.new()
 
 # Set a reference to the active navigation polygon, register to Escoria
 # and update the texture
 func _ready():
-	connect("child_entered_tree", self, "_check_multiple_enabled_navpolys")
-	connect("child_exiting_tree", self, "_check_multiple_enabled_navpolys", [true])
+	connect("child_entered_tree", Callable(self, "_check_multiple_enabled_navpolys"))
+	connect("child_exiting_tree", Callable(self, "_check_multiple_enabled_navpolys").bind(true))
 
 	_check_multiple_enabled_navpolys()
 	if !Engine.is_editor_hint():
@@ -87,14 +87,14 @@ func _check_multiple_enabled_navpolys(node: Node = null, is_exiting: bool = fals
 	var navigation_enabled_found = false
 	if node != null \
 			and not is_exiting\
-			and node is NavigationPolygonInstance \
+			and node is NavigationRegion2D \
 			and node.enabled:
 		 navigation_enabled_found = true
 
 	for n in get_children():
 		if is_exiting and n == node:
 			continue
-		if n is NavigationPolygonInstance and n.enabled:
+		if n is NavigationRegion2D and n.enabled:
 			if navigation_enabled_found:
 				if Engine.is_editor_hint():
 					logger.warn(
@@ -152,9 +152,9 @@ func get_terrain(pos: Vector2) -> float:
 
 # Small helper to get the color of an image at a position
 func _get_color(image: Image, pos: Vector2) -> Color:
-	image.lock()
+	false # image.lock() # TODOConverter3To4, Image no longer requires locking, `false` helps to not break one line if/else, so it can freely be removed
 	var color=image.get_pixel(pos.x, pos.y)
-	image.unlock()
+	false # image.unlock() # TODOConverter3To4, Image no longer requires locking, `false` helps to not break one line if/else, so it can freely be removed
 	return color
 
 
@@ -173,7 +173,7 @@ func _set_bm_scale(p_scale: Vector2):
 # #### Parameters
 #
 # - p_lightmap: Lightmap texture to set
-func _set_lightmap(p_lightmap: Texture):
+func _set_lightmap(p_lightmap: Texture2D):
 	var need_init = (lightmap != p_lightmap) or (lightmap and not _lightmap_data)
 
 	lightmap = p_lightmap
@@ -182,9 +182,9 @@ func _set_lightmap(p_lightmap: Texture):
 	# also need to get the data for every read to make yet another copy
 	if need_init:
 		if _lightmap_data:
-			_lightmap_data.unlock()
+			false # _lightmap_data.unlock() # TODOConverter3To4, Image no longer requires locking, `false` helps to not break one line if/else, so it can freely be removed
 		_lightmap_data = lightmap.get_data()
-		_lightmap_data.lock()
+		false # _lightmap_data.lock() # TODOConverter3To4, Image no longer requires locking, `false` helps to not break one line if/else, so it can freely be removed
 
 	_update_texture()
 
@@ -194,7 +194,7 @@ func _set_lightmap(p_lightmap: Texture):
 # #### Parameters
 #
 # - p_scales: Scale texture to set
-func _set_scales(p_scales: Texture):
+func _set_scales(p_scales: Texture2D):
 	scales = p_scales
 	_update_texture()
 

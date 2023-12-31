@@ -15,7 +15,7 @@ var _player_node: Node
 var _animation_player: AnimationPlayer
 
 # A AnimationPlayer typed reference to the player node (for intellisense)
-var _animated_sprite: AnimatedSprite
+var _animated_sprite: AnimatedSprite2D
 
 # Whether the player node is of type AnimationPlayer (just for convenience)
 var _is_animation_player: bool = false
@@ -66,7 +66,7 @@ func get_animation() -> String:
 
 # Returns a list of all animation names
 # **Returns** A list of all animation names
-func get_animations() -> PoolStringArray:
+func get_animations() -> PackedStringArray:
 	if _is_animation_player:
 		return _animation_player.get_animation_list()
 	else:

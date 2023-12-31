@@ -16,18 +16,18 @@ the node that inherits from this state machine interface
 If you don't the game will crash (on purpose, so you won't
 forget to initialize the state machine)
 """
-export(NodePath) var START_STATE
+@export var START_STATE: NodePath
 var states_map = {}
 
 var states_stack = []  # can also be used as a pushdown automaton
 var current_state = null
 var current_state_name = ""
-var _active = false setget set_active
+var _active = false: set = set_active
 
 
 func initialize(start_state):
 	for child in get_children():
-		child.connect("finished", self, "_change_state")
+		child.connect("finished", Callable(self, "_change_state"))
 
 	set_active(true)
 	states_stack.push_front(start_state)

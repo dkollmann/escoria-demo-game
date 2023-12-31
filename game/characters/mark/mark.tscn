@@ -1,14 +1,14 @@
 [gd_scene load_steps=86 format=2]
 
 [ext_resource path="res://addons/escoria-core/game/core-scripts/esc_player.gd" type="Script" id=1]
-[ext_resource path="res://game/characters/mark/png/mark_talk_down.png" type="Texture" id=2]
-[ext_resource path="res://game/characters/mark/png/markjester.png" type="Texture" id=3]
-[ext_resource path="res://game/characters/mark/png/mark.png" type="Texture" id=4]
-[ext_resource path="res://game/characters/mark/png/mark_talk_down_right.png" type="Texture" id=5]
-[ext_resource path="res://game/characters/mark/png/mark_talk_up.png" type="Texture" id=6]
-[ext_resource path="res://game/characters/mark/png/mark_talk_right.png" type="Texture" id=7]
+[ext_resource path="res://game/characters/mark/png/mark_talk_down.png" type="Texture2D" id=2]
+[ext_resource path="res://game/characters/mark/png/markjester.png" type="Texture2D" id=3]
+[ext_resource path="res://game/characters/mark/png/mark.png" type="Texture2D" id=4]
+[ext_resource path="res://game/characters/mark/png/mark_talk_down_right.png" type="Texture2D" id=5]
+[ext_resource path="res://game/characters/mark/png/mark_talk_up.png" type="Texture2D" id=6]
+[ext_resource path="res://game/characters/mark/png/mark_talk_right.png" type="Texture2D" id=7]
 [ext_resource path="res://game/characters/mark/mark_animations.tres" type="Resource" id=8]
-[ext_resource path="res://game/characters/mark/png/markjester_talk.png" type="Texture" id=9]
+[ext_resource path="res://game/characters/mark/png/markjester_talk.png" type="Texture2D" id=9]
 [ext_resource path="res://addons/escoria-core/game/core-scripts/esc_dialog_location.gd" type="Script" id=10]
 
 [sub_resource type="AtlasTexture" id=18]
@@ -499,7 +499,7 @@ radius = 38.2347
 height = 217.78
 
 [node name="mark" type="Area2D"]
-pause_mode = 1
+process_mode = 1
 script = ExtResource( 1 )
 global_id = "player"
 esc_script = "res://game/characters/mark/mark.esc"
@@ -508,7 +508,7 @@ default_action = "look"
 combine_when_selected_action_is_in = [  ]
 animations = ExtResource( 8 )
 
-[node name="sprite" type="AnimatedSprite" parent="."]
+[node name="sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2( 0, -137.938 )
 scale = Vector2( 4, 4 )
 frames = SubResource( 31 )
@@ -519,12 +519,12 @@ position = Vector2( 0.455139, -138.362 )
 shape = SubResource( 32 )
 
 [node name="debug" type="Label" parent="."]
-margin_right = 40.0
-margin_bottom = 14.0
+offset_right = 40.0
+offset_bottom = 14.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="dialog_position" type="Position2D" parent="."]
+[node name="dialog_position" type="Marker2D" parent="."]
 position = Vector2( 0, -320 )
 script = ExtResource( 10 )

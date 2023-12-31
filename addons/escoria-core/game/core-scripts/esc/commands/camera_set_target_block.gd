@@ -28,14 +28,14 @@ var _camera_tween: Tween
 func configure() -> ESCCommandArgumentDescriptor:
 	return ESCCommandArgumentDescriptor.new(
 		2,
-		[[TYPE_REAL, TYPE_INT], TYPE_STRING],
+		[[TYPE_FLOAT, TYPE_INT], TYPE_STRING],
 		[null, null]
 	)
 
 
 # Validate whether the given arguments match the command descriptor
 func validate(arguments: Array):
-	if not .validate(arguments):
+	if not super.validate(arguments):
 		return false
 
 	if not escoria.object_manager.has(arguments[1]):
@@ -55,13 +55,13 @@ func validate(arguments: Array):
 # Run the command
 func run(command_params: Array) -> int:
 	(escoria.object_manager.get_object(escoria.object_manager.CAMERA).node as ESCCamera)\
-		.set_target(
+		super.set_target(
 			escoria.object_manager.get_object(command_params[1]).node,
 			command_params[0]
 		)
 
 	if command_params[0] > 0.0:
-		yield(_camera_tween, "tween_completed")
+		await _camera_tween.tween_completed
 	escoria.logger.debug(
 			self,
 			"camera_set_target_block tween complete."

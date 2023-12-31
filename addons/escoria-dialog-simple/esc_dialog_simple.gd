@@ -118,14 +118,14 @@ func _init_type_player(type: String) -> void:
 	if type == "floating":
 		_type_player = preload(\
 			"res://addons/escoria-dialog-simple/types/floating.tscn"\
-		).instance()
+		).instantiate()
 	else:
 		_type_player = preload(\
 			"res://addons/escoria-dialog-simple/types/avatar.tscn"\
-		).instance()
+		).instantiate()
 
-	_type_player.connect("say_finished", self, "_on_say_finished")
-	_type_player.connect("say_visible", self, "_on_say_visible")
+	_type_player.connect("say_finished", Callable(self, "_on_say_finished"))
+	_type_player.connect("say_visible", Callable(self, "_on_say_visible"))
 
 
 func _initialize_say_states(global_id: String, text: String, type: String) -> void:
@@ -170,13 +170,13 @@ func do_choose(dialog_player: Node, dialog: ESCDialog, type: String = "simple"):
 	if type == "simple" or type == "":
 		chooser = preload(\
 			"res://addons/escoria-dialog-simple/chooser/simple.tscn"\
-		).instance()
+		).instantiate()
 
 	dialog_player.add_child(chooser)
 	chooser.set_dialog(dialog)
 	chooser.show_chooser()
 
-	var option = yield(chooser, "option_chosen")
+	var option = await chooser.option_chosen
 	dialog_player.remove_child(chooser)
 	emit_signal("option_chosen", option)
 

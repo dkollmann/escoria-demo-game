@@ -16,11 +16,11 @@ func update_tooltip_text():
 	# the rendered string.
 	emit_signal("tooltip_size_updated")
 
-	bbcode_text = "[center]"
-	bbcode_text += "[color=#" + color.to_html(false) + "]"
-	bbcode_text += current_target
-	bbcode_text += "[/color]"
-	bbcode_text += "[/center]"
+	text = "[center]"
+	text += "[color=#" + color.to_html(false) + "]"
+	text += current_target
+	text += "[/color]"
+	text += "[/center]"
 #	push_align(RichTextLabel.ALIGN_CENTER)
 #	push_color(color)
 #	append_bbcode(current_target)

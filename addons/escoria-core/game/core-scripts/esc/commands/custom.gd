@@ -31,7 +31,7 @@ func configure() -> ESCCommandArgumentDescriptor:
 
 # Validate whether the given arguments match the command descriptor
 func validate(arguments: Array):
-	if not .validate(arguments):
+	if not super.validate(arguments):
 		return false
 
 	if not escoria.object_manager.has(arguments[0]):
@@ -55,10 +55,10 @@ func validate(arguments: Array):
 		)
 		return false
 	elif not escoria.object_manager.get_object(arguments[0]).node\
-		.get_node(
+		super.get_node(
 			arguments[1]
 		)\
-		.has_method(
+		super.has_method(
 			arguments[2]
 		):
 		escoria.logger.error(

@@ -30,17 +30,17 @@ var _current_line: String
 
 
 # The node holding the avatar
-onready var avatar_node = $Panel/MarginContainer/HSplitContainer/VBoxContainer\
+@onready var avatar_node = $Panel/MarginContainer/HSplitContainer/VBoxContainer\
 		/avatar
 
 # The node showing the text
-onready var text_node = $Panel/MarginContainer/HSplitContainer/text
+@onready var text_node = $Panel/MarginContainer/HSplitContainer/text
 
 # The tween node for text animations
-onready var tween = $Panel/MarginContainer/HSplitContainer/text/Tween
+@onready var tween = $Panel/MarginContainer/HSplitContainer/text/Tween
 
 # Whether the dialog manager is paused
-onready var is_paused: bool = true
+@onready var is_paused: bool = true
 
 
 
@@ -103,10 +103,10 @@ func _ready():
 		"_on_dialog_line_typed"
 	)
 
-	escoria.connect("paused", self, "_on_paused")
-	escoria.connect("resumed", self, "_on_resumed")
+	escoria.connect("paused", Callable(self, "_on_paused"))
+	escoria.connect("resumed", Callable(self, "_on_resumed"))
 
-	connect("tree_exited", self, "_on_tree_exited")
+	connect("tree_exited", Callable(self, "_on_tree_exited"))
 
 
 # Switch the current character
@@ -114,7 +114,7 @@ func _ready():
 # #### Parameters
 # - name: The name of the current character
 func set_current_character(name: String):
-	if ProjectSettings.get_setting("escoria/dialog_simple/avatars_path").empty():
+	if ProjectSettings.get_setting("escoria/dialog_simple/avatars_path").is_empty():
 		escoria.logger.warn(self, "Unable to load avatar '%s': Avatar path not specified" % name)
 		return
 
@@ -145,7 +145,7 @@ func say(character: String, line: String):
 	popup_centered()
 	set_current_character(character)
 
-	text_node.bbcode_text = tr(line)
+	text_node.text = tr(line)
 
 	text_node.percent_visible = 0.0
 	var time_show_full_text = _text_time_per_character / 1000 * len(line)
@@ -194,8 +194,8 @@ func _on_dialog_line_typed(object, key):
 
 	var time_to_disappear: float = _calculate_time_to_disappear()
 
-	if not $Timer.is_connected("timeout", self, "_on_dialog_finished"):
-		$Timer.connect("timeout", self, "_on_dialog_finished")
+	if not $Timer.is_connected("timeout", Callable(self, "_on_dialog_finished")):
+		$Timer.connect("timeout", Callable(self, "_on_dialog_finished"))
 
 	$Timer.start(time_to_disappear)
 

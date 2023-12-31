@@ -31,7 +31,7 @@ func apply_settings() -> void:
 
 		AudioServer.set_bus_volume_db(
 			AudioServer.get_bus_index(escoria.BUS_MASTER),
-			linear2db(
+			linear_to_db(
 				ESCProjectSettingsManager.get_setting(
 					ESCProjectSettingsManager.MASTER_VOLUME
 				)
@@ -39,7 +39,7 @@ func apply_settings() -> void:
 		)
 		AudioServer.set_bus_volume_db(
 			AudioServer.get_bus_index(escoria.BUS_SFX),
-			linear2db(
+			linear_to_db(
 				ESCProjectSettingsManager.get_setting(
 					ESCProjectSettingsManager.SFX_VOLUME
 				)
@@ -47,7 +47,7 @@ func apply_settings() -> void:
 		)
 		AudioServer.set_bus_volume_db(
 			AudioServer.get_bus_index(escoria.BUS_MUSIC),
-			linear2db(
+			linear_to_db(
 				ESCProjectSettingsManager.get_setting(
 					ESCProjectSettingsManager.MUSIC_VOLUME
 				)
@@ -55,13 +55,13 @@ func apply_settings() -> void:
 		)
 		AudioServer.set_bus_volume_db(
 			AudioServer.get_bus_index(escoria.BUS_SPEECH),
-			linear2db(
+			linear_to_db(
 				ESCProjectSettingsManager.get_setting(
 					ESCProjectSettingsManager.SPEECH_VOLUME
 				)
 			)
 		)
-		OS.window_fullscreen = ESCProjectSettingsManager.get_setting(
+		get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN if (ESCProjectSettingsManager.get_setting() else Window.MODE_WINDOWED
 			ESCProjectSettingsManager.FULLSCREEN
 		)
 		TranslationServer.set_locale(
@@ -166,7 +166,7 @@ func get_settings() -> ESCSaveSettings:
 func save_settings():
 	var settings = get_settings()
 
-	var directory: Directory = Directory.new()
+	var directory: DirAccess = DirAccess.new()
 	if not directory.dir_exists(settings_folder):
 		directory.make_dir_recursive(settings_folder)
 

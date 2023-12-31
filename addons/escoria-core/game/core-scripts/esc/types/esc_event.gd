@@ -61,7 +61,7 @@ func _init(event_string: String):
 		for result in event_regex.search_all(event_string):
 			if "name" in result.names:
 				self.name = ESCUtils.get_re_group(result, "name") \
-					.strip_edges()
+					super.strip_edges()
 			if "flags" in result.names:
 				var _flags = ESCUtils.get_re_group(
 						result,
@@ -90,5 +90,5 @@ func run() -> int:
 		self,
 		"Event %s started." % name
 	)
-	return .run()
+	return super.run()
 

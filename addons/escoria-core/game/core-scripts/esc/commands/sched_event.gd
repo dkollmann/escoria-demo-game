@@ -28,7 +28,7 @@ func configure() -> ESCCommandArgumentDescriptor:
 
 # Validate whether the given arguments match the command descriptor
 func validate(arguments: Array):
-	if not .validate(arguments):
+	if not super.validate(arguments):
 		return false
 
 	if not escoria.object_manager.has(arguments[1]):
@@ -39,7 +39,7 @@ func validate(arguments: Array):
 		)
 		return false
 	elif not escoria.object_manager.get_object(arguments[1]).events\
-			.has(arguments[2]):
+			super.has(arguments[2]):
 		escoria.logger.error(
 			self,
 			"[%s]: invalid object event. Object with global id %s has no event %s."

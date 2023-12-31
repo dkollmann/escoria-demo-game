@@ -1,5 +1,5 @@
+@tool
 # A room in an Escora based game
-tool
 extends Node2D
 class_name ESCRoom, "res://addons/escoria-core/design/esc_room.svg"
 
@@ -16,20 +16,20 @@ const ESC_BACKGROUND_NAME = "escbackground"
 
 
 # The global id of this room
-export(String) var global_id = ""
+@export var global_id: String = ""
 
 # The ESC script of this room
-export(String, FILE, "*.esc") var esc_script = ""
+@export var esc_script = "" # (String, FILE, "*.esc")
 
 # The player inside this scene
-export(PackedScene) var player_scene
+@export var player_scene: PackedScene
 
 # The camera limits available in this room
-export(Array, Rect2) var camera_limits: Array \
+@export var camera_limits: Array \ # (Array, Rect2)
 	= [Rect2()] setget set_camera_limits
 
 # The editor debug display mode
-export(EditorRoomDebugDisplay) var editor_debug_mode \
+@export var editor_debug_mode: EditorRoomDebugDisplay \
 	= EditorRoomDebugDisplay.NONE setget set_editor_debug_mode
 
 
@@ -82,7 +82,7 @@ func _ready():
 	if not found_escbackground:
 		var esc_bg = ESCBackground.new()
 		esc_bg.name = ESC_BACKGROUND_NAME
-		if not camera_limits.empty():
+		if not camera_limits.is_empty():
 			esc_bg.set_size(camera_limits.front().size)
 		add_child(esc_bg)
 		move_child(esc_bg, 0)
@@ -126,8 +126,8 @@ func _connect_location_nodes() -> void:
 func _connect_location_nodes_in_tree(node: Node):
 	for n in node.get_children():
 		if n is ESCLocation:
-			if not n.is_connected("is_start_location_set", self, "_validate_start_locations"):
-				n.connect("is_start_location_set", self, "_validate_start_locations")
+			if not n.is_connected("is_start_location_set", Callable(self, "_validate_start_locations")):
+				n.connect("is_start_location_set", Callable(self, "_validate_start_locations"))
 
 		if n.get_child_count() > 0:
 			_connect_location_nodes_in_tree(n)

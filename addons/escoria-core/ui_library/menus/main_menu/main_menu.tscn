@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/escoria-core/ui_library/menus/main_menu/main_menu.gd" type="Script" id=1]
-[ext_resource path="res://addons/escoria-core/design/escoria-logo-small.png" type="Texture" id=3]
+[ext_resource path="res://addons/escoria-core/design/escoria-logo-small.png" type="Texture2D" id=3]
 [ext_resource path="res://addons/escoria-core/ui_library/menus/options/options.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/escoria-core/ui_library/menus/load_save/load/load_game.tscn" type="PackedScene" id=5]
 
@@ -35,36 +35,36 @@ __meta__ = {
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -308.0
-margin_right = 308.0
-custom_constants/separation = 100
+offset_left = -308.0
+offset_right = 308.0
+theme_override_constants/separation = 100
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TextureRect" type="TextureRect" parent="main/main"]
-margin_top = 162.0
-margin_right = 616.0
-margin_bottom = 398.0
+offset_top = 162.0
+offset_right = 616.0
+offset_bottom = 398.0
 texture = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="buttons" type="VBoxContainer" parent="main/main"]
-margin_top = 498.0
-margin_right = 616.0
-margin_bottom = 738.0
-custom_constants/separation = 10
+offset_top = 498.0
+offset_right = 616.0
+offset_bottom = 738.0
+theme_override_constants/separation = 10
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="new_game" type="Button" parent="main/main/buttons"]
-margin_right = 616.0
-margin_bottom = 150.0
-rect_min_size = Vector2( 0, 150 )
+offset_right = 616.0
+offset_bottom = 150.0
+custom_minimum_size = Vector2( 0, 150 )
 size_flags_vertical = 3
 text = "NEW_GAME"
 __meta__ = {
@@ -72,24 +72,24 @@ __meta__ = {
 }
 
 [node name="load_game" type="Button" parent="main/main/buttons"]
-margin_top = 160.0
-margin_right = 616.0
-margin_bottom = 180.0
+offset_top = 160.0
+offset_right = 616.0
+offset_bottom = 180.0
 text = "LOAD_GAME"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="options" type="Button" parent="main/main/buttons"]
-margin_top = 190.0
-margin_right = 616.0
-margin_bottom = 210.0
+offset_top = 190.0
+offset_right = 616.0
+offset_bottom = 210.0
 text = "OPTIONS"
 
 [node name="quit" type="Button" parent="main/main/buttons"]
-margin_top = 220.0
-margin_right = 616.0
-margin_bottom = 240.0
+offset_top = 220.0
+offset_right = 616.0
+offset_bottom = 240.0
 text = "QUIT"
 __meta__ = {
 "_edit_use_anchors_": false

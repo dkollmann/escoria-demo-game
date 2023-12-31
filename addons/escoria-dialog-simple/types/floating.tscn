@@ -3,10 +3,10 @@
 [ext_resource path="res://addons/escoria-dialog-simple/types/floating.gd" type="Script" id=1]
 
 [node name="dialog_label" type="RichTextLabel"]
-margin_right = 643.0
-margin_bottom = 60.0
+offset_right = 643.0
+offset_bottom = 60.0
 bbcode_enabled = true
-bbcode_text = "[center]Here be some text.[/center]"
+text = "[center]Here be some text.[/center]"
 text = "Here be some text."
 fit_content_height = true
 script = ExtResource( 1 )

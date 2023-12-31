@@ -1,4 +1,4 @@
-extends PopupDialog
+extends Popup
 
 signal savegame_name_ok(savegame_name)
 signal savegame_cancel
@@ -8,7 +8,7 @@ func _on_cancel_pressed():
 	hide()
 
 func _on_ok_pressed():
-	if not $MarginContainer/VBoxContainer/LineEdit.text.empty():
+	if not $MarginContainer/VBoxContainer/LineEdit.text.is_empty():
 		emit_signal("savegame_name_ok", $MarginContainer/VBoxContainer/LineEdit.text)
 		$MarginContainer/VBoxContainer/LineEdit.clear()
 		hide()

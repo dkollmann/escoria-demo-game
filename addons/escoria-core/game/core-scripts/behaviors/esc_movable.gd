@@ -44,11 +44,11 @@ var _orig_speed: float = 0.0
 
 
 # Shortcut variable that references the node's parent
-onready var parent = get_parent()
+@onready var parent = get_parent()
 
 
 # Currenly running task
-onready var task = MovableTask.NONE
+@onready var task = MovableTask.NONE
 
 
 # Add the signal "arrived" to the parent node, which is emitted when
@@ -331,10 +331,10 @@ func update_terrain(on_event_finished_name = null) -> void:
 		return
 
 	var pos = parent.global_position
-	if pos.y <= VisualServer.CANVAS_ITEM_Z_MAX:
+	if pos.y <= RenderingServer.CANVAS_ITEM_Z_MAX:
 		parent.z_index = pos.y
 	else:
-		parent.z_index = VisualServer.CANVAS_ITEM_Z_MAX
+		parent.z_index = RenderingServer.CANVAS_ITEM_Z_MAX
 
 	var factor = parent.terrain.get_terrain(pos)
 	var scal = parent.terrain.get_scale_range(factor)
@@ -447,7 +447,7 @@ func set_angle(deg: int, wait: float = 0.0) -> void:
 			parent.animations.idles[dir].animation
 		)
 		if wait > 0.0:
-			yield(get_tree().create_timer(wait), "timeout")
+			await get_tree().create_timer(wait).timeout
 		is_mirrored = parent.animations.idles[dir].mirrored
 
 	last_dir = _get_dir_deg(deg, parent.animations)
@@ -471,7 +471,7 @@ func set_angle(deg: int, wait: float = 0.0) -> void:
 func turn_to(item: Node, wait: float = 0.0) -> void:
 	set_angle(
 		wrapi(
-			rad2deg(parent.get_position().angle_to_point(item.get_position())),
+			rad_to_deg(parent.get_position().angle_to_point(item.get_position())),
 			0,
 			360
 		),

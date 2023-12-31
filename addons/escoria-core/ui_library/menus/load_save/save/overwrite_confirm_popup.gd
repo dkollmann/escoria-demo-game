@@ -1,4 +1,4 @@
-extends PopupDialog
+extends Popup
 
 signal confirm_yes
 

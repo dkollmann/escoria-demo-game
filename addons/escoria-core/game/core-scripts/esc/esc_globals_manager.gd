@@ -10,7 +10,7 @@ signal global_changed(global, old_value, new_value)
 
 
 # The globals registry
-export(Dictionary) var _globals = {}
+@export var _globals: Dictionary = {}
 
 
 # Registry of globals that are to be reserved for internal use only.

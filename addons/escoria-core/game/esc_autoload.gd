@@ -109,10 +109,10 @@ var is_quitting: bool = false
 
 
 # The game resolution
-onready var game_size = get_viewport().size
+@onready var game_size = get_viewport().size
 
 # The current state of the game
-onready var current_state = GAME_STATE.DEFAULT
+@onready var current_state = GAME_STATE.DEFAULT
 
 
 # Ready function
@@ -122,7 +122,7 @@ func _ready():
 		# Running a room scene. We need to instantiate the main scene ourselves
 		# so that the Escoria scene is created and managers are instanced as well.
 		is_direct_room_run = true
-		var main_scene = preload("res://addons/escoria-core/game/main_scene.tscn").instance()
+		var main_scene = preload("res://addons/escoria-core/game/main_scene.tscn").instantiate()
 		add_child(main_scene)
 
 

@@ -23,7 +23,7 @@ class_name CameraSetZoomCommand
 func configure() -> ESCCommandArgumentDescriptor:
 	return ESCCommandArgumentDescriptor.new(
 		1,
-		[[TYPE_REAL, TYPE_INT], [TYPE_REAL, TYPE_INT]],
+		[[TYPE_FLOAT, TYPE_INT], [TYPE_FLOAT, TYPE_INT]],
 		[null, 0.0]
 	)
 
@@ -31,7 +31,7 @@ func configure() -> ESCCommandArgumentDescriptor:
 # Run the command
 func run(command_params: Array) -> int:
 	(escoria.object_manager.get_object(escoria.object_manager.CAMERA).node as ESCCamera)\
-		.set_camera_zoom(
+		super.set_camera_zoom(
 			command_params[0],
 			command_params[1]
 		)

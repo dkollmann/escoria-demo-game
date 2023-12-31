@@ -1,3 +1,4 @@
+@tool
 # An ``ESCItem`` defines a (usually interactive) item in the game.
 #
 # When interacting with an ``ESCItem``, the game character will automatically
@@ -9,7 +10,6 @@
 # chooses to "use" the exit - for example, saying a goodbye, or running a
 # cutscene. Place a ``change_scene`` command inside this event to move the
 # character to the next room.
-tool
 extends Area2D
 class_name ESCItem, "res://addons/escoria-core/design/esc_item.svg"
 
@@ -67,95 +67,95 @@ const GROUP_ITEM_CAN_COLLIDE = "item_can_collide"
 
 
 # The global ID of this item
-export(String) var global_id
+@export var global_id: String
 
 # The ESC script for this item
-export(String, FILE, "*.esc") var esc_script
+@export var esc_script # (String, FILE, "*.esc")
 
 # If true, the ESC script may have an ``:exit_scene`` event to manage scene changes.
 # For simple exits that do not require scripted actions, the ``ESCExit`` node may be
 # preferred.
-export(bool) var is_exit
+@export var is_exit: bool
 
 # If true, object is considered as trigger. Allows using :trigger_in and
 # :trigger_out verbs in ESC scripts.
-export(bool) var is_trigger
+@export var is_trigger: bool
 
 # The verb used for the trigger in ESC events
-export(String) var trigger_in_verb = "trigger_in"
+@export var trigger_in_verb: String = "trigger_in"
 
 # The verb used for the trigger out ESC events
-export(String) var trigger_out_verb = "trigger_out"
+@export var trigger_out_verb: String = "trigger_out"
 
 # If true, the player can interact with this item
-export(bool) var is_interactive = true
+@export var is_interactive: bool = true
 
 # Whether this item is movable. A movable item will be scaled with the terrain
 # and be moved with commands like teleport and turn_to.
-export(bool) var is_movable = false
+@export var is_movable: bool = false
 
 # If true, player orients towards 'interaction_angle' as
 # player character arrives.
-export(bool) var player_orients_on_arrival = true
+@export var player_orients_on_arrival: bool = true
 
 # Let the player turn to this angle when the player arrives at the item
-export(int) var interaction_angle
+@export var interaction_angle: int
 
 # The name for the tooltip of this item
-export(String) var tooltip_name
+@export var tooltip_name: String
 
 # Default action to use if object is not in the inventory
-export(String) var default_action
+@export var default_action: String
 
 # Default action to use if object is in the inventory
-export(String) var default_action_inventory
+@export var default_action_inventory: String
 
 # If action used by player is in this list, the game will wait for a second
 # click on another item to combine objects together (typical
 # `USE <X> WITH <Y>`, `GIVE <X> TO <Y>`)
-export(PoolStringArray) var combine_when_selected_action_is_in = []
+@export var combine_when_selected_action_is_in: PackedStringArray = []
 
 # If true, combination must be done in the way it is written in ESC script
 # ie. :use ON_ITEM
 # If false, combination will be tried in the other way.
-export(bool) var combine_is_one_way = false
+@export var combine_is_one_way: bool = false
 
 # If true, then the object must have been picked up before using it.
 # A false value is useful for items in the background, such as buttons.
-export(bool) var use_from_inventory_only = false
+@export var use_from_inventory_only: bool = false
 
 # The visual representation for this item when its in the inventory
-export(Texture) var inventory_texture: Texture = null \
+@export var inventory_texture: Texture2D = null \
 		setget ,_get_inventory_texture
 
 # Color used for dialogs
-export(Color) var dialog_color = Color(1,1,1,1)
+@export var dialog_color: Color = Color(1,1,1,1)
 
 # If true, terrain scaling will not be applied and
 # node will remain at the scale set in the scene.
-export(bool) var dont_apply_terrain_scaling = false
+@export var dont_apply_terrain_scaling: bool = false
 
 # Speed of this item ifmovable
-export(int) var speed: int = 300
+@export var speed: int = 300
 
 # Speed damp of this item if movable
-export(float) var v_speed_damp: float = 1.0
+@export var v_speed_damp: float = 1.0
 
 # The node used to play animations
-export(NodePath) var animation_player_node: NodePath = "" \
+@export var animation_player_node: NodePath = "" \
 		setget _set_animation_player_node
 
 # The node that references the camera position and zoom if this item is used
 # as a camera target
-export(NodePath) var camera_node
+@export var camera_node: NodePath
 
 # Custom data dictionary to ease customization and custom command creation.
 # Avoid name collision using proper key names.
-export(Dictionary) var custom_data = {}
+@export var custom_data: Dictionary = {}
 
 
 # ESCAnimationsResource (for walking, idling...)
-var animations: ESCAnimationResource setget set_animations
+var animations: ESCAnimationResource: set = set_animations
 
 # Reference to the animation node (null if none was found)
 var animation_sprite = null
@@ -180,13 +180,13 @@ var _animation_player: ESCAnimationPlayer = null
 var _force_registration: bool = false
 
 # Warnings for scene.
-var _scene_warnings: PoolStringArray = []
+var _scene_warnings: PackedStringArray = []
 
 
 # Add the movable node, connect signals, detect child nodes
 # and register this item
 func _ready():
-	self.pause_mode = Node.PAUSE_MODE_STOP
+	self.process_mode = Node.PROCESS_MODE_PAUSABLE
 
 	_detect_children()
 
@@ -197,10 +197,10 @@ func _ready():
 	validate_animations(animations)
 	validate_exported_parameters()
 
-	if not self.is_connected("input_event", self, "_on_input_event"):
-		connect("input_event", self, "_on_input_event")
-	if not self.is_connected("mouse_exited", self, "_on_mouse_exited"):
-		connect("mouse_exited", self, "_on_mouse_exited")
+	if not self.is_connected("input_event", Callable(self, "_on_input_event")):
+		connect("input_event", Callable(self, "_on_input_event"))
+	if not self.is_connected("mouse_exited", Callable(self, "_on_mouse_exited")):
+		connect("mouse_exited", Callable(self, "_on_mouse_exited"))
 
 	# Register and connect all elements to Escoria backoffice.
 	if not Engine.is_editor_hint():
@@ -284,18 +284,18 @@ func _ready():
 					"_on_mouse_right_clicked_item"
 				)
 		else:
-			if not self.is_connected("area_entered", self, "element_entered"):
-				connect("area_entered", self, "element_entered")
-			if not self.is_connected("area_exited", self, "element_exited"):
-				connect("area_exited", self, "element_exited")
-			if not self.is_connected("body_entered", self, "element_entered"):
-				connect("body_entered", self, "element_entered")
-			if not self.is_connected("body_exited", self, "element_exited"):
-				connect("body_exited", self, "element_exited")
+			if not self.is_connected("area_entered", Callable(self, "element_entered")):
+				connect("area_entered", Callable(self, "element_entered"))
+			if not self.is_connected("area_exited", Callable(self, "element_exited")):
+				connect("area_exited", Callable(self, "element_exited"))
+			if not self.is_connected("body_entered", Callable(self, "element_entered")):
+				connect("body_entered", Callable(self, "element_entered"))
+			if not self.is_connected("body_exited", Callable(self, "element_exited")):
+				connect("body_exited", Callable(self, "element_exited"))
 
 		# If object can be in the inventory, set default_action_inventory to same as
 		# default_action, if default_action_inventory is not set
-		if use_from_inventory_only and default_action_inventory.empty():
+		if use_from_inventory_only and default_action_inventory.is_empty():
 			default_action_inventory = default_action
 
 		# Perform a first terrain scaling if we have to.
@@ -341,7 +341,7 @@ class HoverStackSorter:
 # - _shape_idx is the child index of the clicked Shape2D.
 func _on_input_event(_viewport: Object, event: InputEvent, _shape_idx: int):
 	if event is InputEventMouseMotion:
-		var physics2d_dss: Physics2DDirectSpaceState = get_world_2d().direct_space_state
+		var physics2d_dss: PhysicsDirectSpaceState2D = get_world_2d().direct_space_state
 		var colliding: Array = physics2d_dss.intersect_point(get_global_mouse_position(), 32, [], 0x7FFFFFFF, true, true)
 		var colliding_nodes = []
 		for c in colliding:
@@ -349,9 +349,9 @@ func _on_input_event(_viewport: Object, event: InputEvent, _shape_idx: int):
 					and escoria.action_manager.is_object_actionable(c.collider.global_id):
 				colliding_nodes.push_back(c.collider)
 
-		if colliding_nodes.empty():
+		if colliding_nodes.is_empty():
 			return
-		colliding_nodes.sort_custom(HoverStackSorter, "sort_ascending_z_index")
+		colliding_nodes.sort_custom(Callable(HoverStackSorter, "sort_ascending_z_index"))
 		escoria.inputs_manager.hover_stack.clear()
 		escoria.inputs_manager.hover_stack.add_items(colliding_nodes)
 		escoria.inputs_manager.set_hovered_node(colliding_nodes.back())
@@ -383,9 +383,9 @@ func _unhandled_input(input_event: InputEvent) -> void:
 		# to accommodate gamepad support, we create a synthetic mouse event
 		# based on the InputEventJoypadButton.
 		event = InputEventMouseButton.new()
-		event.button_index = BUTTON_LEFT
+		event.button_index = MOUSE_BUTTON_LEFT
 		event.doubleclick = false
-		event.pressed = true
+		event.button_pressed = true
 		# ESCActionManager expects to read the position off of the event.
 		event.position = get_global_mouse_position()
 
@@ -398,21 +398,21 @@ func _unhandled_input(input_event: InputEvent) -> void:
 			return
 		var p = get_global_mouse_position()
 		if _is_in_shape(p) and escoria.action_manager.is_object_actionable(global_id):
-			if event.doubleclick and event.button_index == BUTTON_LEFT:
+			if event.doubleclick and event.button_index == MOUSE_BUTTON_LEFT:
 				emit_signal("mouse_double_left_clicked_item", self, event)
-				get_tree().set_input_as_handled()
-			elif event.button_index == BUTTON_LEFT:
+				get_viewport().set_input_as_handled()
+			elif event.button_index == MOUSE_BUTTON_LEFT:
 				emit_signal("mouse_left_clicked_item", self, event)
-				get_tree().set_input_as_handled()
-			elif event.button_index == BUTTON_RIGHT:
+				get_viewport().set_input_as_handled()
+			elif event.button_index == MOUSE_BUTTON_RIGHT:
 				emit_signal("mouse_right_clicked_item", self, event)
-				get_tree().set_input_as_handled()
+				get_viewport().set_input_as_handled()
 
 
 # To display warnings in the scene tree should there be any.
-func _get_configuration_warning():
+func _get_configuration_warnings():
 	validate_animations(animations)
-	return _scene_warnings.join("\n")
+	return "\n".join(_scene_warnings)
 
 
 func _is_in_shape(position: Vector2) -> bool:
@@ -470,11 +470,11 @@ func validate_animations(animations_resource: ESCAnimationResource) -> void:
 			_validate_animations_property_all_not_null(animations_resource.speaks, "speaks")
 
 	if Engine.is_editor_hint():
-		update_configuration_warning()
+		update_configuration_warnings()
 	elif _scene_warnings.size() > 0:
 		escoria.logger.error(
 			self,
-			_scene_warnings.join(", ")
+			", ".join(_scene_warnings)
 		)
 
 
@@ -485,8 +485,8 @@ func set_animations(p_animations: ESCAnimationResource) -> void:
 
 	animations = p_animations
 
-	if not animations.is_connected("changed", self, "_validate_animations"):
-		animations.connect("changed", self, "_validate_animations")
+	if not animations.is_connected("changed", Callable(self, "_validate_animations")):
+		animations.connect("changed", Callable(self, "_validate_animations"))
 
 
 # Return the animation player node
@@ -495,7 +495,7 @@ func get_animation_player() -> Node:
 		var player_node_path = animation_player_node
 		if player_node_path == "":
 			for child in self.get_children():
-				if child is AnimatedSprite or \
+				if child is AnimatedSprite2D or \
 						child is AnimationPlayer:
 					player_node_path = child.get_path()
 		if player_node_path == "":
@@ -530,7 +530,7 @@ func get_interact_position() -> Vector2:
 	var interact_position = null
 
 	for c in get_children():
-		if c is Position2D:
+		if c is Marker2D:
 			# Identify any Postion2D nodes
 			if c.is_class("ESCLocation"):
 				esclocation_count += 1
@@ -677,7 +677,7 @@ func stop_walking_now(to_target: bool = false) -> void:
 # #### Parameters
 #
 # - speed_value: Set the new speed
-func set_speed(speed_value: int) -> void:
+func set_velocity(speed_value: int) -> void:
 	speed = speed_value
 
 
@@ -690,7 +690,7 @@ func has_moved() -> bool:
 func get_sprite() -> Node:
 	if _sprite_node == null:
 		for child in self.get_children():
-			if child is AnimatedSprite or child is Sprite:
+			if child is AnimatedSprite2D or child is Sprite2D:
 				_sprite_node = child
 	if _sprite_node == null:
 		escoria.logger.error(
@@ -825,7 +825,7 @@ func get_camera_node():
 	if has_node(camera_node):
 		escoria.logger.debug(
 			self,
-			"Camera node found - directing camera to the camera_node on %s."
+			"Camera3D node found - directing camera to the camera_node on %s."
 				% global_id
 		)
 		return get_node(camera_node)
@@ -872,9 +872,9 @@ func _set_animation_player_node(node_path: NodePath):
 
 	assert(has_node(node_path), "Node with path %s not found" % node_path)
 	assert(
-		get_node(node_path) is AnimatedSprite or \
+		get_node(node_path) is AnimatedSprite2D or \
 				get_node(node_path) is AnimationPlayer,
-		"Selected node has to be an AnimatedSprite or AnimationPlayer node"
+		"Selected node has to be an AnimatedSprite2D or AnimationPlayer node"
 	)
 
 	animation_player_node = node_path
@@ -882,10 +882,10 @@ func _set_animation_player_node(node_path: NodePath):
 
 # Returns either the set inventory texture or the texture of a TextureRect
 # found as a child if it is null
-func _get_inventory_texture() -> Texture:
+func _get_inventory_texture() -> Texture2D:
 	if inventory_texture == null:
 		for c in get_children():
-			if c is TextureRect or c is Sprite:
+			if c is TextureRect or c is Sprite2D:
 				return c.texture
 		return null
 	else:

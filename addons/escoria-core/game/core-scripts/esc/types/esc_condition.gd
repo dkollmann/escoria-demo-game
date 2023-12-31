@@ -1,5 +1,5 @@
 # A condition to run a command
-extends Reference
+extends RefCounted
 class_name ESCCondition
 
 

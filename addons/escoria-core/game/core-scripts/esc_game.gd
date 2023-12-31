@@ -22,21 +22,21 @@ enum EDITOR_GAME_DEBUG_DISPLAY {
 
 
 # The main menu node
-export(NodePath) var main_menu
+@export var main_menu: NodePath
 
 # The main menu node
-export(NodePath) var pause_menu
+@export var pause_menu: NodePath
 
 # The safe margin around tooltips
-export(float) var mouse_tooltip_margin = 50.0
+@export var mouse_tooltip_margin: float = 50.0
 
 # Which (if any) debug mode for the editor is used
-export(EDITOR_GAME_DEBUG_DISPLAY) var editor_debug_mode = \
+@export var editor_debug_mode: EDITOR_GAME_DEBUG_DISPLAY = \
 		EDITOR_GAME_DEBUG_DISPLAY.NONE setget _set_editor_debug_mode
 
 # The Control node underneath which all UI must be placed.
 # This should be a Control node and NOT a CanvasLayer (or any other type of) node.
-export(NodePath) var ui_parent_control_node
+@export var ui_parent_control_node: NodePath
 
 # A reference to the node handling tooltips
 var tooltip_node: Object
@@ -73,9 +73,9 @@ func _enter_tree():
 		get_node_or_null("hover_stack_layer") == null:
 		hover_stack_displayer = preload(
 			"res://addons/escoria-core/ui_library/tools/hover_stack/hover_stack.tscn"
-		).instance()
+		).instantiate()
 		add_child(hover_stack_displayer)
-		escoria.inputs_manager.hover_stack.connect("hover_stack_changed", hover_stack_displayer, "update")
+		escoria.inputs_manager.hover_stack.connect("hover_stack_changed", Callable(hover_stack_displayer, "update"))
 
 
 # Function called when ESCGame exits the scene tree.
@@ -102,7 +102,7 @@ func _exit_tree():
 func _ready():
 	escoria.settings_manager.apply_settings()
 	connect("crash_popup_confirmed", escoria, "quit",
-		[], CONNECT_ONESHOT)
+		[], CONNECT_ONE_SHOT)
 
 
 # Handle debugging visualizations
@@ -460,8 +460,8 @@ func get_custom_data() -> Dictionary:
 # - files: Array of strings containing the paths to the files generated on crash
 func show_crash_popup(files: Array = []) -> void:
 	var crash_popup = AcceptDialog.new()
-	crash_popup.popup_exclusive = true
-	crash_popup.pause_mode = Node.PAUSE_MODE_PROCESS
+	crash_popup.exclusive = true
+	crash_popup.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(crash_popup)
 	var files_to_send: String = ""
 	for file in files:
@@ -471,7 +471,7 @@ func show_crash_popup(files: Array = []) -> void:
 	) % files_to_send
 	crash_popup.popup_centered()
 	escoria.set_game_paused(true)
-	yield(crash_popup, "confirmed")
+	await crash_popup.confirmed
 	emit_signal("crash_popup_confirmed")
 
 

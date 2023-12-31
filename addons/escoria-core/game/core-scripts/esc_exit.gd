@@ -15,10 +15,10 @@ class_name ESCExit, "res://addons/escoria-core/design/esc_exit.svg"
 
 
 # Path to the target scene to change to
-export(String, FILE, "*.tscn") var target_scene = ""
+@export var target_scene = "" # (String, FILE, "*.tscn")
 
 # Sound effect to play when changing the scene
-export(String, FILE, "*.ogg,*.mp3,*.wav") var switch_sound = ""
+@export var switch_sound = "" # (String, FILE, "*.ogg,*.mp3,*.wav")
 
 # ESC commands kept around for references to their command names.
 var _play_snd: PlaySndCommand

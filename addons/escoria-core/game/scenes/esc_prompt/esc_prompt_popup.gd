@@ -1,12 +1,12 @@
 # A debug window which can run esc commands
-extends WindowDialog
+extends Window
 
 
 # Reference to the past actions display
-onready var past_actions = $VBoxContainer/past_actions
+@onready var past_actions = $VBoxContainer/past_actions
 
 # Reference to the command input
-onready var command = $VBoxContainer/command
+@onready var command = $VBoxContainer/command
 
 # ESC commands kept around for references to their command names.
 var _print: PrintCommand
@@ -22,7 +22,7 @@ func _ready() -> void:
 #
 # - p_command_str: Command to execute
 func _on_command_text_entered(p_command_str : String):
-	if p_command_str.empty():
+	if p_command_str.is_empty():
 		return
 
 	command.text = ""
@@ -40,9 +40,9 @@ func _on_command_text_entered(p_command_str : String):
 
 	if script:
 		escoria.event_manager.queue_event(script.events[escoria.event_manager.EVENT_PRINT])
-		var ret = yield(escoria.event_manager, "event_finished")
+		var ret = await escoria.event_manager.event_finished
 		while ret[1] != _print.get_command_name():
-			ret = yield(escoria.event_manager, "event_finished")
+			ret = await escoria.event_manager.event_finished
 		past_actions.text += "Returned code: %d" % ret[0]
 
 

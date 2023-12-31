@@ -34,14 +34,14 @@ class_name TurnToCommand
 func configure() -> ESCCommandArgumentDescriptor:
 	return ESCCommandArgumentDescriptor.new(
 		2,
-		[TYPE_STRING, TYPE_STRING, TYPE_REAL],
+		[TYPE_STRING, TYPE_STRING, TYPE_FLOAT],
 		[null, null, 0.0]
 	)
 
 
 # Validate whether the given arguments match the command descriptor
 func validate(arguments: Array):
-	if not .validate(arguments):
+	if not super.validate(arguments):
 		return false
 
 	if not escoria.object_manager.has(arguments[0]):
@@ -64,7 +64,7 @@ func validate(arguments: Array):
 # Run the command
 func run(command_params: Array) -> int:
 	(escoria.object_manager.get_object(command_params[0]).node as ESCItem)\
-		.turn_to(
+		super.turn_to(
 			escoria.object_manager.get_object(command_params[1]).node,
 			command_params[2]
 		)

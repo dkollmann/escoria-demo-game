@@ -53,26 +53,26 @@ func handle_input(_event):
 func _handle_left_click_action(left_click_action: String) -> void:
 	match left_click_action:
 		SimpleDialogSettings.LEFT_CLICK_ACTION_SPEED_UP:
-			if _dialog_manager.is_connected("say_visible", self, "_on_say_visible"):
-				_dialog_manager.disconnect("say_visible", self, "_on_say_visible")
+			if _dialog_manager.is_connected("say_visible", Callable(self, "_on_say_visible")):
+				_dialog_manager.disconnect("say_visible", Callable(self, "_on_say_visible"))
 
 			escoria.logger.trace(self, "Dialog State Machine: 'say' -> 'say_fast'")
 			emit_signal("finished", "say_fast")
 		SimpleDialogSettings.LEFT_CLICK_ACTION_INSTANT_FINISH:
-			if _dialog_manager.is_connected("say_visible", self, "_on_say_visible"):
-				_dialog_manager.disconnect("say_visible", self, "_on_say_visible")
+			if _dialog_manager.is_connected("say_visible", Callable(self, "_on_say_visible")):
+				_dialog_manager.disconnect("say_visible", Callable(self, "_on_say_visible"))
 
 			escoria.logger.trace(self, "Dialog State Machine: 'say' -> 'say_finish'")
 			emit_signal("finished", "say_finish")
 
-	get_tree().set_input_as_handled()
+	get_viewport().set_input_as_handled()
 
 
 func enter():
 	escoria.logger.trace(self, "Dialog State Machine: Entered 'say'.")
 
-	if not _dialog_manager.is_connected("say_visible", self, "_on_say_visible"):
-		_dialog_manager.connect("say_visible", self, "_on_say_visible")
+	if not _dialog_manager.is_connected("say_visible", Callable(self, "_on_say_visible")):
+		_dialog_manager.connect("say_visible", Callable(self, "_on_say_visible"))
 
 	var matches = _keytext_regex.search(_text)
 
@@ -104,12 +104,12 @@ func enter():
 				if not (
 					escoria.object_manager.get_object(escoria.object_manager.SPEECH).node\
 					 as ESCSpeechPlayer
-				).stream.is_connected("finished", self, "_on_audio_finished"):
+				).stream.is_connected("finished", Callable(self, "_on_audio_finished")):
 
 					(
 						escoria.object_manager.get_object(escoria.object_manager.SPEECH).node\
 						 as ESCSpeechPlayer
-					).stream.connect("finished", self, "_on_audio_finished")
+					).stream.connect("finished", Callable(self, "_on_audio_finished"))
 
 		var translated_text: String = tr(matches.get_string("key"))
 
@@ -118,7 +118,7 @@ func enter():
 		if translated_text == matches.get_string("key"):
 			escoria.logger.warn(
 				self,
-				"Unable to find translation key '%s'. Using untranslated text." % matches.get_string("key")
+				"Unable to find position key '%s'. Using untranslated text." % matches.get_string("key")
 			)
 			_text = matches.get_string("text")
 		else:
@@ -148,9 +148,9 @@ func _get_voice_file(key: String, start: String = "") -> String:
 		start = ESCProjectSettingsManager.get_setting(
 			ESCProjectSettingsManager.SPEECH_FOLDER
 		)
-	var _dir = Directory.new()
+	var _dir = DirAccess.new()
 	if _dir.open(start) == OK:
-		_dir.list_dir_begin(true, true)
+		_dir.list_dir_begin() # TODOConverter3To4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 		var file_name = _dir.get_next()
 		while file_name != "":
 			if _dir.current_is_dir():

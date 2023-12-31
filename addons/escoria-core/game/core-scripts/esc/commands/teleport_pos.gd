@@ -24,7 +24,7 @@ func configure() -> ESCCommandArgumentDescriptor:
 
 # Validate whether the given arguments match the command descriptor
 func validate(arguments: Array):
-	if not .validate(arguments):
+	if not super.validate(arguments):
 		return false
 
 	if not escoria.object_manager.has(arguments[0]):
@@ -49,7 +49,7 @@ func validate(arguments: Array):
 # Run the command
 func run(command_params: Array) -> int:
 	(escoria.object_manager.get_object(command_params[0]).node as ESCItem) \
-		.teleport_to(
+		super.teleport_to(
 			Vector2(int(command_params[1]), int(command_params[2])
 		)
 	)

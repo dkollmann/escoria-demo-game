@@ -60,7 +60,7 @@ func _init():
 		])
 		var property_info = {
 			"name": COMMAND_DIRECTORIES,
-			"type": TYPE_STRING_ARRAY
+			"type": TYPE_PACKED_STRING_ARRAY
 		}
 		ProjectSettings.add_property_info(property_info)
 

@@ -1,5 +1,5 @@
+@tool
 # The escoria main script
-tool
 extends Node
 class_name Escoria
 
@@ -12,7 +12,7 @@ const ESCORIA_CORE_PLUGIN_NAME: String = "escoria-core"
 
 
 # The main scene
-onready var main = $main
+@onready var main = $main
 
 
 
@@ -31,7 +31,7 @@ func _init():
 
 	if ESCProjectSettingsManager.get_setting(
 		ESCProjectSettingsManager.GAME_SCENE
-	).empty():
+	).is_empty():
 		escoria.logger.error(
 			self,
 			"Project setting '%s' is not set!" % ESCProjectSettingsManager.GAME_SCENE
@@ -39,7 +39,7 @@ func _init():
 	else:
 		escoria.game_scene = escoria.resource_cache.get_resource(
 			ESCProjectSettingsManager.get_setting(ESCProjectSettingsManager.GAME_SCENE)
-		).instance()
+		).instantiate()
 
 
 # Load settings
@@ -56,7 +56,7 @@ func _ready():
 
 	if ESCProjectSettingsManager.get_setting(
 		ESCProjectSettingsManager.GAME_START_SCRIPT
-	).empty():
+	).is_empty():
 		escoria.logger.error(
 			self,
 			"Project setting '%s' is not set!"
@@ -70,7 +70,7 @@ func _ready():
 
 	if ESCProjectSettingsManager.get_setting(
 		ESCProjectSettingsManager.ACTION_DEFAULT_SCRIPT
-	).empty():
+	).is_empty():
 		escoria.logger.info(
 			self,
 			"Project setting '%s' is not set. No action defaults will be used."
@@ -93,7 +93,7 @@ func _ready():
 func _perform_plugins_checks():
 	if ESCProjectSettingsManager.get_setting(
 		ESCProjectSettingsManager.DIALOG_MANAGERS
-	).empty():
+	).is_empty():
 		escoria.logger.error(
 			self,
 			"No dialog manager configured. Please add a dialog manager plugin."
@@ -155,9 +155,9 @@ func run_event_from_script(script: ESCScript, event_name: String):
 			"Please load the ESC script using esc_compiler.load_esc_file()."
 		)
 	escoria.event_manager.queue_event(script.events[event_name])
-	var rc = yield(escoria.event_manager, "event_finished")
+	var rc = await escoria.event_manager.event_finished
 	while rc[1] != event_name:
-		rc = yield(escoria.event_manager, "event_finished")
+		rc = await escoria.event_manager.event_finished
 
 	if rc[0] != ESCExecution.RC_OK:
 		escoria.logger.error(

@@ -23,7 +23,7 @@ func initialize(dialog_player, dialog_chooser_ui: ESCDialogManager, dialog: ESCD
 func enter():
 	escoria.logger.trace(self, "Dialog State Machine: Entered 'choices'.")
 
-	if _dialog.options.empty():
+	if _dialog.options.is_empty():
 		escoria.logger.error(
 			self,
 			"Received dialog options array was empty."
@@ -36,7 +36,7 @@ func update(_delta):
 	if _ready_to_choose:
 		_ready_to_choose = false
 		_dialog_chooser_ui.do_choose(_dialog_player, _dialog, _type)
-		var option = yield(_dialog_chooser_ui, "option_chosen")
+		var option = await _dialog_chooser_ui.option_chosen
 
 		escoria.logger.trace(self, "Dialog State Machine: 'choices' -> 'idle'")
 

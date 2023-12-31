@@ -56,7 +56,7 @@ var _channels_state: Dictionary = {}
 var _yielding: Dictionary = {}
 
 # Whether we're currently changing the scene.
-var _changing_scene: bool = false setget set_changing_scene
+var _changing_scene: bool = false: set = set_changing_scene
 
 # ESC "change_scene" command.
 var _change_scene: ChangeSceneCommand
@@ -69,7 +69,7 @@ func _init():
 
 # Make sure to stop when pausing the game
 func _ready():
-	self.pause_mode = Node.PAUSE_MODE_STOP
+	self.process_mode = Node.PROCESS_MODE_PAUSABLE
 
 
 # Handle the events queue and scheduled events
@@ -95,7 +95,7 @@ func _process(delta: float) -> void:
 					channel_name,
 				] +
 				"to source %s." % _running_events[channel_name].source \
-					if not _running_events[channel_name].source.empty()
+					if not _running_events[channel_name].source.is_empty()
 					else "(unknown)"
 			)
 			if not _running_events[channel_name].is_connected(
@@ -106,7 +106,7 @@ func _process(delta: float) -> void:
 					self,
 					"_on_event_finished",
 					[channel_name],
-					CONNECT_ONESHOT
+					CONNECT_ONE_SHOT
 				)
 			if not _running_events[channel_name].is_connected(
 				"interrupted", self, "_on_event_finished"
@@ -116,7 +116,7 @@ func _process(delta: float) -> void:
 					self,
 					"_on_event_finished",
 					[channel_name],
-					CONNECT_ONESHOT
+					CONNECT_ONE_SHOT
 				)
 
 			if channel_name == CHANNEL_FRONT:
@@ -145,7 +145,7 @@ func _process(delta: float) -> void:
 
 			if rc is GDScriptFunctionState:
 				_yielding[channel_name] = true
-				rc = yield(rc, "completed")
+				rc = await rc.completed
 				_yielding[channel_name] = false
 
 	for event in self.scheduled_events:
@@ -181,14 +181,14 @@ func queue_event_from_esc(script_object: ESCScript, event: String,
 		)
 	if block:
 		if channel == CHANNEL_FRONT:
-			var rc = yield(self, "event_finished")
+			var rc = await self.event_finished
 			while rc[1] != event:
-				rc = yield(self, "event_finished")
+				rc = await self.event_finished
 			return rc[0]
 		else:
-			var rc = yield(self, "background_event_finished")
+			var rc = await self.background_event_finished
 			while rc[1] != event and rc[2] != channel:
-				rc = yield(self, "background_event_finished")
+				rc = await self.background_event_finished
 			return rc[0]
 
 	return ESCExecution.RC_OK
@@ -283,7 +283,7 @@ func queue_background_event(channel_name: String, event: ESCEvent) -> void:
 #
 # #### Parameters
 # - exceptions: an optional list of events which should be left running or queued
-func interrupt(exceptions: PoolStringArray = []) -> void:
+func interrupt(exceptions: PackedStringArray = []) -> void:
 	if escoria.main.current_scene != null \
 			and escoria.main.current_scene.player != null \
 			and escoria.main.current_scene.player.is_moving():
@@ -466,7 +466,7 @@ func _generate_statement_error_warning(statement: ESCStatement, event_name: Stri
 		% [statement.name, event_name]
 
 	if statement is ESCCommand and statement.parameters.size() > 0:
-		var statement_params: String = "[" + PoolStringArray(statement.parameters).join(", ") + "]"
+		var statement_params: String = "[" + PackedStringArray(statement.", ".join(parameters)) + "]"
 
 		warning_string += " with parameters: %s" % statement_params
 

@@ -19,14 +19,14 @@ class_name CameraSetPosCommand
 func configure() -> ESCCommandArgumentDescriptor:
 	return ESCCommandArgumentDescriptor.new(
 		3,
-		[[TYPE_REAL, TYPE_INT], TYPE_INT, TYPE_INT],
+		[[TYPE_FLOAT, TYPE_INT], TYPE_INT, TYPE_INT],
 		[null, null, null]
 	)
 
 
 # Validate whether the given arguments match the command descriptor
 func validate(arguments: Array):
-	if not .validate(arguments):
+	if not super.validate(arguments):
 		return false
 
 	var new_pos: Vector2 = Vector2(arguments[1], arguments[2])
@@ -42,7 +42,7 @@ func validate(arguments: Array):
 # Run the command
 func run(command_params: Array) -> int:
 	(escoria.object_manager.get_object(escoria.object_manager.CAMERA).node as ESCCamera)\
-			.set_target(
+			super.set_target(
 				Vector2(command_params[1], command_params[2]),
 				command_params[0]
 			)

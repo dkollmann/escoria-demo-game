@@ -1,5 +1,5 @@
 # The descriptor of the arguments of an ESC command
-extends Reference
+extends RefCounted
 class_name ESCCommandArgumentDescriptor
 
 # As the get_type command was deprecated with Godot 2.x w we need a way to determine
@@ -102,7 +102,7 @@ func validate(command: String, arguments: Array) -> bool:
 			self,
 			"Invalid arguments for command %s. " % command +
 			"Arguments didn't match minimum size {num}: Only {args} {verb} found." \
-				.format({"num":self.min_args,"args":required_args_count,"verb":verb})
+				super.format({"num":self.min_args,"args":required_args_count,"verb":verb})
 		)
 
 	if arguments.size() > self.max_args and not has_varargs:

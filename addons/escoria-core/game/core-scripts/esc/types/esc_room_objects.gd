@@ -1,5 +1,5 @@
 # Container for ESCObjects stored in the object manager.
-extends Reference
+extends RefCounted
 class_name ESCRoomObjects
 
 

@@ -40,14 +40,14 @@ class_name SetAngleCommand
 func configure() -> ESCCommandArgumentDescriptor:
 	return ESCCommandArgumentDescriptor.new(
 		2,
-		[TYPE_STRING,  [TYPE_REAL, TYPE_INT],  [TYPE_REAL, TYPE_INT]],
+		[TYPE_STRING,  [TYPE_FLOAT, TYPE_INT],  [TYPE_FLOAT, TYPE_INT]],
 		[null, null, 0.0]
 	)
 
 
 # Validate whether the given arguments match the command descriptor
 func validate(arguments: Array):
-	if not .validate(arguments):
+	if not super.validate(arguments):
 		return false
 
 	if not escoria.object_manager.has(arguments[0]):
@@ -66,7 +66,7 @@ func run(command_params: Array) -> int:
 	# angle against X axis not Y, we need to check direction using (angle-90°).
 	# Since the ESC command already gives the right angle, we add 90.
 	escoria.object_manager.get_object(command_params[0]).node\
-			.set_angle(
+			super.set_angle(
 				wrapi(int(command_params[1]) + 90, 0, 360),
 				command_params[2]
 			)

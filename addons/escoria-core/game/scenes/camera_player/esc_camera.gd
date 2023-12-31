@@ -20,7 +20,7 @@ var _zoom_target: Vector2
 func _ready():
 	_tween = Tween.new()
 	add_child(_tween)
-	_tween.connect("tween_all_completed", self, "_target_reached")
+	_tween.connect("tween_all_completed", Callable(self, "_target_reached"))
 
 
 func _exit_tree():
@@ -73,8 +73,8 @@ func set_limits(limits: ESCCameraLimits):
 
 
 func set_drag_margin_enabled(p_dm_h_enabled, p_dm_v_enabled):
-	self.drag_margin_h_enabled = p_dm_h_enabled
-	self.drag_margin_v_enabled = p_dm_v_enabled
+	self.drag_horizontal_enabled = p_dm_h_enabled
+	self.drag_vertical_enabled = p_dm_v_enabled
 
 
 # Set the target for the camera
@@ -95,7 +95,7 @@ func set_target(p_target, p_time : float = 0.0):
 	else:
 		# Need to wait a frame in order to ensure the screen centre position is
 		# recalculated. Also to allow any close-calls with the tween to finish.
-		yield(get_tree(), "idle_frame")
+		await get_tree().idle_frame
 
 		if _tween.is_active():
 			escoria.logger.debug(
@@ -143,7 +143,7 @@ func set_camera_zoom(p_zoom_level: float, p_time: float):
 	else:
 		# Need to wait a frame in order to ensure the screen centre position is
 		# recalculated. Also to allow any close-calls with the tween to finish.
-		yield(get_tree(), "idle_frame")
+		await get_tree().idle_frame
 
 		if _tween.is_active():
 			escoria.logger.debug(
@@ -198,7 +198,7 @@ func push(p_target, p_time: float = 0.0, p_type: int = 0):
 	else:
 		# Need to wait a frame in order to ensure the screen centre position is
 		# recalculated. Also to allow any close-calls with the tween to finish.
-		yield(get_tree(), "idle_frame")
+		await get_tree().idle_frame
 
 		if _tween.is_active():
 			escoria.logger.debug(
@@ -257,7 +257,7 @@ func shift(p_target: Vector2, p_time: float, p_type: int):
 	if _tween.is_active():
 		# Need to wait a frame in order to ensure the screen centre position is
 		# recalculated. Also to allow any close-calls with the tween to finish.
-		yield(get_tree(), "idle_frame")
+		await get_tree().idle_frame
 
 		escoria.logger.debug(
 			self,
@@ -343,14 +343,14 @@ func clamp_to_viewport_limits() -> void:
 	var ret_position: Vector2 = cur_camera_pos
 
 	if cur_camera_pos.x - viewport_rect.size.x * 0.5 * zoom.x <= limit_left:
-		ret_position.x = limit_left + viewport_rect.size.x * 0.5 * zoom.x * (1 + drag_margin_left)
+		ret_position.x = limit_left + viewport_rect.size.x * 0.5 * zoom.x * (1 + drag_left_margin)
 	elif cur_camera_pos.x + viewport_rect.size.x * 0.5 * zoom.x >= limit_right:
-		ret_position.x = limit_right - viewport_rect.size.x * 0.5 * zoom.x * (1 + drag_margin_right)
+		ret_position.x = limit_right - viewport_rect.size.x * 0.5 * zoom.x * (1 + drag_right_margin)
 
 	if cur_camera_pos.y - viewport_rect.size.y * 0.5 * zoom.y <= limit_top:
-		ret_position.y = limit_top + viewport_rect.size.y * 0.5 * zoom.y * (1 + drag_margin_top)
+		ret_position.y = limit_top + viewport_rect.size.y * 0.5 * zoom.y * (1 + drag_top_margin)
 	elif cur_camera_pos.y + viewport_rect.size.y * 0.5 * zoom.y >= limit_bottom:
-		ret_position.y = limit_bottom - viewport_rect.size.y * 0.5 * zoom.y * (1 + drag_margin_bottom)
+		ret_position.y = limit_bottom - viewport_rect.size.y * 0.5 * zoom.y * (1 + drag_bottom_margin)
 
 	self.global_position = ret_position
 

@@ -103,7 +103,7 @@ func run():
 	if option:
 		rc = option.run()
 		if rc is GDScriptFunctionState:
-			rc = yield(rc, "completed")
+			rc = await rc.completed
 		if rc != ESCExecution.RC_CANCEL:
 			# We also set this here in case a chosen option doesn't yield, since this block
 			# will return normally and not allow the current_state reset at the bottom of this

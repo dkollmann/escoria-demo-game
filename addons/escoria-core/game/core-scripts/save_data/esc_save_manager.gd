@@ -66,9 +66,9 @@ func get_saves_list() -> Dictionary:
 	regex.compile("save_(?<slotnumber>[0-9]{3})\\.tres")
 
 	var saves = {}
-	var dirsave = Directory.new()
+	var dirsave = DirAccess.new()
 	if dirsave.open(save_folder) == OK:
-		dirsave.list_dir_begin(true, true)
+		dirsave.list_dir_begin() # TODOConverter3To4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 		var nextfile = dirsave.get_next()
 		while nextfile != "":
 			var save_path = save_folder.plus_file(nextfile)
@@ -120,13 +120,13 @@ func save_game(id: int, p_savename: String):
 	if not save_enabled:
 		escoria.logger.debug(
 			self,
-			"Save requested while saving is not possible. Save cancelled."
+			"Save requested while saving is not possible. Save canceled."
 		)
 		return
 
 	var save_game := _do_save_game(p_savename)
 
-	var directory: Directory = Directory.new()
+	var directory: DirAccess = DirAccess.new()
 	if not directory.dir_exists(save_folder):
 		directory.make_dir_recursive(save_folder)
 
@@ -141,7 +141,7 @@ func save_game(id: int, p_savename: String):
 
 # Performs an emergency savegame in case of crash.
 func save_game_crash():
-	var datetime = OS.get_datetime()
+	var datetime = Time.get_datetime_dict_from_system()
 	var datetime_string = "%02d/%02d/%02d %02d:%02d" % [
 		datetime["day"],
 		datetime["month"],
@@ -190,7 +190,7 @@ func _do_save_game(p_savename: String) -> ESCSaveGame:
 	)
 	save_game.name = p_savename
 
-	var datetime = OS.get_datetime()
+	var datetime = Time.get_datetime_dict_from_system()
 	var datetime_string = "%02d/%02d/%02d %02d:%02d" % [
 		datetime["day"],
 		datetime["month"],
@@ -299,7 +299,7 @@ func load_game(id: int):
 	for k in save_game.globals.keys():
 		var global_value = save_game.globals[k]
 
-		if global_value is String and global_value.empty():
+		if global_value is String and global_value.is_empty():
 			global_value = "''"
 
 		load_statements.append(
@@ -424,7 +424,7 @@ func save_settings():
 	settings_res.fullscreen = escoria.settings.fullscreen
 	settings_res.custom_settings = escoria.settings.custom_settings
 
-	var directory: Directory = Directory.new()
+	var directory: DirAccess = DirAccess.new()
 	if not directory.dir_exists(settings_folder):
 		directory.make_dir_recursive(settings_folder)
 

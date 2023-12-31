@@ -1,5 +1,5 @@
 # An event that is scheduled to run later
-extends Reference
+extends RefCounted
 class_name ESCScheduledEvent
 
 
