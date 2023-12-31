@@ -839,8 +839,7 @@ func spritesheet_on_export_button_pressed() -> void:
 
 	var scene_name = "%s/%s.scn" % [get_node(CHARACTER_PATH_NODE).text, get_node(NAME_NODE).get_node("node_name").text]
 
-	var dest_file = File.new()
-	if dest_file.file_exists(scene_name):
+	if FileAccess.file_exists(scene_name):
 		get_node(GENERIC_ERROR_NODE).dialog_text = \
 			"Scene file '%s' already exists.\nPlease change Global_ID or path,\nor delete scene before continuing.\n" \
 			% scene_name
@@ -1320,9 +1319,7 @@ func export_player(scene_name) -> void:
 	export_largest_sprite = Vector2.ONE
 	# Need to yield on the child function so this function doesn't continue
 	# when the child yields
-	var export_state = export_generate_animations(new_character, num_directions)
-	if export_state is GDScriptFunctionState:
-		export_state = await export_state.completed
+	export_generate_animations(new_character, num_directions)
 	# Add Collision shape to the ESCPlayer
 	var rectangle_shape = RectangleShape2D.new()
 	var collision_shape = CollisionShape2D.new()
@@ -1538,9 +1535,8 @@ func spritesheet_on_main_menu_button_up() -> void:
 
 func load_settings() -> void:
 	var file_path = "res://"
-	var file = File.new()
-	if file.file_exists(CONFIG_FILE):
-		file.open(CONFIG_FILE, File.READ)
+	if FileAccess.file_exists(CONFIG_FILE):
+		var file := FileAccess.open(CONFIG_FILE, FileAccess.READ)
 		file_path = file.get_pascal_string()
 		file.close()
 	get_node(CHARACTER_PATH_NODE).text = file_path
@@ -1573,8 +1569,7 @@ func _on_character_path_change_button_pressed() -> void:
 
 func _on_CharacterPathFileDialog_dir_selected(dir: String) -> void:
 	get_node(CHARACTER_PATH_NODE).text = dir
-	var file = File.new()
-	file.open(CONFIG_FILE, File.WRITE)
+	var file := FileAccess.open(CONFIG_FILE, FileAccess.WRITE)
 	file.store_pascal_string(dir)
 	file.close()
 

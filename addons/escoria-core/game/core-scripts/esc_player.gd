@@ -1,7 +1,8 @@
 @tool
+@icon("res://addons/escoria-core/design/esc_player.svg")
 # A playable character
 extends ESCItem
-class_name ESCPlayer, "res://addons/escoria-core/design/esc_player.svg"
+class_name ESCPlayer
 
 
 

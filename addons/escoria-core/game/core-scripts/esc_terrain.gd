@@ -1,7 +1,8 @@
 @tool
+@icon("res://addons/escoria-core/design/esc_terrain.svg")
 # A walkable Terrains
-extends Navigation2D
-class_name ESCTerrain, "res://addons/escoria-core/design/esc_terrain.svg"
+extends Node2D
+class_name ESCTerrain
 
 
 # Logger class
@@ -10,8 +11,8 @@ const Logger = preload("res://addons/escoria-core/game/esc_logger.gd")
 
 # Visualize scales or the lightmap for debugging purposes
 enum DebugMode {
-	NONE
-	SCALES
+	NONE,
+	SCALES,
 	LIGHTMAP
 }
 
@@ -42,8 +43,9 @@ enum DebugMode {
 @export var lightmap_modulate: Color = Color(1, 1, 1, 1)
 
 # Currently selected debug visualize mode
-@export var debug_mode = DebugMode.NONE \ # (int, "None", "Scales", "Lightmap")
-		setget _set_debug_mode
+@export var debug_mode = DebugMode.NONE: # (int, "None", "Scales", "Lightmap")
+		set(new_value):
+			_set_debug_mode(new_value)
 
 
 # The currently activ navigation polygon
@@ -86,10 +88,10 @@ func _ready():
 func _check_multiple_enabled_navpolys(node: Node = null, is_exiting: bool = false) -> void:
 	var navigation_enabled_found = false
 	if node != null \
-			and not is_exiting\
+			and not is_exiting \
 			and node is NavigationRegion2D \
 			and node.enabled:
-		 navigation_enabled_found = true
+		navigation_enabled_found = true
 
 	for n in get_children():
 		if is_exiting and n == node:
@@ -224,7 +226,7 @@ func _do_update_texture():
 		return
 
 	if debug_mode == DebugMode.NONE:
-		update()
+		queue_redraw()
 		return
 
 	_texture = ImageTexture.new()
@@ -235,7 +237,7 @@ func _do_update_texture():
 		if lightmap != null:
 			_texture = lightmap
 
-	update()
+	queue_redraw()
 
 
 # Draw debugging visualizations

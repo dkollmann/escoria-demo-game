@@ -1,4 +1,5 @@
 @tool
+@icon("res://addons/escoria-core/design/esc_item.svg")
 # An ``ESCItem`` defines a (usually interactive) item in the game.
 #
 # When interacting with an ``ESCItem``, the game character will automatically
@@ -11,7 +12,7 @@
 # cutscene. Place a ``change_scene`` command inside this event to move the
 # character to the next room.
 extends Area2D
-class_name ESCItem, "res://addons/escoria-core/design/esc_item.svg"
+class_name ESCItem
 
 
 # List of forbidden characters in global_ids
@@ -70,7 +71,7 @@ const GROUP_ITEM_CAN_COLLIDE = "item_can_collide"
 @export var global_id: String
 
 # The ESC script for this item
-@export var esc_script # (String, FILE, "*.esc")
+@export var esc_script: String # (String, FILE, "*.esc")
 
 # If true, the ESC script may have an ``:exit_scene`` event to manage scene changes.
 # For simple exits that do not require scripted actions, the ``ESCExit`` node may be
@@ -125,8 +126,9 @@ const GROUP_ITEM_CAN_COLLIDE = "item_can_collide"
 @export var use_from_inventory_only: bool = false
 
 # The visual representation for this item when its in the inventory
-@export var inventory_texture: Texture2D = null \
-		setget ,_get_inventory_texture
+@export var inventory_texture: Texture2D = null:
+		get:
+			return _get_inventory_texture()
 
 # Color used for dialogs
 @export var dialog_color: Color = Color(1,1,1,1)
@@ -142,8 +144,9 @@ const GROUP_ITEM_CAN_COLLIDE = "item_can_collide"
 @export var v_speed_damp: float = 1.0
 
 # The node used to play animations
-@export var animation_player_node: NodePath = "" \
-		setget _set_animation_player_node
+@export var animation_player_node: NodePath = "":
+		set(new_value):
+			_set_animation_player_node(new_value)
 
 # The node that references the camera position and zoom if this item is used
 # as a camera target
@@ -210,16 +213,8 @@ func _ready():
 
 			add_child(_movable)
 
-		if not escoria.event_manager.is_connected(
-			"event_finished",
-			self,
-			"_update_terrain"
-		):
-			escoria.event_manager.connect(
-				"event_finished",
-				self,
-				"_update_terrain"
-			)
+		if not escoria.event_manager.event_finished.is_connected(_update_terrain):
+			escoria.event_manager.event_finished.connect(_update_terrain)
 
 		escoria.object_manager.register_object(
 			ESCObject.new(
@@ -233,56 +228,16 @@ func _ready():
 		terrain = escoria.room_terrain
 
 		if !is_trigger:
-			if not self.is_connected(
-				"mouse_entered_item",
-				escoria.inputs_manager,
-				"_on_mouse_entered_item"
-			):
-				connect(
-					"mouse_entered_item",
-					escoria.inputs_manager,
-					"_on_mouse_entered_item"
-				)
-			if not self.is_connected(
-				"mouse_exited_item",
-				escoria.inputs_manager,
-				"_on_mouse_exited_item"
-			):
-				connect(
-					"mouse_exited_item",
-					escoria.inputs_manager,
-					"_on_mouse_exited_item"
-				)
-			if not self.is_connected(
-				"mouse_left_clicked_item",
-				escoria.inputs_manager,
-				"_on_mouse_left_clicked_item"
-			):
-				connect(
-					"mouse_left_clicked_item",
-					escoria.inputs_manager,
-					"_on_mouse_left_clicked_item"
-				)
-			if not self.is_connected(
-				"mouse_double_left_clicked_item",
-				escoria.inputs_manager,
-				"_on_mouse_left_double_clicked_item"
-			):
-				connect(
-					"mouse_double_left_clicked_item",
-					escoria.inputs_manager,
-					"_on_mouse_left_double_clicked_item"
-				)
-			if not self.is_connected(
-				"mouse_right_clicked_item",
-				escoria.inputs_manager,
-				"_on_mouse_right_clicked_item"
-			):
-				connect(
-					"mouse_right_clicked_item",
-					escoria.inputs_manager,
-					"_on_mouse_right_clicked_item"
-				)
+			if not self.mouse_entered_item.is_connected(escoria.inputs_manager._on_mouse_entered_item):
+				mouse_entered_item.connect(escoria.inputs_manager._on_mouse_entered_item)
+			if not self.mouse_exited_item.is_connected(escoria.inputs_manager._on_mouse_exited_item):
+				mouse_exited_item.connect(escoria.inputs_manager._on_mouse_exited_item)
+			if not self.mouse_left_clicked_item.is_connected(escoria.inputs_manager._on_mouse_left_clicked_item):
+				mouse_left_clicked_item.connect(escoria.inputs_manager._on_mouse_left_clicked_item)
+			if not self.mouse_double_left_clicked_item.is_connected(escoria.inputs_manager._on_mouse_left_double_clicked_item):
+				mouse_double_left_clicked_item.connect(escoria.inputs_manager._on_mouse_left_double_clicked_item)
+			if not self.mouse_right_clicked_item.is_connected(escoria.inputs_manager._on_mouse_right_clicked_item):
+				mouse_right_clicked_item.connect(escoria.inputs_manager._on_mouse_right_clicked_item)
 		else:
 			if not self.is_connected("area_entered", Callable(self, "element_entered")):
 				connect("area_entered", Callable(self, "element_entered"))
@@ -342,7 +297,11 @@ class HoverStackSorter:
 func _on_input_event(_viewport: Object, event: InputEvent, _shape_idx: int):
 	if event is InputEventMouseMotion:
 		var physics2d_dss: PhysicsDirectSpaceState2D = get_world_2d().direct_space_state
-		var colliding: Array = physics2d_dss.intersect_point(get_global_mouse_position(), 32, [], 0x7FFFFFFF, true, true)
+		var params := PhysicsPointQueryParameters2D.new()
+		params.position = get_global_mouse_position()
+		params.collision_mask = 0x7FFFFFFF
+		params.collide_with_areas = true
+		var colliding: Array = physics2d_dss.intersect_point(params, 32)
 		var colliding_nodes = []
 		for c in colliding:
 			if c.collider.get("global_id") \
@@ -416,13 +375,13 @@ func _get_configuration_warnings():
 
 
 func _is_in_shape(position: Vector2) -> bool:
+	var params := PhysicsPointQueryParameters2D.new()
+	params.position = position
+	params.collision_mask = 2147483647
+	params.collide_with_areas = true
 	var colliders = get_world_2d().direct_space_state.intersect_point(
-		position,
-		32,
-		[],
-		2147483647,
-		true,
-		true
+		params,
+		32
 	)
 	for _owner in get_shape_owners():
 		for _shape_id in range(0, shape_owner_get_shape_count(_owner)):
@@ -866,7 +825,7 @@ func _set_animation_player_node(node_path: NodePath):
 	if not Engine.is_editor_hint():
 		return
 
-	if node_path == "":
+	if node_path.is_empty():
 		animation_player_node = node_path
 		return
 
