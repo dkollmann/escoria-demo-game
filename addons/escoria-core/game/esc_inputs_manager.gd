@@ -73,71 +73,25 @@ func _on_event_finished(return_code: int, event_name: String):
 
 # Register core signals (from escoria.gd)
 func register_core():
-	escoria.game_scene.connect(
-		"request_pause_menu",
-		self,
-		"_on_pause_menu_requested"
-	)
+	escoria.game_scene.request_pause_menu.connect(_on_pause_menu_requested)
 
 
 # Connect the item signals to the local methods
 func register_inventory_item(item: Node):
-	item.connect(
-		"mouse_left_inventory_item",
-		self,
-		"_on_mouse_left_click_inventory_item"
-	)
-	item.connect(
-		"mouse_double_left_inventory_item",
-		self,
-		"_on_mouse_double_left_click_inventory_item"
-	)
-	item.connect(
-		"mouse_right_inventory_item",
-		self,
-		"_on_mouse_right_click_inventory_item"
-	)
+	item.mouse_left_inventory_item.connect(_on_mouse_left_click_inventory_item)
+	item.mouse_double_left_inventory_item.connect(_on_mouse_double_left_click_inventory_item)
+	item.mouse_right_inventory_item.connect(_on_mouse_right_click_inventory_item)
 
-	item.connect(
-		"inventory_item_focused",
-		self,
-		"_on_mouse_entered_inventory_item"
-	)
-	item.connect(
-		"inventory_item_unfocused",
-		self,
-		"_on_mouse_exited_inventory_item"
-	)
+	item.inventory_item_focused.connect(_on_mouse_entered_inventory_item)
+	item.inventory_item_unfocused.connect(_on_mouse_exited_inventory_item)
 
 
 func register_background(background: ESCBackground):
-	background.connect(
-		"left_click_on_bg",
-		self,
-		"_on_left_click_on_bg"
-	)
-	background.connect(
-		"right_click_on_bg",
-		escoria.inputs_manager,
-		"_on_right_click_on_bg"
-	)
-	background.connect(
-		"double_left_click_on_bg",
-		escoria.inputs_manager,
-		"_on_double_left_click_on_bg"
-	)
-	background.connect(
-		"mouse_wheel_up",
-		self,
-		"_on_mousewheel_action",
-		[1]
-	)
-	background.connect(
-		"mouse_wheel_down",
-		self,
-		"_on_mousewheel_action",
-		[-1]
-	)
+	background.left_click_on_bg.connect(_on_left_click_on_bg)
+	background.right_click_on_bg.connect(_on_right_click_on_bg)
+	background.double_left_click_on_bg.connect(_on_double_left_click_on_bg)
+	background.mouse_wheel_up.connect(_on_mousewheel_action.bind([1]))
+	background.mouse_wheel_down.connect(_on_mousewheel_action.bind([-1]))
 
 
 # Registers a function that can be used to intercept and process input events.

@@ -42,17 +42,9 @@ func _init(node: Node):
 # Connect animation signals
 func _ready() -> void:
 	if _is_animation_player:
-		_player_node.connect(
-			"animation_finished",
-			self,
-			"_on_animation_finished"
-		)
+		_player_node.animation_finished.connect(_on_animation_finished)
 	else:
-		_player_node.connect(
-			"animation_finished",
-			self,
-			"_on_animation_finished_animated_sprite"
-		)
+		_player_node.animation_finished.connect(_on_animation_finished_animated_sprite)
 
 
 # Return the currently playing animation

@@ -18,15 +18,14 @@ var _zoom_target: Vector2
 
 # Prepare the tween
 func _ready():
-	_tween = Tween.new()
-	add_child(_tween)
+	_tween = get_tree().create_tween()
 	_tween.connect("tween_all_completed", Callable(self, "_target_reached"))
 
 
 func _exit_tree():
 	if is_instance_valid(_tween):
-		remove_child(_tween)
 		_tween.queue_free()
+		_tween.kill()
 
 
 # Update the position if the followed target is moving
@@ -339,7 +338,7 @@ func get_camera_limit_rect() -> Rect2:
 func clamp_to_viewport_limits() -> void:
 	var viewport_rect: Rect2 = get_viewport_rect()
 
-	var cur_camera_pos: Vector2 = self.get_camera_screen_center()
+	var cur_camera_pos: Vector2 = self.get_screen_center_position()
 	var ret_position: Vector2 = cur_camera_pos
 
 	if cur_camera_pos.x - viewport_rect.size.x * 0.5 * zoom.x <= limit_left:
@@ -370,7 +369,7 @@ func _target_reached():
 # This is something of a hack until we decide on whether we implement an Escoria-specific camera
 # instead of relying on Camera2D.
 func _convert_current_global_pos_for_disabled_drag_margin() -> void:
-	var cur_camera_pos: Vector2 = self.get_camera_screen_center()
+	var cur_camera_pos: Vector2 = self.get_screen_center_position()
 	var ret_position: Vector2 = _convert_pos_for_disabled_drag_margin(cur_camera_pos)
 
 	self.global_position = ret_position

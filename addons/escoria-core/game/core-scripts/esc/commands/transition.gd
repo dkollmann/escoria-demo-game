@@ -72,10 +72,7 @@ func run(command_params: Array) -> int:
 		"Starting transition #%s [%s, %s]."
 				% [transition_id, command_params[0], command_params[1]]
 	)
-	while yield(
-		escoria.main.scene_transition,
-		"transition_done"
-	) != transition_id:
+	while await escoria.main.scene_transition.transition_done != transition_id:
 		pass
 	escoria.logger.debug(
 		self,

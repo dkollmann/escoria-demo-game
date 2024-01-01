@@ -168,7 +168,7 @@ func init_room(room: ESCRoom) -> void:
 	if room.camera_limits.is_empty():
 		room.camera_limits.push_back(Rect2())
 
-	if room.camera_limits.size() == 1 and room.camera_limits[0].has_no_area():
+	if room.camera_limits.size() == 1 and not room.camera_limits[0].has_area():
 		for child in room.get_children():
 			if child is ESCBackground:
 				room.camera_limits[0] = \
@@ -208,7 +208,7 @@ func init_room(room: ESCRoom) -> void:
 # #### Parameters
 #
 # - room: The ESCRoom to be initialized for use.
-func _perform_script_events(room: ESCRoom) -> void:
+func _perform_script_events(room: ESCRoom) -> int:
 	# Used to track whether any yields have been executed before the call to
 	# set_scene_finish.
 	var yielded: bool = false
@@ -417,6 +417,8 @@ func _perform_script_events(room: ESCRoom) -> void:
 				if escoria.main.current_scene != null else "",
 		true
 	)
+	
+	return ESCExecution.RC_OK
 
 
 # Runs the script event from the script attached, if any.

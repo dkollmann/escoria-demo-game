@@ -89,13 +89,10 @@ class ESCLoggerBase:
 # A logger that logs to the terminal and to a log file.
 class ESCLoggerFile extends ESCLoggerBase:
 	# Log file handler
-	var log_file: File
+	var log_file: FileAccess
 
 	# Constructor
 	func _init():
-		# Open logfile in write mode
-		log_file = File.new()
-
 		# This is left alone as this constructor is called from escoria.gd's own
 		# constructor
 		var log_file_path = ProjectSettings.get_setting(
@@ -106,9 +103,10 @@ class ESCLoggerFile extends ESCLoggerBase:
 				str(date["year"]) + str(date["month"]) + str(date["day"]),
 				str(date["hour"]) + str(date["minute"]) + str(date["second"])
 			])
-		log_file.open(
+		# Open logfile in write mode
+		var log_file := FileAccess.open(
 			log_file_path,
-			File.WRITE
+			FileAccess.WRITE
 		)
 
 	func trace(owner: Object, msg: String):

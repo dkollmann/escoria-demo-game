@@ -41,7 +41,7 @@ func _ready() -> void:
 	color = Color.WHITE
 	color.a = 0
 	mouse_filter = MOUSE_FILTER_IGNORE
-	_tween = Tween.new()
+	_tween = get_tree().create_tween()
 
 
 # Play a transition animation
@@ -62,9 +62,8 @@ func transition(
 	# constructor, the transition will ALWAYS happen on game start, which might
 	# not be desired if 'false' is used for automatic_transitions in a
 	# change_scene call in :init.
-	if not _tween.is_inside_tree():
-		add_child(_tween)
-		_tween.connect("tween_all_completed", Callable(self, "_on_tween_completed"))
+	if not _tween.finished.is_connected(_on_tween_completed):
+		_tween.finished.connect(_on_tween_completed)
 
 	if transition_name.is_empty():
 		transition_name = ESCProjectSettingsManager.get_setting(

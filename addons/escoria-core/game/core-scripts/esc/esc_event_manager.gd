@@ -143,10 +143,11 @@ func _process(delta: float) -> void:
 
 			var rc = _running_events[channel_name].run()
 
-			if rc is GDScriptFunctionState:
-				_yielding[channel_name] = true
-				rc = await rc.completed
-				_yielding[channel_name] = false
+			# FIXME: GDScriptFunctionState is no longer supported: https://github.com/godotengine/godot-proposals/issues/5673
+			#if rc is GDScriptFunctionState:
+			#	_yielding[channel_name] = true
+			#	rc = await rc.completed
+			#	_yielding[channel_name] = false
 
 	for event in self.scheduled_events:
 		(event as ESCScheduledEvent).timeout -= delta
