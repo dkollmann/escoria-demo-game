@@ -11,7 +11,7 @@ signal interrupted(event, return_code)
 
 
 # The list of ESC commands
-var statements: Array = []
+var statements: Array[ESCCommand] = []
 
 # The source of this statement, e.g. an ESC script or a class.
 var source: String = ""
@@ -43,15 +43,18 @@ func run() -> int:
 			return final_rc
 
 		if statement.is_valid():
-			var rc = statement.run()
-			if rc is GDScriptFunctionState:
-				rc = await rc.completed
-				escoria.logger.debug(
-					self,
-					"Statement (%s) was completed." % statement
-				)
+			var rc := statement.run()
+			# FIXME: GDScriptFunctionState is no longer supported: https://github.com/godotengine/godot-proposals/issues/5673
+			#if rc is GDScriptFunctionState:
+			#	rc = await rc.completed
+			#	escoria.logger.debug(
+			#		self,
+			#		"Statement (%s) was completed." % statement
+			#	)
 			if rc == ESCExecution.RC_REPEAT:
-				return self.run()
+				# FIXME: GDScriptFunctionState is no longer supported: https://github.com/godotengine/godot-proposals/issues/5673
+				#return self.run()
+				return rc
 			elif rc != ESCExecution.RC_OK:
 				final_rc = rc
 				break

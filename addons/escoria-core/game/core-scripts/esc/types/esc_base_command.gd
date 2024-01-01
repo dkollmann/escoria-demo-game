@@ -9,8 +9,7 @@ class_name ESCBaseCommand
 const PATH_REGEX_GROUP = "path"
 const FILE_REGEX_GROUP = "file"
 const EXTENSION_REGEX_GROUP = "extension"
-const COMMAND_NAME_REGEX = "(?<%s>.+)\/(?<%s>[^.]+)(?<%s>\\.[^.]*$|$)" % \
-	[PATH_REGEX_GROUP, FILE_REGEX_GROUP, EXTENSION_REGEX_GROUP]
+const COMMAND_NAME_REGEX = "(?<" + PATH_REGEX_GROUP + ">.+)\\/(?<" + FILE_REGEX_GROUP + ">[^.]+)(?<" + EXTENSION_REGEX_GROUP + ">\\\\.[^.]*$|$)"
 
 # Regex matcher for command names
 var command_name_regex: RegEx = RegEx.new()

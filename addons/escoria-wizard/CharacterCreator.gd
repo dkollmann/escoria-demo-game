@@ -184,7 +184,7 @@ func character_creator_reset() -> void:
 
 	# Make sure help window doesn't swallow mouse input
 	$InformationWindows.visible = false
-	autostore = $VBoxContainer/HBoxContainer/configuration/VBoxContainer/animation/autosave/HBoxContainer/AutoStoreCheckBox.pressed
+	autostore = $VBoxContainer/HBoxContainer/configuration/VBoxContainer/animation/autosave/HBoxContainer/AutoStoreCheckBox.button_pressed
 	connect_selector_signals()
 
 
@@ -220,7 +220,7 @@ func reset_frame_outlines() -> void:
 	get_node(SCROLL_CTRL_NODE).get_node("frame_rectangles").start_cell = 0
 	get_node(SCROLL_CTRL_NODE).get_node("frame_rectangles").end_cell = 0
 	get_node(SCROLL_CTRL_NODE).get_node("frame_rectangles").cell_size = Vector2(1,1)
-	get_node(SCROLL_CTRL_NODE).get_node("frame_rectangles").update()
+	get_node(SCROLL_CTRL_NODE).get_node("frame_rectangles").queue_redraw()
 
 
 func calc_sprite_size() -> void:
@@ -322,7 +322,7 @@ func setup_test_data() -> void:
 # Animations are stored as metadata in an array. This creates the initial empty array.
 # The preview animation ("in_progress") is the only sprite animation created prior to the final export.
 func create_empty_animations() -> void:
-	var sframes = SpriteFrames.new()
+	var sframes := SpriteFrames.new()
 
 	var metadata_dict = {
 		METADATA_ANIM_NAME: "tbc",
@@ -345,7 +345,7 @@ func create_empty_animations() -> void:
 			local_dict[METADATA_ANIM_NAME] = "%s_%s" % [typeloop, dirloop]
 			anim_metadata.append(local_dict)
 
-	sframes.add_animation_library(ANIM_IN_PROGRESS)
+	sframes.add_animation(ANIM_IN_PROGRESS)
 
 	get_node(PREVIEW_NODE).get_node("anim_preview_sprite").frames = sframes
 

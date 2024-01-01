@@ -131,8 +131,9 @@ func run() -> int:
 						% [self.name, prepared_arguments]
 			)
 			var rc = command_object.run(prepared_arguments)
-			if rc is GDScriptFunctionState:
-				rc = await rc.completed
+			# FIXME: GDScriptFunctionState is no longer supported: https://github.com/godotengine/godot-proposals/issues/5673
+			#if rc is GDScriptFunctionState:
+			#	rc = await rc.completed
 
 			escoria.logger.debug(
 				self,

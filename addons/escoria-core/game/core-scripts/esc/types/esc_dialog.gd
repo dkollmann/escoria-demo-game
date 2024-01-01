@@ -90,9 +90,7 @@ func run():
 
 	escoria.dialog_player.start_dialog_choices(self)
 
-	var option = yield(
-		escoria.dialog_player,
-		"option_chosen"
+	var option = (await escoria.dialog_player.option_chosen
 	) as ESCDialogOption
 
 	var rc = ESCExecution.RC_OK
@@ -102,8 +100,9 @@ func run():
 	# it is still yielding and so will be shown again.
 	if option:
 		rc = option.run()
-		if rc is GDScriptFunctionState:
-			rc = await rc.completed
+		# FIXME: GDScriptFunctionState is no longer supported: https://github.com/godotengine/godot-proposals/issues/5673
+		#if rc is GDScriptFunctionState:
+		#	rc = await rc.completed
 		if rc != ESCExecution.RC_CANCEL:
 			# We also set this here in case a chosen option doesn't yield, since this block
 			# will return normally and not allow the current_state reset at the bottom of this

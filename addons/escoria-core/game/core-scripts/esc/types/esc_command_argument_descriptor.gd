@@ -102,7 +102,7 @@ func validate(command: String, arguments: Array) -> bool:
 			self,
 			"Invalid arguments for command %s. " % command +
 			"Arguments didn't match minimum size {num}: Only {args} {verb} found." \
-				super.format({"num":self.min_args,"args":required_args_count,"verb":verb})
+				.format({"num":self.min_args,"args":required_args_count,"verb":verb})
 		)
 
 	if arguments.size() > self.max_args and not has_varargs:
