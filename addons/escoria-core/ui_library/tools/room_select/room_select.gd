@@ -63,7 +63,7 @@ func _on_button_pressed():
 
 	var script = escoria.esc_compiler.compile([
 		":room_selector",
-		"change_scene_to_file %s" % _options_paths[_selected_id]
+		"change_scene %s" % _options_paths[_selected_id]
 	],
 	get_class()
 	)
