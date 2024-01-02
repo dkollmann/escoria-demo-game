@@ -143,9 +143,9 @@ func get_escoria():
 # - p_paused: if true, pauses the game. If false, unpauses the game.
 func set_game_paused(p_paused: bool):
 	if p_paused:
-		emit_signal("paused")
+		paused.emit()
 	else:
-		emit_signal("resumed")
+		resumed.emit()
 
 	var scene_tree = get_tree()
 

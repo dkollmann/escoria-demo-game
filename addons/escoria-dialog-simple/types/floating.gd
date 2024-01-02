@@ -221,7 +221,7 @@ func _on_dialog_line_typed(object, key):
 	$Timer.start(time_to_disappear)
 	$Timer.connect("timeout", Callable(self, "_on_dialog_finished"))
 
-	emit_signal("say_visible")
+	say_visible.emit()
 
 
 func _calculate_time_to_disappear() -> float:
@@ -236,7 +236,7 @@ func _get_number_of_words() -> int:
 func _on_dialog_finished():
 	# Only trigger to clear the text if we aren't limiting the clearing trigger to a click.
 	if not ESCProjectSettingsManager.get_setting(SimpleDialogSettings.CLEAR_TEXT_BY_CLICK_ONLY):
-		emit_signal("say_finished")
+		say_finished.emit()
 
 
 # Handler managing pause notification from Escoria

@@ -75,29 +75,25 @@ func _on_inventory_item_gui_input(event: InputEvent):
 #		var p = get_global_mouse_position()
 		if event.doubleclick:
 			if event.button_index == MOUSE_BUTTON_LEFT:
-				emit_signal(
-					"mouse_double_left_inventory_item",
+				mouse_double_left_inventory_item.emit(
 					global_id,
 					event
 				)
 			# Make sure fast right clicks in the inventory aren't ignored
 			elif event.button_index == MOUSE_BUTTON_RIGHT:
-					emit_signal(
-						"mouse_right_inventory_item",
+					mouse_right_inventory_item.emit(
 						global_id,
 						event
 					)
 		else:
 			if event.is_pressed():
 				if event.button_index == MOUSE_BUTTON_LEFT:
-					emit_signal(
-						"mouse_left_inventory_item",
+					mouse_left_inventory_item.emit(
 						global_id,
 						event
 					)
 				if event.button_index == MOUSE_BUTTON_RIGHT:
-					emit_signal(
-						"mouse_right_inventory_item",
+					mouse_right_inventory_item.emit(
 						global_id,
 						event
 					)
@@ -105,9 +101,9 @@ func _on_inventory_item_gui_input(event: InputEvent):
 
 # Handle mouse entering the item and send the respecitve signal
 func _on_inventory_item_mouse_enter():
-	emit_signal("inventory_item_focused", global_id)
+	inventory_item_focused.emit(global_id)
 
 
 # Handle mouse leaving the item and send the respecitve signal
 func _on_inventory_item_mouse_exit():
-	emit_signal("inventory_item_unfocused")
+	inventory_item_unfocused.emit()

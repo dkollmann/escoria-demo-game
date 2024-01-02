@@ -53,7 +53,7 @@ func register_reserved_global(key: String, value = null) -> void:
 	_globals[key] = value
 
 	if value != null:
-		emit_signal("global_changed", key, old_value, _globals[key])
+		global_changed.emit(key, old_value, _globals[key])
 
 
 # Get the current value of a global
@@ -98,8 +98,7 @@ func set_global(key: String, value, ignore_reserved: bool = false) -> void:
 			"Global key %s is reserved and can not be overridden." % key
 		)
 
-	emit_signal(
-		"global_changed",
+	global_changed.emit(
 		key,
 		_globals[key] if _globals.has(key) else null,
 		value

@@ -55,4 +55,4 @@ func interrupt():
 	if timer == null:
 		return
 
-	timer.emit_signal("timeout")
+	timer.timeout.emit()

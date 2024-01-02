@@ -114,13 +114,11 @@ func _process(delta: float) -> void:
 				)
 
 			if channel_name == CHANNEL_FRONT:
-				emit_signal(
-					"event_started",
+				event_started.emit(
 					_running_events[channel_name].name
 				)
 			else:
-				emit_signal(
-					"background_event_started",
+				background_event_started.emit(
 					channel_name,
 					_running_events[channel_name].name
 				)
@@ -409,14 +407,12 @@ func _on_event_finished(finished_event: ESCStatement, finished_statement: ESCSta
 	_channels_state[channel_name] = true
 
 	if channel_name == CHANNEL_FRONT:
-		emit_signal(
-			"event_finished",
+		event_finished.emit(
 			return_code,
 			event.name
 		)
 	else:
-		emit_signal(
-			"background_event_finished",
+		background_event_finished.emit(
 			return_code,
 			event.name,
 			channel_name

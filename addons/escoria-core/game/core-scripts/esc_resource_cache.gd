@@ -52,8 +52,8 @@ func get_progress(path):
 			ret = float(pending[path].res.get_stage()) / float(pending[path].res.get_stage_count())
 		else:
 			ret = 1.0
-			emit_signal("resource_loading_done", path)
-	emit_signal("resource_loading_progress", path, ret)
+			resource_loading_done.emit(path)
+	resource_loading_progress.emit(path, ret)
 
 	return ret
 
@@ -144,4 +144,4 @@ func _process(_delta) -> void:
 				pending[res.get_meta("path")].res = res.get_resource()
 
 			queue.erase(res) # something might have been put at the front of the queue while we polled, so use erase instead of remove
-			emit_signal("resource_queue_progress", queue.size())
+			resource_queue_progress.emit(queue.size())

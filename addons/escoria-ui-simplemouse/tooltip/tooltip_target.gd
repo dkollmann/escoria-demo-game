@@ -14,7 +14,7 @@ func update_tooltip_text():
 	# processing. We signal here to avoid "lagging" behind a frame since
 	# tooltips are presently dependent on the size of the bounding box around
 	# the rendered string.
-	emit_signal("tooltip_size_updated")
+	tooltip_size_updated.emit()
 
 	text = "[center]"
 	text += "[color=#" + color.to_html(false) + "]"

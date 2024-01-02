@@ -308,7 +308,7 @@ func walk_stop(pos: Vector2) -> void:
 				walk_context.target_position
 			]
 		)
-	parent.emit_signal("arrived", walk_context)
+	parent.arrived.emit(walk_context)
 
 
 # Update the sprite scale and lighting

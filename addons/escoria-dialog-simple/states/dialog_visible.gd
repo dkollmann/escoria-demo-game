@@ -24,11 +24,11 @@ func handle_input(_event):
 			if _dialog_manager.is_connected("say_finished", Callable(self, "_on_say_finished")):
 				_dialog_manager.disconnect("say_finished", Callable(self, "_on_say_finished"))
 
-			emit_signal("finished", "interrupt")
+			finished.emit("interrupt")
 			get_viewport().set_input_as_handled()
 
 
 # Handles the end of a say function after it has emitted say_finished.
 func _on_say_finished():
 	escoria.logger.trace(self, "Dialog State Machine: 'visible' -> 'finish'")
-	emit_signal("finished", "finish")
+	finished.emit("finish")

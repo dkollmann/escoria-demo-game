@@ -137,7 +137,7 @@ func _input(event: InputEvent):
 		main.get_node("layers/debug_layer/esc_prompt_popup").popup()
 
 	if event.is_action_pressed("ui_cancel"):
-		emit_signal("request_pause_menu")
+		request_pause_menu.emit()
 	pass
 
 

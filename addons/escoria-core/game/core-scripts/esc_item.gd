@@ -357,13 +357,13 @@ func _unhandled_input(input_event: InputEvent) -> void:
 		var p = get_global_mouse_position()
 		if _is_in_shape(p) and escoria.action_manager.is_object_actionable(global_id):
 			if event.doubleclick and event.button_index == MOUSE_BUTTON_LEFT:
-				emit_signal("mouse_double_left_clicked_item", self, event)
+				mouse_double_left_clicked_item.emit(self, event)
 				get_viewport().set_input_as_handled()
 			elif event.button_index == MOUSE_BUTTON_LEFT:
-				emit_signal("mouse_left_clicked_item", self, event)
+				mouse_left_clicked_item.emit(self, event)
 				get_viewport().set_input_as_handled()
 			elif event.button_index == MOUSE_BUTTON_RIGHT:
-				emit_signal("mouse_right_clicked_item", self, event)
+				mouse_right_clicked_item.emit(self, event)
 				get_viewport().set_input_as_handled()
 
 
@@ -529,12 +529,12 @@ func get_interact_position() -> Vector2:
 # React to the mouse entering the item by emitting the respective signal
 func mouse_entered():
 	if escoria.action_manager.is_object_actionable(global_id):
-		emit_signal("mouse_entered_item", self)
+		mouse_entered_item.emit(self)
 
 
 # React to the mouse exiting the item by emitting the respective signal
 func mouse_exited():
-	emit_signal("mouse_exited_item",  self)
+	mouse_exited_item.emit(self)
 
 
 # Another item (e.g. the player) has entered this item

@@ -164,11 +164,11 @@ func _on_apply_pressed():
 	escoria.settings_manager.custom_settings[CUSTOM_SETTING] = 100
 	escoria.settings_manager.save_settings()
 	changed = false
-	emit_signal("back_button_pressed")
+	back_button_pressed.emit()
 
 
 # The back button was pressed
 func _on_back_pressed():
 	escoria.settings_manager.save_settings_resource_to_project_settings(backup_settings)
 	escoria.settings_manager.apply_settings()
-	emit_signal("back_button_pressed")
+	back_button_pressed.emit()

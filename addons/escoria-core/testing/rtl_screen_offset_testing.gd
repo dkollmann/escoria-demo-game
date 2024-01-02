@@ -40,7 +40,7 @@ func set_path_to_richtextlabel(path):
 
 func _input(event):
 	if event is InputEventMouseMotion:
-		emit_signal("mouse_moved", event.position)
+		mouse_moved.emit(event.position)
 
 func set_global_dist_clamp(d):
 	global_distance_to_clamp = d
@@ -61,7 +61,7 @@ func update_line2d():
 func _on_new_text_pressed():
 	var pressed_button = $HBoxContainer2/foo.group.get_pressed_button()
 	printt(pressed_button.name, pressed_button.text)
-	emit_signal("text_selected", pressed_button.text)
+	text_selected.emit(pressed_button.text)
 
 
 func tooltip_distance_to_edge_top(position: Vector2):

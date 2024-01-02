@@ -57,7 +57,7 @@ func refresh_savegames():
 
 # The back button was pressed
 func _on_back_pressed():
-	emit_signal("back_button_pressed")
+	back_button_pressed.emit()
 
 
 # The name for the save game was given, save the game.

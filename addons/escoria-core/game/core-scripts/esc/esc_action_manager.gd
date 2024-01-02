@@ -210,7 +210,7 @@ func do(action: int, params: Array = [], can_interrupt: bool = false) -> void:
 # - p_state: the action input state to set
 func set_action_input_state(p_state):
 	action_state = p_state
-	emit_signal("action_input_state_changed")
+	action_input_state_changed.emit()
 
 
 # Set the current action verb
@@ -228,14 +228,14 @@ func set_current_action(action: String):
 	elif action_state == ACTION_INPUT_STATE.AWAITING_VERB:
 		set_action_input_state(ACTION_INPUT_STATE.AWAITING_VERB_CONFIRMATION)
 
-	emit_signal("action_changed")
+	action_changed.emit()
 
 
 # Clear the current action
 func clear_current_action():
 	set_current_action("")
 	set_action_input_state(ACTION_INPUT_STATE.AWAITING_VERB_OR_ITEM)
-	emit_signal("action_changed")
+	action_changed.emit()
 
 
 # Clear the current tool
@@ -394,7 +394,7 @@ func _run_event(event: ESCEvent) -> int:
 		event_returned = await escoria.event_manager.event_finished
 
 	clear_current_action()
-	emit_signal("action_finished")
+	action_finished.emit()
 
 	return event_returned[0]
 
@@ -562,7 +562,7 @@ func perform_inputevent_on_object(
 	# player walking towards the destination.
 	if current_action and not event_to_queue:
 		clear_current_action()
-		emit_signal("action_finished")
+		action_finished.emit()
 		return
 
 	var event_flags = event_to_queue.flags if event_to_queue else 0

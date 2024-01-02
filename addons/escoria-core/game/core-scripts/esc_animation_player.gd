@@ -170,7 +170,7 @@ func _on_animation_finished(name: String):
 		_animation_player.stop()
 	elif not _animated_sprite.frames.get_animation_loop(name):
 		_animated_sprite.stop()
-	emit_signal("animation_finished", name)
+	animation_finished.emit(name)
 
 
 # Special signal handler for animated sprites

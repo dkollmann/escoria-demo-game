@@ -74,7 +74,7 @@ func hide_chooser():
 func _option_chosen(option: ESCDialogOption):
 	_remove_avatar()
 	$TimerProgress.value = 0
-	emit_signal("option_chosen", option)
+	option_chosen.emit(option)
 
 
 # An option was chosen directly from the list

@@ -453,7 +453,7 @@ func show_crash_popup(files: Array = []) -> void:
 	crash_popup.popup_centered()
 	escoria.set_game_paused(true)
 	await crash_popup.confirmed
-	emit_signal("crash_popup_confirmed")
+	crash_popup_confirmed.emit()
 
 
 # *** FOR USE BY ESCORIA CORE ONLY ***
@@ -493,4 +493,4 @@ func _input(event):
 		return
 
 	if event.is_action_pressed("ui_cancel"):
-		emit_signal("request_pause_menu")
+		request_pause_menu.emit()

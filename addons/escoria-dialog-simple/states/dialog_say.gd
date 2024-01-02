@@ -57,13 +57,13 @@ func _handle_left_click_action(left_click_action: String) -> void:
 				_dialog_manager.disconnect("say_visible", Callable(self, "_on_say_visible"))
 
 			escoria.logger.trace(self, "Dialog State Machine: 'say' -> 'say_fast'")
-			emit_signal("finished", "say_fast")
+			finished.emit("say_fast")
 		SimpleDialogSettings.LEFT_CLICK_ACTION_INSTANT_FINISH:
 			if _dialog_manager.is_connected("say_visible", Callable(self, "_on_say_visible")):
 				_dialog_manager.disconnect("say_visible", Callable(self, "_on_say_visible"))
 
 			escoria.logger.trace(self, "Dialog State Machine: 'say' -> 'say_finish'")
-			emit_signal("finished", "say_finish")
+			finished.emit("say_finish")
 
 	get_viewport().set_input_as_handled()
 
@@ -174,7 +174,7 @@ func _get_voice_file(key: String, start: String = "") -> String:
 
 func _on_say_visible() -> void:
 	escoria.logger.trace(self, "Dialog State Machine: 'say' -> 'visible'")
-	emit_signal("finished", "visible")
+	finished.emit("visible")
 
 
 func _on_audio_finished() -> void:

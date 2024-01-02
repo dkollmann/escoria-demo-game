@@ -26,4 +26,4 @@ func enter():
 
 func _on_say_visible() -> void:
 	escoria.logger.trace(self, "Dialog State Machine: 'say_fast' -> 'visible'")
-	emit_signal("finished", "visible")
+	finished.emit("visible")

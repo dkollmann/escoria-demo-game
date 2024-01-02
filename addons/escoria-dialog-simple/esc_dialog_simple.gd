@@ -102,7 +102,7 @@ func say(dialog_player: Node, global_id: String, text: String, type: String):
 #	yield(_type_player, "say_finished")
 #	if _dialog_player.get_children().has(_type_player):
 #		_dialog_player.remove_child(_type_player)
-#		emit_signal("say_finished")
+#		say_finished.emit()
 
 
 func do_say(global_id: String, text: String) -> void:
@@ -143,11 +143,11 @@ func _on_say_finished():
 
 	_is_saying = false
 
-	emit_signal("say_finished")
+	say_finished.emit()
 
 
 func _on_say_visible():
-	emit_signal("say_visible")
+	say_visible.emit()
 
 
 # Present an option chooser to the player and sends the signal
@@ -178,7 +178,7 @@ func do_choose(dialog_player: Node, dialog: ESCDialog, type: String = "simple"):
 
 	var option = await chooser.option_chosen
 	dialog_player.remove_child(chooser)
-	emit_signal("option_chosen", option)
+	option_chosen.emit(option)
 
 
 # Trigger running the dialogue faster
@@ -204,7 +204,7 @@ func interrupt():
 		if not _should_preserve_dialog_box and _dialog_player.get_children().has(_type_player):
 			_dialog_player.remove_child(_type_player)
 
-		emit_signal("say_finished")
+		say_finished.emit()
 
 
 # To be called if voice audio has finished.

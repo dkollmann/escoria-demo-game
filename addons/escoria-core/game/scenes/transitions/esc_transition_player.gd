@@ -99,7 +99,7 @@ func transition(
 		_was_canceled = true
 		_tween.stop_all()
 		_tween.remove_all()
-		emit_signal("transition_done", transition_id-1)
+		transition_done.emit(transition_id-1)
 
 	_tween.interpolate_property(
 		$".",
@@ -154,4 +154,4 @@ func _on_tween_completed():
 		_tween.stop_all()
 		_tween.remove_all()
 		escoria.logger.debug(self, "Transition %s done." % str(transition_id))
-		emit_signal("transition_done", transition_id)
+		transition_done.emit(transition_id)

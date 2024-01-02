@@ -58,7 +58,7 @@ func _ready():
 func _exit_tree():
 	if Engine.is_editor_hint():
 		if is_start_location:
-			emit_signal("is_start_location_set", self)
+			is_start_location_set.emit(self)
 
 
 func _get_configuration_warnings():
@@ -77,4 +77,4 @@ func set_is_start_location(value: bool) -> void:
 	is_start_location = value
 
 	if Engine.is_editor_hint() and is_instance_valid(get_owner()):
-		emit_signal("is_start_location_set")
+		is_start_location_set.emit()

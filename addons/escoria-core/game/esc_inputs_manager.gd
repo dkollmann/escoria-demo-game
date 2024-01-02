@@ -585,7 +585,7 @@ class HoverStack:
 		if not hover_stack.has(item):
 			hover_stack.push_back(item)
 			_sort()
-			emit_signal("hover_stack_changed")
+			hover_stack_changed.emit()
 
 
 	# Add the items contained in given list to the stack if not already in it.
@@ -603,7 +603,7 @@ class HoverStack:
 		for e in hover_stack:
 			if e == null or !is_instance_valid(e):
 				hover_stack.erase(e)
-				emit_signal("hover_stack_changed")
+				hover_stack_changed.emit()
 
 
 	# Pops the top element of the hover stack and returns it
@@ -613,7 +613,7 @@ class HoverStack:
 	func pop_top_item():
 		var ret = hover_stack.pop_back()
 		if is_instance_valid(ret):
-			emit_signal("hover_stack_changed")
+			hover_stack_changed.emit()
 		return ret
 
 
@@ -633,13 +633,13 @@ class HoverStack:
 		if hover_stack.has(item):
 			hover_stack.erase(item)
 			_sort()
-			emit_signal("hover_stack_changed")
+			hover_stack_changed.emit()
 
 
 	# Clear the stack of hovered items
 	func clear():
 		hover_stack = []
-		emit_signal("hover_stack_emptied")
+		hover_stack_emptied.emit()
 
 
 	# Returns true if the hover stack is empty, else false

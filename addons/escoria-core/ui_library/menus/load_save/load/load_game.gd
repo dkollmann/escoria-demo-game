@@ -25,7 +25,7 @@ func _on_slot_pressed(slot_id: int) -> void:
 
 # The back button was pressed
 func _on_back_pressed():
-	emit_signal("back_button_pressed")
+	back_button_pressed.emit()
 
 
 # Create the slots from the list of savegames

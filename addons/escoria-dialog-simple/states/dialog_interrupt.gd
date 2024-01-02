@@ -21,5 +21,5 @@ func enter():
 
 func _on_say_finished() -> void:
 	escoria.logger.trace(self, "Dialog State Machine: 'interrupt' -> 'finish'")
-	emit_signal("finished", "finish")
+	finished.emit("finish")
 

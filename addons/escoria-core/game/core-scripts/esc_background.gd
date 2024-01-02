@@ -96,9 +96,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if InputMap.has_action(escoria.inputs_manager.SWITCH_ACTION_VERB) \
 			and event.is_action_pressed(escoria.inputs_manager.SWITCH_ACTION_VERB):
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			emit_signal("mouse_wheel_up")
+			mouse_wheel_up.emit()
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			emit_signal("mouse_wheel_down")
+			mouse_wheel_down.emit()
 	if event is InputEventMouseButton and event.is_pressed():
 		var p = get_global_mouse_position()
 		var size
@@ -108,11 +108,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			size = self.size
 		if Rect2(position, size).has_point(p):
 			if event.double_click and event.button_index == MOUSE_BUTTON_LEFT:
-				emit_signal("double_left_click_on_bg", p)
+				double_left_click_on_bg.emit(p)
 			elif event.button_index == MOUSE_BUTTON_LEFT:
-				emit_signal("left_click_on_bg", p)
+				left_click_on_bg.emit(p)
 			elif event.button_index == MOUSE_BUTTON_RIGHT:
-				emit_signal("right_click_on_bg", p)
+				right_click_on_bg.emit(p)
 
 
 # Calculate the actual area taken by this background depending on its
