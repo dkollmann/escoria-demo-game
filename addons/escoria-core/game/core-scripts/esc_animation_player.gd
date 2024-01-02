@@ -121,7 +121,7 @@ func has_animation(name: String) -> bool:
 	if _is_animation_player:
 		return _animation_player.has_animation(name)
 	else:
-		return _animated_sprite.frames.has_animation(name)
+		return _animated_sprite.sprite_frames.has_animation(name)
 
 
 # Play an animation and directly skip to the end
