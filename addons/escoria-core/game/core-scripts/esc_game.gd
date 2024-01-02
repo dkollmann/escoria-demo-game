@@ -69,10 +69,14 @@ func _enter_tree():
 
 # Function called when ESCGame exits the scene tree.
 func _exit_tree():
-	escoria.event_manager.event_finished.disconnect(_on_event_done)
-	escoria.action_manager.action_finished.disconnect(_on_action_finished)
+	if escoria.event_manager.event_finished.is_connected(_on_event_done):  # FIXME: Why is this needed?
+		escoria.event_manager.event_finished.disconnect(_on_event_done)
+	
+	if escoria.action_manager.action_finished.is_connected(_on_action_finished):  # FIXME: Why is this needed?
+		escoria.action_manager.action_finished.disconnect(_on_action_finished)
 
-	escoria.main.room_ready.disconnect(_on_room_ready)
+	if escoria.main.room_ready.is_connected(_on_room_ready):  # FIXME: Why is this needed?
+		escoria.main.room_ready.disconnect(_on_room_ready)
 
 
 # Ready function
