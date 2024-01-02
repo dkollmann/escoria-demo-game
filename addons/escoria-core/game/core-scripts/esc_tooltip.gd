@@ -31,7 +31,9 @@ const ONE_LINE_HEIGHT = 16
 var current_action: String
 
 # Target item/hotspot
-var current_target: String: set = set_target
+var current_target: String:
+	set(new_value):
+		set_target(new_value)
 
 # Preposition: on, with...
 var current_prep: String = "with"
@@ -127,7 +129,7 @@ func update_size():
 	if not get_tree():
 		# We're not in the tree anymore. Return
 		return
-	size = get_font("normal_font").get_string_size(current_target)
+	size = get_theme_font("normal_font").get_string_size(current_target)
 
 
 # Calculate the offset of the label depending on its position.

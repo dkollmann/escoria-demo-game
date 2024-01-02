@@ -66,7 +66,7 @@ func run(command_params: Array) -> int:
 	# angle against X axis not Y, we need to check direction using (angle-90°).
 	# Since the ESC command already gives the right angle, we add 90.
 	escoria.object_manager.get_object(command_params[0]).node\
-			super.set_angle(
+			.set_angle(
 				wrapi(int(command_params[1]) + 90, 0, 360),
 				command_params[2]
 			)

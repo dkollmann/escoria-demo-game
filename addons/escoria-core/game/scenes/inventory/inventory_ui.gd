@@ -28,11 +28,7 @@ func _ready():
 
 	escoria.inventory = self
 
-	escoria.globals_manager.connect(
-		"global_changed", #
-		self,
-		"_on_escoria_global_changed"
-	)
+	escoria.globals_manager.global_changed.connect(_on_escoria_global_changed)
 
 
 # add item to Inventory UI using its id set in its scene

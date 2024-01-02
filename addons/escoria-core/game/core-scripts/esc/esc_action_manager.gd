@@ -199,7 +199,7 @@ func do(action: int, params: Array = [], can_interrupt: bool = false) -> void:
 			_:
 				escoria.logger.warn(
 					self,
-					"Action received: '%s' with params %s.", [action, params]
+					"Action received: '%s' with params %s." % [action, params]
 				)
 	elif escoria.current_state == escoria.GAME_STATE.WAIT:
 		pass
@@ -227,7 +227,7 @@ func set_current_action(action: String):
 	if action_state == ACTION_INPUT_STATE.AWAITING_VERB_OR_ITEM:
 		set_action_input_state(ACTION_INPUT_STATE.AWAITING_ITEM)
 	elif action_state == ACTION_INPUT_STATE.AWAITING_VERB:
-		set_action_input_state(ACTION_INPUT_STATE.AWAITING_VERB_CONFIRM)
+		set_action_input_state(ACTION_INPUT_STATE.AWAITING_VERB_CONFIRMATION)
 
 	emit_signal("action_changed")
 
@@ -576,14 +576,11 @@ func perform_inputevent_on_object(
 		if not obj.node is ESCPlayer and \
 			not escoria.inventory_manager.inventory_has(obj.global_id) and \
 			not event_flags & ESCEvent.FLAG_TK:
-				var context = _walk_towards_object(
+				var context = await _walk_towards_object(
 					obj,
 					event.position,
 					event.doubleclick
 				)
-
-				if context is GDScriptFunctionState:
-					context = await context.completed
 
 				# In case of an interrupted walk, we don't want to proceed.
 				if context == null:
@@ -715,9 +712,9 @@ func _walk_towards_object(
 		walk_context)
 
 	escoria.logger.debug(
-	self,
-	"Player walking to destination. Yielding."
-)
+		self,
+		"Player walking to destination. Yielding."
+	)
 
 	# Wait for the player to arrive before continuing with action.
 	var context: ESCWalkContext = await escoria.main.current_scene.player.arrived

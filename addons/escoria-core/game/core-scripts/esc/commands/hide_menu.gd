@@ -46,10 +46,8 @@ func run(command_params: Array) -> int:
 	)
 
 	if transition_id != ESCTransitionPlayer.TRANSITION_ID_INSTANT:
-		while yield(
-			escoria.main.scene_transition,
-			"transition_done"
-		) != transition_id:
+		while await escoria.main.scene_transition.transition_done \
+		 != transition_id:
 			pass
 
 	if command_params[0] == "main":
@@ -61,10 +59,8 @@ func run(command_params: Array) -> int:
 		transition_id = escoria.main.scene_transition.transition()
 
 		if transition_id != ESCTransitionPlayer.TRANSITION_ID_INSTANT:
-			while yield(
-				escoria.main.scene_transition,
-				"transition_done"
-			) != transition_id:
+			while await escoria.main.scene_transition.transition_done \
+				!= transition_id:
 				pass
 
 	return ESCExecution.RC_OK

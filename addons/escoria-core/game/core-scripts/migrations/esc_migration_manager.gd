@@ -94,8 +94,7 @@ func _find_versions(directory: String, from: String, to: String) -> Array:
 		"Searching directory %s." % directory
 	)
 	var versions = []
-	var dir = DirAccess.new()
-	dir.open(directory)
+	var dir := DirAccess.open(directory)
 	dir.list_dir_begin() # TODOConverter3To4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 	var file_name = dir.get_next()
 	while file_name != "":
@@ -103,7 +102,7 @@ func _find_versions(directory: String, from: String, to: String) -> Array:
 		var regex_result = version_regex.search(version)
 		if dir.current_is_dir():
 			versions += _find_versions(
-				directory.plus_file(file_name),
+				directory.path_join(file_name),
 				from,
 				to
 			)
@@ -113,7 +112,7 @@ func _find_versions(directory: String, from: String, to: String) -> Array:
 				"Found compatible savegame migration script for version %s." % version
 			)
 			versions.append(
-				directory.plus_file(file_name)
+				directory.path_join(file_name)
 			)
 		file_name = dir.get_next()
 	return versions

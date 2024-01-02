@@ -114,9 +114,8 @@ func save_settings_resource_to_project_settings(settings: ESCSaveSettings):
 # Load the game settings from the settings file
 func load_settings():
 	var save_settings_path: String = \
-			settings_folder.plus_file(SETTINGS_TEMPLATE)
-	var file: File = File.new()
-	if not file.file_exists(save_settings_path):
+			settings_folder.path_join(SETTINGS_TEMPLATE)
+	if not FileAccess.file_exists(save_settings_path):
 		escoria.logger.warn(
 			self,
 			"Settings file %s doesn't exist" % save_settings_path
@@ -168,11 +167,10 @@ func get_settings() -> ESCSaveSettings:
 func save_settings():
 	var settings = get_settings()
 
-	var directory: DirAccess = DirAccess.new()
-	if not directory.dir_exists(settings_folder):
-		directory.make_dir_recursive(settings_folder)
+	if not DirAccess.dir_exists_absolute(settings_folder):
+		DirAccess.make_dir_recursive_absolute(settings_folder)
 
-	var save_path = settings_folder.plus_file(SETTINGS_TEMPLATE)
+	var save_path = settings_folder.path_join(SETTINGS_TEMPLATE)
 	var error: int = ResourceSaver.save(save_path, settings)
 	if error != OK:
 		escoria.logger.error(

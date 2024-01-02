@@ -99,16 +99,13 @@ func run():
 	# If this is the case and the current level of dialog has a parent, it means
 	# it is still yielding and so will be shown again.
 	if option:
-		rc = option.run()
-		# FIXME: GDScriptFunctionState is no longer supported: https://github.com/godotengine/godot-proposals/issues/5673
-		#if rc is GDScriptFunctionState:
-		#	rc = await rc.completed
+		rc = await option.run()
 		if rc != ESCExecution.RC_CANCEL:
 			# We also set this here in case a chosen option doesn't yield, since this block
 			# will return normally and not allow the current_state reset at the bottom of this
 			# method to run.
 			escoria.current_state = escoria.GAME_STATE.DEFAULT
-			return self.run()
+			return await self.run()
 
 	escoria.current_state = escoria.GAME_STATE.DEFAULT
 

@@ -378,7 +378,7 @@ func show_ui():
 # corresponding to the desired editor debug mode
 func _set_editor_debug_mode(p_editor_debug_mode: int) -> void:
 	editor_debug_mode = p_editor_debug_mode
-	update()
+	queue_redraw()
 
 
 # Automatically called whenever an event is finished. Can be used to reset some

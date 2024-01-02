@@ -21,4 +21,4 @@ func _init(p_event: ESCEvent, p_timeout: float):
 #
 # **Returns** The execution code
 func run() -> int:
-	return event.run()
+	return await event.run()

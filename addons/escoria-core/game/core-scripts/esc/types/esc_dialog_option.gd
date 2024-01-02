@@ -46,8 +46,7 @@ func load_string(option_string: String):
 	else:
 		escoria.logger.error(
 			self,
-			"Invalid dialog option detected: %s." % option_string,
-				"Dialog option regexp didn't match"
+			"Invalid dialog option detected: %s. Dialog option regexp didn't match" % option_string
 		)
 
 

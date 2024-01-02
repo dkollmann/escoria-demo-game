@@ -99,7 +99,7 @@ class ESCLoggerFile extends ESCLoggerBase:
 			ESCProjectSettingsManager.LOG_FILE_PATH
 		)
 		var date = Time.get_datetime_dict_from_system()
-		log_file_path = log_file_path.plus_file(LOG_FILE_FORMAT % [
+		log_file_path = log_file_path.path_join(LOG_FILE_FORMAT % [
 				str(date["year"]) + str(date["month"]) + str(date["day"]),
 				str(date["hour"]) + str(date["minute"]) + str(date["second"])
 			])

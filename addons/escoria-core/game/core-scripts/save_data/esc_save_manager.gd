@@ -66,13 +66,12 @@ func get_saves_list() -> Dictionary:
 	regex.compile("save_(?<slotnumber>[0-9]{3})\\.tres")
 
 	var saves = {}
-	var dirsave = DirAccess.new()
-	if dirsave.open(save_folder) == OK:
+	var dirsave := DirAccess.open(save_folder)
+	if dirsave:
 		dirsave.list_dir_begin() # TODOConverter3To4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 		var nextfile = dirsave.get_next()
 		while nextfile != "":
-			var save_path = save_folder.plus_file(nextfile)
-			var file: File = File.new()
+			var save_path = save_folder.path_join(nextfile)
 			var save_game_res: Resource = load(save_path)
 
 			if save_game_res == null:
@@ -105,9 +104,8 @@ func get_saves_list() -> Dictionary:
 # ## Parameters
 # - id: integer suffix of the savegame file
 func save_game_exists(id: int) -> bool:
-	var save_file_path: String = save_folder.plus_file(SAVE_NAME_TEMPLATE % id)
-	var file: File = File.new()
-	return file.file_exists(save_file_path)
+	var save_file_path: String = save_folder.path_join(SAVE_NAME_TEMPLATE % id)
+	return FileAccess.file_exists(save_file_path)
 
 
 # Save the current state of the game in a file suffixed with the id value.
@@ -126,12 +124,11 @@ func save_game(id: int, p_savename: String):
 
 	var save_game := _do_save_game(p_savename)
 
-	var directory: DirAccess = DirAccess.new()
-	if not directory.dir_exists(save_folder):
-		directory.make_dir_recursive(save_folder)
+	if not DirAccess.dir_exists_absolute(save_folder):
+		DirAccess.make_dir_recursive_absolute(save_folder)
 
-	var save_path = save_folder.plus_file(SAVE_NAME_TEMPLATE % id)
-	var error: int = ResourceSaver.save(save_path, save_game)
+	var save_path = save_folder.path_join(SAVE_NAME_TEMPLATE % id)
+	var error: int = ResourceSaver.save(save_game, save_path)
 	if error != OK:
 		escoria.logger.error(
 			self,
@@ -155,7 +152,7 @@ func save_game_crash():
 	var save_file_path: String = ESCProjectSettingsManager.get_setting(
 		ESCProjectSettingsManager.LOG_FILE_PATH
 	)
-	crash_savegame_filename = save_file_path.plus_file(
+	crash_savegame_filename = save_file_path.path_join(
 		CRASH_SAVE_NAME_TEMPLATE % [
 			str(datetime["year"]) + str(datetime["month"])
 					+ str(datetime["day"]),
@@ -164,7 +161,7 @@ func save_game_crash():
 		]
 	)
 
-	var error: int = ResourceSaver.save(crash_savegame_filename, save_game)
+	var error: int = ResourceSaver.save(save_game, crash_savegame_filename)
 	if error != OK:
 		escoria.logger.error(
 			self,
@@ -213,9 +210,8 @@ func _do_save_game(p_savename: String) -> ESCSaveGame:
 # ## Parameters
 # - id: integer suffix of the savegame file
 func load_game(id: int):
-	var save_file_path: String = save_folder.plus_file(SAVE_NAME_TEMPLATE % id)
-	var file: File = File.new()
-	if not file.file_exists(save_file_path):
+	var save_file_path: String = save_folder.path_join(SAVE_NAME_TEMPLATE % id)
+	if not FileAccess.file_exists(save_file_path):
 		escoria.logger.error(
 			self,
 			"Save file %s doesn't exist." % save_file_path
@@ -424,25 +420,24 @@ func save_settings():
 	settings_res.fullscreen = escoria.settings.fullscreen
 	settings_res.custom_settings = escoria.settings.custom_settings
 
-	var directory: DirAccess = DirAccess.new()
-	if not directory.dir_exists(settings_folder):
-		directory.make_dir_recursive(settings_folder)
+	if not DirAccess.dir_exists_absolute(settings_folder):
+		DirAccess.make_dir_recursive_absolute(settings_folder)
 
-	var save_path = settings_folder.plus_file(SETTINGS_TEMPLATE)
-	var error: int = ResourceSaver.save(save_path, settings_res)
+	var save_path = settings_folder.path_join(SETTINGS_TEMPLATE)
+	var error: int = ResourceSaver.save(settings_res, save_path)
 	if error != OK:
 		escoria.logger.error(
-			"esc_save_manager.gd:save_settings()",
-			["There was an issue writing settings file %s." % save_path])
+			#"esc_save_manager.gd:save_settings()",
+			self,
+			"There was an issue writing settings file %s." % save_path)
 
 
 # Load the game settings from the settings file
 # **Returns** The Resource structure loaded from settings file
 func load_settings() -> Resource:
 	var save_settings_path: String = \
-			settings_folder.plus_file(SETTINGS_TEMPLATE)
-	var file: File = File.new()
-	if not file.file_exists(save_settings_path):
+			settings_folder.path_join(SETTINGS_TEMPLATE)
+	if not FileAccess.file_exists(save_settings_path):
 		escoria.logger.warn(
 			self,
 			"Settings file %s doesn't exist. Using default settings."
