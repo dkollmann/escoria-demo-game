@@ -148,15 +148,15 @@ func _get_voice_file(key: String, start: String = "") -> String:
 		start = ESCProjectSettingsManager.get_setting(
 			ESCProjectSettingsManager.SPEECH_FOLDER
 		)
-	var _dir = DirAccess.new()
-	if _dir.open(start) == OK:
+	var _dir := DirAccess.open(start)
+	if _dir:
 		_dir.list_dir_begin() # TODOConverter3To4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 		var file_name = _dir.get_next()
 		while file_name != "":
 			if _dir.current_is_dir():
 				var _voice_file = _get_voice_file(
 					key,
-					start.plus_file(file_name)
+					start.path_join(file_name)
 				)
 				if _voice_file != "":
 					return _voice_file
@@ -167,7 +167,7 @@ func _get_voice_file(key: String, start: String = "") -> String:
 						ESCProjectSettingsManager.SPEECH_EXTENSION
 					)
 				]:
-					return start.plus_file(file_name.trim_suffix(".import"))
+					return start.path_join(file_name.trim_suffix(".import"))
 			file_name = _dir.get_next()
 	return ""
 

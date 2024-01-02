@@ -4,10 +4,10 @@ class_name ESCStatement
 
 
 # Emitted when the event did finish running
-signal finished(event, return_code)
+signal finished(event: ESCStatement, return_code: int)
 
 # Emitted when the event was interrupted
-signal interrupted(event, return_code)
+signal interrupted(event: ESCStatement, return_code: int)
 
 
 # The list of ESC commands
@@ -54,7 +54,7 @@ func run() -> int:
 				final_rc = rc
 				break
 
-	emit_signal("finished", self, current_statement, final_rc)
+	finished.emit(current_statement, final_rc)
 	return final_rc
 
 

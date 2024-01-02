@@ -300,7 +300,7 @@ func _perform_script_events(room: ESCRoom) -> int:
 	escoria.main.set_camera_limits(0, room)
 
 	# Add the camera in to the scene tree but don't make it active just yet.
-	new_player_camera.current = false
+	new_player_camera.enabled = false
 	room.add_child(new_player_camera)
 	room.move_child(new_player_camera, 0)
 

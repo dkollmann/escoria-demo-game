@@ -104,7 +104,7 @@ class ESCLoggerFile extends ESCLoggerBase:
 				str(date["hour"]) + str(date["minute"]) + str(date["second"])
 			])
 		# Open logfile in write mode
-		var log_file := FileAccess.open(
+		log_file = FileAccess.open(
 			log_file_path,
 			FileAccess.WRITE
 		)

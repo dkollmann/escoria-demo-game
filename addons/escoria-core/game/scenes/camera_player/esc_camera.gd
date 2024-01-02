@@ -19,13 +19,13 @@ var _zoom_target: Vector2
 # Prepare the tween
 func _ready():
 	_tween = get_tree().create_tween()
-	_tween.connect("tween_all_completed", Callable(self, "_target_reached"))
+	_tween.finished.connect(_target_reached)
 
 
 func _exit_tree():
 	if is_instance_valid(_tween):
-		_tween.queue_free()
 		_tween.kill()
+		#_tween.free()
 
 
 # Update the position if the followed target is moving

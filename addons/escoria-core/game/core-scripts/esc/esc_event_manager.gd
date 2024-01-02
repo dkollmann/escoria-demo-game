@@ -133,10 +133,8 @@ func _process(delta: float) -> void:
 			if event_flags & ESCEvent.FLAG_NO_SAVE:
 				escoria.save_manager.save_enabled = false
 
-			var rc = _running_events[channel_name].run()
-
 			_yielding[channel_name] = true
-			rc = await rc.completed
+			await _running_events[channel_name].run()
 			_yielding[channel_name] = false
 
 	for event in self.scheduled_events:

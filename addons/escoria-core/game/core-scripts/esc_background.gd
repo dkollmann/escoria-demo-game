@@ -52,7 +52,7 @@ func _enter_tree():
 	if get_texture():
 		size = get_texture().get_size()
 	else:
-		size = size
+		size = self.size
 
 	var area = Area2D.new()
 	var shape = RectangleShape2D.new()
@@ -65,7 +65,7 @@ func _enter_tree():
 	area.shape_owner_set_transform(sid, transform)
 
 	# Set extents of RectangleShape2D to cover entire TextureRect
-	shape.set_extents(size / 2)
+	shape.size = size / 2
 	area.shape_owner_add_shape(sid, shape)
 
 	add_child(area)
@@ -105,9 +105,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		if get_texture():
 			size = get_texture().get_size()
 		else:
-			size = size
+			size = self.size
 		if Rect2(position, size).has_point(p):
-			if event.doubleclick and event.button_index == MOUSE_BUTTON_LEFT:
+			if event.double_click and event.button_index == MOUSE_BUTTON_LEFT:
 				emit_signal("double_left_click_on_bg", p)
 			elif event.button_index == MOUSE_BUTTON_LEFT:
 				emit_signal("left_click_on_bg", p)
@@ -125,7 +125,7 @@ func get_full_area_rect2() -> Rect2:
 	if get_texture():
 		size = get_texture().get_size()
 	else:
-		size = size
+		size = self.size
 
 	if scale.x != 1 or scale.y != 1:
 		size.x *= scale.x

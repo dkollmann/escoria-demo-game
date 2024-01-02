@@ -37,7 +37,7 @@ var _current_line: String
 @onready var text_node = $Panel/MarginContainer/HSplitContainer/text
 
 # The tween node for text animations
-@onready var tween = $Panel/MarginContainer/HSplitContainer/text/Tween
+var tween: Tween
 
 # Whether the dialog manager is paused
 @onready var is_paused: bool = true
@@ -46,6 +46,8 @@ var _current_line: String
 
 # Build up the UI
 func _ready():
+	tween = get_tree().create_tween()
+	
 	_text_time_per_character = ProjectSettings.get_setting(
 		SimpleDialogSettings.TEXT_TIME_PER_LETTER_MS
 	)
@@ -56,11 +58,11 @@ func _ready():
 			"%s setting must be a non-negative number. Will use default value of %s." %
 				[
 					SimpleDialogSettings.TEXT_TIME_PER_LETTER_MS,
-					SimpleDialogSettings.TEXT_TIME_PER_LETTER_MS_DEFAULT_VALUE
+					escoria.TEXT_TIME_PER_LETTER_MS_DEFAULT_VALUE
 				]
 		)
 
-		_text_time_per_character = SimpleDialogSettings.TEXT_TIME_PER_LETTER_MS_DEFAULT_VALUE
+		_text_time_per_character = escoria.TEXT_TIME_PER_LETTER_MS_DEFAULT_VALUE
 
 	_fast_text_time_per_character = ProjectSettings.get_setting(
 		SimpleDialogSettings.TEXT_TIME_PER_LETTER_MS_FAST
@@ -72,11 +74,11 @@ func _ready():
 			"%s setting must be a non-negative number. Will use default value of %s." %
 				[
 					SimpleDialogSettings.TEXT_TIME_PER_LETTER_MS_FAST,
-					SimpleDialogSettings.TEXT_TIME_PER_LETTER_MS_FAST_DEFAULT_VALUE
+					escoria.TEXT_TIME_PER_LETTER_MS_FAST_DEFAULT_VALUE
 				]
 		)
 
-		_fast_text_time_per_character = SimpleDialogSettings.TEXT_TIME_PER_LETTER_MS_FAST_DEFAULT_VALUE
+		_fast_text_time_per_character = escoria.TEXT_TIME_PER_LETTER_MS_FAST_DEFAULT_VALUE
 
 	_reading_speed_in_wpm = ProjectSettings.get_setting(
 		SimpleDialogSettings.READING_SPEED_IN_WPM
@@ -88,25 +90,21 @@ func _ready():
 			"%s setting must be a positive number. Will use default value of %s." %
 				[
 					SimpleDialogSettings.READING_SPEED_IN_WPM,
-					SimpleDialogSettings.READING_SPEED_IN_WPM_DEFAULT_VALUE
+					escoria.READING_SPEED_IN_WPM_DEFAULT_VALUE
 				]
 		)
 
-		_reading_speed_in_wpm = SimpleDialogSettings.READING_SPEED_IN_WPM_DEFAULT_VALUE
+		_reading_speed_in_wpm = escoria.READING_SPEED_IN_WPM_DEFAULT_VALUE
 
 	_word_regex.compile("\\S+")
 
 	text_node.bbcode_enabled = true
-	tween.connect(
-		"tween_completed",
-		self,
-		"_on_dialog_line_typed"
-	)
+	tween.finished.connect(_on_dialog_line_typed)
 
-	escoria.connect("paused", Callable(self, "_on_paused"))
-	escoria.connect("resumed", Callable(self, "_on_resumed"))
+	escoria.paused.connect(_on_paused)
+	escoria.resumed.connect(_on_resumed)
 
-	connect("tree_exited", Callable(self, "_on_tree_exited"))
+	tree_exited.connect(_on_tree_exited)
 
 
 # Switch the current character

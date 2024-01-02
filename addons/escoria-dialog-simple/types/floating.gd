@@ -34,7 +34,7 @@ var _current_line: String
 
 
 # Tween node for text animation
-@onready var tween: Tween = $Tween
+var tween: Tween
 
 # The node showing the text
 @onready var text_node: RichTextLabel = self
@@ -46,6 +46,8 @@ var dialog_location_node = null
 
 # Enable bbcode and catch the signal when a tween completed
 func _ready():
+	tween = get_tree().create_tween()
+	
 	_text_time_per_character = ProjectSettings.get_setting(
 		SimpleDialogSettings.TEXT_TIME_PER_LETTER_MS
 	)
@@ -56,11 +58,11 @@ func _ready():
 			"%s setting must be a non-negative number. Will use default value of %s." %
 				[
 					SimpleDialogSettings.TEXT_TIME_PER_LETTER_MS,
-					SimpleDialogSettings.TEXT_TIME_PER_LETTER_MS_DEFAULT_VALUE
+					escoria.TEXT_TIME_PER_LETTER_MS_DEFAULT_VALUE
 				]
 		)
 
-		_text_time_per_character = SimpleDialogSettings.TEXT_TIME_PER_LETTER_MS_DEFAULT_VALUE
+		_text_time_per_character = escoria.TEXT_TIME_PER_LETTER_MS_DEFAULT_VALUE
 
 	_fast_text_time_per_character = ProjectSettings.get_setting(
 		SimpleDialogSettings.TEXT_TIME_PER_LETTER_MS_FAST
@@ -72,11 +74,11 @@ func _ready():
 			"%s setting must be a non-negative number. Will use default value of %s." %
 				[
 					SimpleDialogSettings.TEXT_TIME_PER_LETTER_MS_FAST,
-					SimpleDialogSettings.TEXT_TIME_PER_LETTER_MS_FAST_DEFAULT_VALUE
+					escoria.TEXT_TIME_PER_LETTER_MS_FAST_DEFAULT_VALUE
 				]
 		)
 
-		_fast_text_time_per_character = SimpleDialogSettings.TEXT_TIME_PER_LETTER_MS_FAST_DEFAULT_VALUE
+		_fast_text_time_per_character = escoria.TEXT_TIME_PER_LETTER_MS_FAST_DEFAULT_VALUE
 
 	_reading_speed_in_wpm = ProjectSettings.get_setting(
 		SimpleDialogSettings.READING_SPEED_IN_WPM
@@ -88,11 +90,11 @@ func _ready():
 			"%s setting must be a positive number. Will use default value of %s." %
 				[
 					SimpleDialogSettings.READING_SPEED_IN_WPM,
-					SimpleDialogSettings.READING_SPEED_IN_WPM_DEFAULT_VALUE
+					escoria.READING_SPEED_IN_WPM_DEFAULT_VALUE
 				]
 		)
 
-		_reading_speed_in_wpm = SimpleDialogSettings.READING_SPEED_IN_WPM_DEFAULT_VALUE
+		_reading_speed_in_wpm = escoria.READING_SPEED_IN_WPM_DEFAULT_VALUE
 
 	_word_regex.compile("\\S+")
 
@@ -156,7 +158,7 @@ func say(character: String, line: String) :
 	var text_color_html = text_color.to_html(false)
 
 	text_node.text = "[center][color=#" + text_color_html + "]" \
-		super.format([text_color_html]) + tr(line) + "[/color][center]"
+		.format([text_color_html]) + tr(line) + "[/color][center]"
 
 	if _current_character.is_inside_tree() and \
 			is_instance_valid(dialog_location_node):

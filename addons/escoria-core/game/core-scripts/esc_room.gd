@@ -29,13 +29,15 @@ const ESC_BACKGROUND_NAME = "escbackground"
 @export var camera_limits: Array[Rect2] \
 	= [Rect2()]:
 		set(new_value):
-			set_camera_limits(new_value)
+			camera_limits = new_value
+			queue_redraw()
 
 # The editor debug display mode
 @export var editor_debug_mode: EditorRoomDebugDisplay \
 	= EditorRoomDebugDisplay.NONE:
 		set(new_value):
-			set_editor_debug_mode(new_value)
+			editor_debug_mode = new_value
+			queue_redraw()
 
 
 # The player scene instance
@@ -170,24 +172,3 @@ func _find_esc_locations(node: Node) -> Array:
 			esc_locations.append_array(_find_esc_locations(n))
 
 	return esc_locations
-
-
-# Set the camera limits
-#
-# #### Parameters
-#
-# - p_camera_limits: An array of Rect2Ds as camera limits
-func set_camera_limits(p_camera_limits: Array) -> void:
-	camera_limits = p_camera_limits
-	queue_redraw()
-
-
-# Set the editor debug mode
-#
-# #### Parameters
-#
-# - p_editor_debug_mode: The debug mode to set for the room
-func set_editor_debug_mode(p_editor_debug_mode: int) -> void:
-	editor_debug_mode = p_editor_debug_mode
-	queue_redraw()
-
