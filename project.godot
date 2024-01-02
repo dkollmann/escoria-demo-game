@@ -21,7 +21,7 @@ config/icon="res://icon.png"
 
 [audio]
 
-buses/default_bus_layout="res://addons/escoria-core/buses/default_bus_layout.tres"
+buses/default_bus_layout="res://addons/escoria-core/default_bus_layout.tres"
 
 [autoload]
 
