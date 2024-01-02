@@ -356,7 +356,7 @@ func _unhandled_input(input_event: InputEvent) -> void:
 			return
 		var p = get_global_mouse_position()
 		if _is_in_shape(p) and escoria.action_manager.is_object_actionable(global_id):
-			if event.doubleclick and event.button_index == MOUSE_BUTTON_LEFT:
+			if event.double_click and event.button_index == MOUSE_BUTTON_LEFT:
 				mouse_double_left_clicked_item.emit(self, event)
 				get_viewport().set_input_as_handled()
 			elif event.button_index == MOUSE_BUTTON_LEFT:

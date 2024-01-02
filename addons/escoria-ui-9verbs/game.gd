@@ -332,7 +332,7 @@ func show_main_menu():
 func unpause_game():
 	if get_node(pause_menu).visible:
 		get_node(pause_menu).hide()
-		escoria.object_manager.get_object(ESCObjectManager.CAMERA).node.current = true
+		escoria.object_manager.get_object(ESCObjectManager.CAMERA).node.enabled = true
 		escoria.object_manager.get_object(ESCObjectManager.SPEECH).node.resume()
 		escoria.main.current_scene.game.show_ui()
 		escoria.main.current_scene.show()
@@ -343,7 +343,7 @@ func pause_game():
 		get_node(pause_menu).reset()
 		get_node(pause_menu).set_save_enabled(escoria.save_manager.save_enabled)
 		get_node(pause_menu).show()
-		escoria.object_manager.get_object(ESCObjectManager.CAMERA).node.current = false
+		escoria.object_manager.get_object(ESCObjectManager.CAMERA).node.enabled = false
 		escoria.object_manager.get_object(ESCObjectManager.SPEECH).node.pause()
 		escoria.main.current_scene.game.hide_ui()
 		escoria.main.current_scene.hide()

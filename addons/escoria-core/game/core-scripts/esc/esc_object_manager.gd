@@ -174,7 +174,7 @@ func register_object(object: ESCObject, room: ESCRoom = null, force: bool = fals
 
 	if auto_unregister:
 		object.node.tree_exited.connect(
-			unregister_object.bind([object, room_key])
+			unregister_object.bind(object, room_key)
 		)
 
 	if "is_interactive" in object.node and object.node.is_interactive:

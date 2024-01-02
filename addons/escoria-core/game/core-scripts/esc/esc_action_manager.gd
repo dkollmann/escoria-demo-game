@@ -578,7 +578,7 @@ func perform_inputevent_on_object(
 				var context = await _walk_towards_object(
 					obj,
 					event.position,
-					event.doubleclick
+					event.double_click
 				)
 
 				# In case of an interrupted walk, we don't want to proceed.
