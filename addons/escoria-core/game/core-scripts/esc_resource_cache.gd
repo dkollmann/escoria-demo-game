@@ -16,12 +16,12 @@ func queue_resource(path: String, p_in_front: bool = false, p_permanent: bool = 
 	if path in pending:
 		return
 
-	elif ResourceLoader.has(path):
+	elif ResourceLoader.has_cached(path):
 		var res = ResourceLoader.load(path)
 		pending[path] = ESCResourceDescriptor.new(res, p_permanent)
 	else:
 		var res = ResourceLoader.load_threaded_request(path)
-		res.set_meta("path", path)
+		res.resource_path = path
 		if p_in_front:
 			queue.insert(0, res)
 		else:
@@ -85,7 +85,7 @@ func get_resource(path):
 			var res = pending[path].res
 			if res != queue[0]:
 				var pos = queue.find(res)
-				queue.remove(pos)
+				queue.remove_at(pos)
 				queue.insert(0, res)
 
 			res = _wait_for_resource(res, path)
