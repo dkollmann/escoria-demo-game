@@ -20,13 +20,12 @@ func _ready():
 				ESCProjectSettingsManager.ENABLE_ROOM_SELECTOR
 			):
 		return
-	var dir = DirAccess.new()
 	var rooms_list: Array = []
 	var path = ProjectSettings.globalize_path(rooms_folder)
 	if not OS.has_feature("editor"):
-		path = OS.get_executable_path().get_base_dir().plus_file(path)
-	var tmp = dir.open(path)
-	if tmp == OK:
+		path = OS.get_executable_path().get_base_dir().path_join(path)
+	var dir := DirAccess.open(path)
+	if dir:
 		dir.list_dir_begin() # TODOConverter3To4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 		var file_name = dir.get_next()
 		while file_name != "":

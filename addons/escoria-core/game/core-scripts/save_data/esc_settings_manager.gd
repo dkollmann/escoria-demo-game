@@ -62,9 +62,7 @@ func apply_settings() -> void:
 			)
 		)
 		DisplayServer.window_set_mode(
-			DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN if \
-			ESCProjectSettingsManager.get_setting(ESCProjectSettingsManager.FULLSCREEN) \
-			else DisplayServer.WINDOW_MODE_WINDOWED
+			ESCProjectSettingsManager.get_setting(ESCProjectSettingsManager.WINDOWMODE)
 		)
 		TranslationServer.set_locale(
 			ESCProjectSettingsManager.get_setting(
@@ -105,8 +103,8 @@ func save_settings_resource_to_project_settings(settings: ESCSaveSettings):
 		settings.speech_volume
 	)
 	ESCProjectSettingsManager.set_setting(
-		ESCProjectSettingsManager.FULLSCREEN,
-		settings.fullscreen
+		ESCProjectSettingsManager.WINDOWMODE,
+		DisplayServer.WINDOW_MODE_FULLSCREEN if settings.fullscreen else DisplayServer.WINDOW_MODE_WINDOWED
 	)
 	custom_settings = settings.custom_settings
 
@@ -155,8 +153,8 @@ func get_settings() -> ESCSaveSettings:
 		ESCProjectSettingsManager.SPEECH_VOLUME
 	)
 	settings.fullscreen = ESCProjectSettingsManager.get_setting(
-		ESCProjectSettingsManager.FULLSCREEN
-	)
+		ESCProjectSettingsManager.WINDOWMODE
+	) >= DisplayServer.WINDOW_MODE_FULLSCREEN
 	settings.custom_settings = custom_settings
 
 	return settings
@@ -171,7 +169,7 @@ func save_settings():
 		DirAccess.make_dir_recursive_absolute(settings_folder)
 
 	var save_path = settings_folder.path_join(SETTINGS_TEMPLATE)
-	var error: int = ResourceSaver.save(save_path, settings)
+	var error: int = ResourceSaver.save(settings, save_path)
 	if error != OK:
 		escoria.logger.error(
 			self,

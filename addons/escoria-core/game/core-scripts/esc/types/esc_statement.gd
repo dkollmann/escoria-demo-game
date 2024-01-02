@@ -11,7 +11,7 @@ signal interrupted(event, return_code)
 
 
 # The list of ESC commands
-var statements: Array[ESCCommand] = []
+var statements: Array[ESCStatement] = []
 
 # The source of this statement, e.g. an ESC script or a class.
 var source: String = ""

@@ -119,8 +119,8 @@ func compile(lines: Array, path: String = "") -> ESCScript:
 
 
 # Compile an array of ESC script lines into an array of ESC objects
-func _compile(lines: Array, path: String = "") -> Array:
-	var returned = []
+func _compile(lines: Array, path: String = "") -> Array[ESCStatement]:
+	var returned: Array[ESCStatement] = []
 
 	while lines.size() > 0:
 		var line = lines.pop_front().strip_edges(false, true)

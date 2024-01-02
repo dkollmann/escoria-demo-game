@@ -148,12 +148,12 @@ func _on_speech_volume_value_changed(value: float) -> void:
 # #### Parameters
 # - button_pressed: Fullscreen (true) or windowed (false)
 func _on_fullscreen_toggled(button_pressed: bool) -> void:
-	if ESCProjectSettingsManager.get_setting(
-				ESCProjectSettingsManager.FULLSCREEN
-			) != button_pressed:
+	if (ESCProjectSettingsManager.get_setting(
+				ESCProjectSettingsManager.WINDOWMODE
+			) >= DisplayServer.WINDOW_MODE_FULLSCREEN) != button_pressed:
 		ESCProjectSettingsManager.set_setting(
-			ESCProjectSettingsManager.FULLSCREEN,
-			button_pressed
+			ESCProjectSettingsManager.WINDOWMODE,
+			DisplayServer.WINDOW_MODE_FULLSCREEN if button_pressed else DisplayServer.WINDOW_MODE_WINDOWED
 		)
 		escoria.settings_manager.apply_settings()
 		changed = true

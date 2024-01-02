@@ -68,7 +68,7 @@ const SKIP_CACHE_MOBILE = _ESCORIA_SETTINGS_ROOT + "/" + _PLATFORM_ROOT + "/skip
 const DISPLAY = "display"
 const WINDOW = "window"
 const SIZE = "size"
-const FULLSCREEN = DISPLAY + "/" + WINDOW + "/" + SIZE + "/fullscreen"
+const WINDOWMODE = DISPLAY + "/" + WINDOW + "/" + SIZE + "/mode"
 
 
 # Register a new project setting if it hasn't been defined already

@@ -40,7 +40,7 @@ class_name ESCSaveSettings
 
 # True if game has to be fullscreen
 @export var fullscreen: bool = ProjectSettings.get_setting(
-	"display/window/size/fullscreen")
+	"display/window/size/mode") >= DisplayServer.WINDOW_MODE_FULLSCREEN
 
 # Dictionary containing all user-defined settings.
 @export var custom_settings: Dictionary
