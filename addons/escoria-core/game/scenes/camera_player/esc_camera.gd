@@ -30,7 +30,7 @@ func _exit_tree():
 
 # Update the position if the followed target is moving
 func _process(_delta):
-	if is_instance_valid(_follow_target) and not _tween.is_active() and _follow_target.has_moved():
+	if is_instance_valid(_follow_target) and not _tween.is_running() and _follow_target.has_moved():
 		self.global_position = _follow_target.global_position
 
 

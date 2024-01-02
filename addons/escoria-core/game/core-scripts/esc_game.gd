@@ -33,8 +33,7 @@ enum EDITOR_GAME_DEBUG_DISPLAY {
 # Which (if any) debug mode for the editor is used
 @export var editor_debug_mode: EDITOR_GAME_DEBUG_DISPLAY = \
 		EDITOR_GAME_DEBUG_DISPLAY.NONE:
-		set(new_value):
-			_set_editor_debug_mode(new_value)
+		set = _set_editor_debug_mode
 
 # The Control node underneath which all UI must be placed.
 # This should be a Control node and NOT a CanvasLayer (or any other type of) node.

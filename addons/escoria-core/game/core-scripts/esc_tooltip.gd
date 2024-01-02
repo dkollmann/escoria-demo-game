@@ -32,8 +32,7 @@ var current_action: String
 
 # Target item/hotspot
 var current_target: String:
-	set(new_value):
-		set_target(new_value)
+		set = _set_target
 
 # Preposition: on, with...
 var current_prep: String = "with"
@@ -92,6 +91,14 @@ func set_debug_mode(p_debug_mode: bool):
 		if debug_texturerect_node:
 			remove_child(debug_texturerect_node)
 			debug_texturerect_node.queue_free()
+
+
+# Set the first target of the label.
+#
+# ## Parameters
+# - target: String the target to add to the label
+func _set_target(target: String) -> void:
+	set_target(target, false)
 
 
 # Set the first target of the label.

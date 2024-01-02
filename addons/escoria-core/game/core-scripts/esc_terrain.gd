@@ -44,8 +44,7 @@ enum DebugMode {
 
 # Currently selected debug visualize mode
 @export var debug_mode = DebugMode.NONE: # (int, "None", "Scales", "Lightmap")
-		set(new_value):
-			_set_debug_mode(new_value)
+		set = _set_debug_mode
 
 
 # The currently activ navigation polygon

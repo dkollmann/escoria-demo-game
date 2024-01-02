@@ -398,7 +398,7 @@ func get_start_location() -> ESCLocation:
 			if is_instance_valid(object.node) \
 					and object.node is ESCLocation \
 					and object.node.is_start_location:
-				return object
+				return object as ESCLocation
 
 	escoria.logger.warn(
 		self,

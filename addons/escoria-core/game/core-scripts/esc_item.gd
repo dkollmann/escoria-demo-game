@@ -145,8 +145,7 @@ const GROUP_ITEM_CAN_COLLIDE = "item_can_collide"
 
 # The node used to play animations
 @export var animation_player_node: NodePath = "":
-		set(new_value):
-			_set_animation_player_node(new_value)
+		set = _set_animation_player_node
 
 # The node that references the camera position and zoom if this item is used
 # as a camera target

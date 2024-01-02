@@ -66,8 +66,7 @@ var current_target: ESCObject
 
 # Current action input state
 var action_state = ACTION_INPUT_STATE.AWAITING_VERB_OR_ITEM:
-	set(new_value):
-		set_action_input_state(new_value)
+		set = set_action_input_state
 
 
 # Run a generic action

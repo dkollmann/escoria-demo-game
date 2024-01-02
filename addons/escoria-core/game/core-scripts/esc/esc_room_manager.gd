@@ -53,7 +53,7 @@ func register_reserved_globals() -> void:
 # - enable_automatic_transitions: Whether to play the transition between rooms
 #	automatically or to leave the responsibility to the developer.
 func change_scene_to_file(room_path: String, enable_automatic_transitions: bool) -> void:
-	if escoria.main and escoria.main.current_scene and escoria.main.current_scene.filename == room_path:
+	if escoria.main and escoria.main.current_scene and escoria.main.current_scene.scene_file_path == room_path:
 		escoria.logger.info(
 			self,
 			"Attempting to change scene to same scene as the current scene. Aborting."
