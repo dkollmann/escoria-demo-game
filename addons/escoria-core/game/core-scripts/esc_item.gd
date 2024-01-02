@@ -451,13 +451,13 @@ func set_animations(p_animations: ESCAnimationResource) -> void:
 # Return the animation player node
 func get_animation_player() -> Node:
 	if _animation_player == null:
-		var player_node_path = animation_player_node
-		if player_node_path == "":
+		var player_node_path := animation_player_node
+		if player_node_path.is_empty():
 			for child in self.get_children():
 				if child is AnimatedSprite2D or \
 						child is AnimationPlayer:
 					player_node_path = child.get_path()
-		if player_node_path == "":
+		if player_node_path.is_empty():
 			escoria.logger.warn(
 				self,
 				"Can not find animation_player or animated sprite for %s." % global_id

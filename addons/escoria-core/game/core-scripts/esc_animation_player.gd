@@ -166,7 +166,7 @@ func is_valid() -> bool:
 #
 # - name: Name of the animation played
 func _on_animation_finished(name: String):
-	if _is_animation_player and not _animation_player.get_animation(name).loop:
+	if _is_animation_player and not _animation_player.get_animation(name).loop_mode > Animation.LOOP_NONE:
 		_animation_player.stop()
 	elif not _animated_sprite.frames.get_animation_loop(name):
 		_animated_sprite.stop()

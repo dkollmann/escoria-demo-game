@@ -102,13 +102,15 @@ func _process(delta: float) -> void:
 				_on_event_finished
 			):
 				_running_events[channel_name].finished.connect(
-					_on_event_finished.bind([channel_name], CONNECT_ONE_SHOT)
+					_on_event_finished.bind(channel_name),
+					CONNECT_ONE_SHOT
 				)
 			if not _running_events[channel_name].interrupted.is_connected(
 				_on_event_finished
 			):
 				_running_events[channel_name].interrupted.connect(
-					_on_event_finished.bind([channel_name], CONNECT_ONE_SHOT)
+					_on_event_finished.bind(channel_name),
+					CONNECT_ONE_SHOT
 				)
 
 			if channel_name == CHANNEL_FRONT:

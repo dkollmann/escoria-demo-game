@@ -4,10 +4,10 @@ class_name ESCStatement
 
 
 # Emitted when the event did finish running
-signal finished(event: ESCStatement, return_code: int)
+signal finished(event: ESCStatement, statement :ESCStatement, return_code: int)
 
 # Emitted when the event was interrupted
-signal interrupted(event: ESCStatement, return_code: int)
+signal interrupted(event: ESCStatement, statement :ESCStatement, return_code: int)
 
 
 # The list of ESC commands
@@ -39,7 +39,7 @@ func run() -> int:
 		if _is_interrupted:
 			final_rc = ESCExecution.RC_INTERRUPTED
 			statement.interrupt()
-			emit_signal("interrupted", self, statement, final_rc)
+			interrupted.emit(self, statement, final_rc)
 			return final_rc
 
 		if statement.is_valid():
@@ -54,7 +54,7 @@ func run() -> int:
 				final_rc = rc
 				break
 
-	finished.emit(current_statement, final_rc)
+	finished.emit(self, current_statement, final_rc)
 	return final_rc
 
 
