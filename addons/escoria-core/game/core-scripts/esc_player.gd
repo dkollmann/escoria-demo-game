@@ -19,7 +19,7 @@ func _init():
 
 # Ready function
 func _ready():
-	if selectable:
-		super._ready()
+	if selectable or is_movable:
+		super()
 	else:
 		tooltip_name = ""
