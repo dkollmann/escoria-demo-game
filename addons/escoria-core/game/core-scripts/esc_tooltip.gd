@@ -98,7 +98,9 @@ func set_debug_mode(p_debug_mode: bool):
 # ## Parameters
 # - target: String the target to add to the label
 func _set_target(target: String) -> void:
-	set_target(target, false)
+	current_target = target
+	if _room_is_ready:
+		update_tooltip_text()
 
 
 # Set the first target of the label.
@@ -107,10 +109,8 @@ func _set_target(target: String) -> void:
 # - target: String the target to add to the label
 # - needs_second_target: if true, the label will prepare for a second target
 func set_target(target: String, needs_second_target: bool = false) -> void:
-	current_target = target
 	waiting_for_target2 = needs_second_target
-	if _room_is_ready:
-		update_tooltip_text()
+	_set_target(target)
 
 
 # Set the second target of the label

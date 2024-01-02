@@ -64,7 +64,7 @@ func validate(arguments: Array):
 # Run the command
 func run(command_params: Array) -> int:
 	(escoria.object_manager.get_object(command_params[0]).node as ESCItem)\
-		super.turn_to(
+		.turn_to(
 			escoria.object_manager.get_object(command_params[1]).node,
 			command_params[2]
 		)
