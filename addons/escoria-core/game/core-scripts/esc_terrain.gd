@@ -115,6 +115,10 @@ func _check_multiple_enabled_navpolys(node: Node = null, is_exiting: bool = fals
 				current_active_navigation_instance = n
 
 
+func get_simple_path(from: Vector2, to: Vector2, optimize: bool = true) -> PackedVector2Array:
+	return []
+
+
 # Return the Color of the lightmap pixel for the specified position
 #
 # #### Parameters
