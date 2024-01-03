@@ -99,7 +99,7 @@ func _ready():
 	_word_regex.compile("\\S+")
 
 	bbcode_enabled = true
-	$Tween.connect("tween_completed", Callable(self, "_on_dialog_line_typed"))
+	tween.finished.connect(_on_dialog_line_typed)
 
 	connect("tree_exiting", Callable(self, "_on_tree_exiting"))
 
