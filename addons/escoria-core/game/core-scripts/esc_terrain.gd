@@ -54,7 +54,10 @@ var current_active_navigation_instance: NavigationRegion2D = null
 var _texture = null
 
 # The image from the lightmap texture
-var _lightmap_data
+var _lightmap_data: Image
+
+# The image from the scales texture
+var _scales_data: Image
 
 # Prohibits multiple calls to update_texture
 var _texture_in_update = false
@@ -126,7 +129,7 @@ func get_simple_path(from: Vector2, to: Vector2, optimize: bool = true, layers: 
 # - pos: Position to calculate lightmap for
 # **Returns** The color of the given point
 func get_light(pos: Vector2) -> Color:
-	if not lightmap or lightmap.get_data().is_empty():
+	if not _lightmap_data or _lightmap_data.is_empty():
 		return Color(1, 1, 1, 1)
 	var c = _get_color(_lightmap_data, pos)
 	return _get_color(_lightmap_data, pos) * lightmap_modulate
@@ -150,9 +153,9 @@ func get_scale_range(factor: float) -> Vector2:
 # - pos: The position to calculate for
 # **Returns** The scale factor for the given position
 func get_terrain(pos: Vector2) -> float:
-	if scales == null || scales.get_data().is_empty():
+	if _scales_data == null || _scales_data.is_empty():
 		return 1.0
-	return _get_color(scales.get_data(), pos).v
+	return _get_color(_scales_data, pos).v
 
 
 # Small helper to get the color of an image at a position
@@ -186,10 +189,7 @@ func _set_lightmap(p_lightmap: Texture2D):
 	# It's bad enough a new copy is created when reading a pixel, we don't
 	# also need to get the data for every read to make yet another copy
 	if need_init:
-		if _lightmap_data:
-			false # _lightmap_data.unlock() # TODOConverter3To4, Image no longer requires locking, `false` helps to not break one line if/else, so it can freely be removed
-		_lightmap_data = lightmap.get_data()
-		false # _lightmap_data.lock() # TODOConverter3To4, Image no longer requires locking, `false` helps to not break one line if/else, so it can freely be removed
+		_lightmap_data = lightmap.get_image()
 
 	_update_texture()
 
@@ -201,6 +201,7 @@ func _set_lightmap(p_lightmap: Texture2D):
 # - p_scales: Scale texture to set
 func _set_scales(p_scales: Texture2D):
 	scales = p_scales
+	_scales_data = scales.get_image()
 	_update_texture()
 
 
