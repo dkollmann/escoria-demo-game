@@ -489,12 +489,9 @@ func get_interact_position() -> Vector2:
 	for c in get_children():
 		if c is Marker2D:
 			# Identify any Postion2D nodes
-			if c.is_class("ESCLocation"):
+			if c is ESCLocation:
 				esclocation_count += 1
 				esclocation_position = c.global_position
-			elif c.is_class("ESCInteractionLocation"):
-				interact_count += 1
-				interact_position = c.global_position
 			else:
 				# This will catch all other Position2D related nodes
 				# including dialog locations and native Position2D nodes.
