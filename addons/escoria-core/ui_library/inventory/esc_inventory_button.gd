@@ -73,7 +73,7 @@ func _on_inventory_item_gui_input(event: InputEvent):
 			escoria.inputs_manager._on_mousewheel_action(1)
 	if event is InputEventMouseButton:
 #		var p = get_global_mouse_position()
-		if event.doubleclick:
+		if event.double_click:
 			if event.button_index == MOUSE_BUTTON_LEFT:
 				mouse_double_left_inventory_item.emit(
 					global_id,

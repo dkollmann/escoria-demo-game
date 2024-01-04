@@ -1,3 +1,4 @@
+@icon("res://addons/escoria-core/design/esc_exit.svg")
 # An ESCExit is a minimal feature node that provides an exit to a room.
 #
 # For exits that don't require scripts, the ``ESCExit`` node is provided.
@@ -11,7 +12,7 @@
 # The game character will automatically walk to an ``ESCLocation`` created as a
 # child of an ``ESCExit`` node.
 extends ESCItem
-class_name ESCExit, "res://addons/escoria-core/design/esc_exit.svg"
+class_name ESCExit
 
 
 # Path to the target scene to change to
