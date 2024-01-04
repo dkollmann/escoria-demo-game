@@ -113,11 +113,11 @@ func _draw():
 	for i in camera_limits.size():
 		draw_rect(camera_limits[i], camera_limits_colors[i], false, 10.0)
 		var temp_control = Control.new()
-		var default_font = temp_control.get_font("font")
+		var default_font = temp_control.get_theme_default_font()
 		temp_control.queue_free()
 
 		draw_string(default_font, Vector2(camera_limits[i].position.x + 30,
-			camera_limits[i].position.y + 30), str(i), camera_limits_colors[i])
+			camera_limits[i].position.y + 30), str(i), 0, -1, 16, camera_limits_colors[i])
 
 
 # Listen for any signals from ESCLocation indicating that the is_start_location attribute

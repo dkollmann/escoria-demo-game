@@ -56,10 +56,7 @@ func run(command_params: Array) -> int:
 		command_params[0],
 		Vector2(command_params[1], command_params[2]), command_params[3]
 	])
-	yield(
-		(escoria.object_manager.get_object(command_params[0]).node as ESCItem),
-		"arrived"
-	)
+	await (escoria.object_manager.get_object(command_params[0]).node as ESCItem).arrived
 	return ESCExecution.RC_OK
 
 

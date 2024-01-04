@@ -39,7 +39,7 @@ func validate(arguments: Array):
 		)
 		return false
 	elif not escoria.object_manager.get_object(arguments[1]).events\
-			super.has(arguments[2]):
+			.has(arguments[2]):
 		escoria.logger.error(
 			self,
 			"[%s]: invalid object event. Object with global id %s has no event %s."

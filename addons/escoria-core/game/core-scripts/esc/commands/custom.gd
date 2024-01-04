@@ -55,10 +55,10 @@ func validate(arguments: Array):
 		)
 		return false
 	elif not escoria.object_manager.get_object(arguments[0]).node\
-		super.get_node(
+		.get_node(
 			arguments[1]
 		)\
-		super.has_method(
+		.has_method(
 			arguments[2]
 		):
 		escoria.logger.error(

@@ -127,8 +127,7 @@ const GROUP_ITEM_CAN_COLLIDE = "item_can_collide"
 
 # The visual representation for this item when its in the inventory
 @export var inventory_texture: Texture2D = null:
-		get:
-			return _get_inventory_texture()
+		get = _get_inventory_texture
 
 # Color used for dialogs
 @export var dialog_color: Color = Color(1,1,1,1)
