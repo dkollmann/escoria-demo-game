@@ -97,9 +97,9 @@ func transition(
 
 	if _tween.is_running():
 		_was_canceled = true
-		_tween.reset()
 		transition_done.emit(transition_id-1)
 
+	_tween.reset()
 	_tween.interpolate_property(
 		$".",
 		"material:shader_param/cutoff",

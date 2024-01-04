@@ -60,5 +60,15 @@ func interpolate_property(
 func play():
 	_tween.play()
 
+func resume():
+	if _tween.is_valid():
+		_tween.play()
+
+func pause():
+	_tween.pause()
+
 func is_running():
 	return _tween.is_running()
+
+func is_valid():
+	return _tween.is_valid()

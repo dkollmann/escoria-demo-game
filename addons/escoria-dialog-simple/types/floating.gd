@@ -248,7 +248,7 @@ func _on_paused():
 func _on_resumed():
 	if not tween.is_running():
 		is_paused = false
-		tween.play()
+		tween.resume()
 
 
  # Handler to deal with this node being removed
