@@ -25,7 +25,7 @@ func _ready():
 func _exit_tree():
 	if is_instance_valid(_tween):
 		_tween.kill()
-		#_tween.free()
+		_tween = null
 
 
 # Update the position if the followed target is moving
@@ -96,7 +96,7 @@ func set_target(p_target, p_time : float = 0.0):
 		# recalculated. Also to allow any close-calls with the tween to finish.
 		await get_tree().idle_frame
 
-		if _tween.is_active():
+		if _tween.is_running():
 			escoria.logger.debug(
 				self,
 				"set_target tween is still active: %f seconds of %f completed." % [
@@ -104,14 +104,14 @@ func set_target(p_target, p_time : float = 0.0):
 					_tween.get_runtime()
 				]
 			)
-			_tween.stop_all()
+			_tween.stop()
 
 		set_drag_margin_enabled(false, false)
 
 		_convert_current_global_pos_for_disabled_drag_margin()
 		_target = _convert_pos_for_disabled_drag_margin(_target)
 
-		Tween3.interpolate_property(
+		Tween3.tween_interpolate_property(
 			_tween,
 			self,
 			"global_position",
@@ -145,7 +145,7 @@ func set_camera_zoom(p_zoom_level: float, p_time: float):
 		# recalculated. Also to allow any close-calls with the tween to finish.
 		await get_tree().idle_frame
 
-		if _tween.is_active():
+		if _tween.is_running():
 			escoria.logger.debug(
 				self,
 				"set_camera_zoom tween is still active: %f seconds of %f completed." % [
@@ -153,13 +153,13 @@ func set_camera_zoom(p_zoom_level: float, p_time: float):
 					_tween.get_runtime()
 				]
 			)
-			_tween.stop_all()
+			_tween.stop()
 
 		set_drag_margin_enabled(false, false)
 
 		_convert_current_global_pos_for_disabled_drag_margin()
 
-		Tween3.interpolate_property(
+		Tween3.tween_interpolate_property(
 			_tween,
 			self,
 			"zoom",
@@ -201,7 +201,7 @@ func push(p_target, p_time: float = 0.0, p_type: int = 0):
 		# recalculated. Also to allow any close-calls with the tween to finish.
 		await get_tree().idle_frame
 
-		if _tween.is_active():
+		if _tween.is_running():
 			escoria.logger.debug(
 				self,
 				"camera push tween is still active: %f seconds of %f completed." % [
@@ -209,10 +209,10 @@ func push(p_target, p_time: float = 0.0, p_type: int = 0):
 					_tween.get_runtime()
 				]
 			)
-			_tween.stop_all()
+			_tween.stop()
 
 		if _zoom_target != Vector2():
-			Tween3.interpolate_property(
+			Tween3.tween_interpolate_property(
 				_tween,
 				self,
 				"zoom",
@@ -227,7 +227,7 @@ func push(p_target, p_time: float = 0.0, p_type: int = 0):
 
 		_convert_current_global_pos_for_disabled_drag_margin()
 
-		Tween3.interpolate_property(
+		Tween3.tween_interpolate_property(
 			_tween,
 			self,
 			"global_position",
@@ -257,7 +257,7 @@ func shift(p_target: Vector2, p_time: float, p_type: int):
 	var new_pos = self.global_position + p_target
 	_target = new_pos
 
-	if _tween.is_active():
+	if _tween.is_running():
 		# Need to wait a frame in order to ensure the screen centre position is
 		# recalculated. Also to allow any close-calls with the tween to finish.
 		await get_tree().idle_frame
@@ -269,13 +269,13 @@ func shift(p_target: Vector2, p_time: float, p_type: int):
 				_tween.get_runtime()
 			]
 		)
-		_tween.stop_all()
+		_tween.stop()
 
 	set_drag_margin_enabled(false, false)
 
 	_convert_current_global_pos_for_disabled_drag_margin()
 
-	Tween3.interpolate_property(
+	Tween3.tween_interpolate_property(
 		_tween,
 		self,
 		"global_position",
@@ -360,7 +360,7 @@ func clamp_to_viewport_limits() -> void:
 
 
 func _target_reached():
-	_tween.stop_all()
+	_tween.stop()
 	set_drag_margin_enabled(true, true)
 
 

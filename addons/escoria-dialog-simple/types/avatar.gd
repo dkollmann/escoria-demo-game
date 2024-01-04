@@ -37,7 +37,7 @@ var _current_line: String
 @onready var text_node = $Panel/MarginContainer/HSplitContainer/text
 
 # The tween node for text animations
-var tween: Tween
+var tween: Tween3
 
 # Whether the dialog manager is paused
 @onready var is_paused: bool = true
@@ -46,7 +46,7 @@ var tween: Tween
 
 # Build up the UI
 func _ready():
-	tween = get_tree().create_tween()
+	tween = Tween3.new(self)
 	
 	_text_time_per_character = ProjectSettings.get_setting(
 		SimpleDialogSettings.TEXT_TIME_PER_LETTER_MS
@@ -148,7 +148,7 @@ func say(character: String, line: String):
 	text_node.visible_ratio = 0.0
 	var time_show_full_text = _text_time_per_character / 1000 * len(line)
 
-	Tween3.interpolate_property(tween, text_node, "visible_ratio",
+	tween.interpolate_property(text_node, "visible_ratio",
 		0.0, 1.0, time_show_full_text,
 		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	tween.play()
@@ -159,8 +159,7 @@ func speedup():
 	if not _is_speeding_up:
 		_is_speeding_up = true
 		var time_show_full_text = _fast_text_time_per_character / 1000 * len(_current_line)
-		tween.kill()
-		tween = get_tree().create_tween()
+		tween.reset()
 		tween.interpolate_property(text_node, "visible_ratio",
 			text_node.visible_ratio, 1.0, time_show_full_text,
 			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
@@ -169,9 +168,8 @@ func speedup():
 
 # Called by the dialog player when user wants to finish dialogue immediately.
 func finish():
-	tween.kill()
-	tween = get_tree().create_tween()
-	Tween3.interpolate_property(tween, text_node, "visible_ratio",
+	tween.reset()
+	tween.interpolate_property(text_node, "visible_ratio",
 		text_node.visible_ratio, 1.0, 0.0)
 	tween.play()
 
@@ -221,21 +219,21 @@ func _on_dialog_finished():
 
 # Handler managing pause notification from Escoria
 func _on_paused():
-	if tween.is_active():
+	if tween.is_running():
 		is_paused = true
-		tween.stop_all()
+		tween.pause()
 
 
 # Handler managing resume notification from Escoria
 func _on_resumed():
-	if not tween.is_active():
+	if not tween.is_running():
 		# We can't rely on "show()" to make an invisible popup reappear, as per the docs for
 		# CanvasItem. Instead, we need to use one of the popup_* methods.
 		if is_inside_tree():
 			popup_centered()
 
 		is_paused = false
-		tween.resume_all()
+		tween.play()
 
 
 func _on_tree_exited():

@@ -26,7 +26,7 @@ const TRANSITION_INSTANT = "instant"
 var transition_id: int = 0
 
 # The tween instance to animate
-var _tween: Tween
+var _tween: Tween3
 
 # If the current tween was canceled
 var _was_canceled: bool = false
@@ -41,7 +41,7 @@ func _ready() -> void:
 	color = Color.WHITE
 	color.a = 0
 	mouse_filter = MOUSE_FILTER_IGNORE
-	_tween = get_tree().create_tween()
+	_tween = Tween3.new(self)
 
 
 # Play a transition animation
@@ -95,15 +95,12 @@ func transition(
 		start = 1.0
 		end = 0.0
 
-	if _tween.is_active():
+	if _tween.is_running():
 		_was_canceled = true
-		_tween.stop_all()
-		_tween.kill()
-		_tween = get_tree().create_tween()
+		_tween.reset()
 		transition_done.emit(transition_id-1)
 
-	Tween3.interpolate_property(
-		_tween,
+	_tween.interpolate_property(
 		$".",
 		"material:shader_param/cutoff",
 		start,
@@ -153,8 +150,6 @@ func reset_shader_cutoff() -> void:
 
 func _on_tween_completed():
 	if not _was_canceled:
-		_tween.stop_all()
-		_tween.kill()
-		_tween = get_tree().create_tween()
+		_tween.reset()
 		escoria.logger.debug(self, "Transition %s done." % str(transition_id))
 		transition_done.emit(transition_id)

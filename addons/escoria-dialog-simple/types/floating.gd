@@ -34,7 +34,7 @@ var _current_line: String
 
 
 # Tween node for text animation
-var tween: Tween
+@onready var tween: Tween3 = Tween3.new(self)
 
 # The node showing the text
 @onready var text_node: RichTextLabel = self
@@ -46,8 +46,6 @@ var dialog_location_node = null
 
 # Enable bbcode and catch the signal when a tween completed
 func _ready():
-	tween = get_tree().create_tween()
-	
 	_text_time_per_character = ProjectSettings.get_setting(
 		SimpleDialogSettings.TEXT_TIME_PER_LETTER_MS
 	)
@@ -178,7 +176,7 @@ func say(character: String, line: String) :
 	text_node.visible_ratio = 0.0
 	var time_show_full_text = _text_time_per_character / 1000 * len(_current_line)
 
-	Tween3.interpolate_property(tween, text_node, "visible_ratio",
+	tween.interpolate_property(text_node, "visible_ratio",
 		0.0, 1.0, time_show_full_text,
 		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	tween.play()
@@ -191,9 +189,8 @@ func speedup():
 		_is_speeding_up = true
 		var time_show_full_text = _fast_text_time_per_character / 1000 * len(_current_line)
 
-		tween.kill()
-		tween = get_tree().create_tween()
-		Tween3.interpolate_property(tween, text_node, "visible_ratio",
+		tween.reset()
+		tween.interpolate_property(text_node, "visible_ratio",
 			text_node.visible_ratio, 1.0, time_show_full_text,
 			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 		tween.play()
@@ -201,9 +198,8 @@ func speedup():
 
 # Called by the dialog player when user wants to finish dialogue immediately.
 func finish():
-	tween.kill()
-	tween = get_tree().create_tween()
-	Tween3.interpolate_property(tween, text_node, "visible_ratio",
+	tween.reset()
+	tween.interpolate_property(text_node, "visible_ratio",
 		text_node.visible_ratio, 1.0, 0.0)
 	tween.play()
 
@@ -243,16 +239,16 @@ func _on_dialog_finished():
 
 # Handler managing pause notification from Escoria
 func _on_paused():
-	if tween.is_active():
+	if tween.is_running():
 		is_paused = true
-		tween.stop_all()
+		tween.pause()
 
 
 # Handler managing resume notification from Escoria
 func _on_resumed():
-	if not tween.is_active():
+	if not tween.is_running():
 		is_paused = false
-		tween.resume_all()
+		tween.play()
 
 
  # Handler to deal with this node being removed

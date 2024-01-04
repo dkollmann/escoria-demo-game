@@ -72,14 +72,13 @@ func _slide_object(
 
 	if _tweens.has(source.global_id):
 		var tween = (_tweens.get(source.global_id) as Tween)
-		tween.stop_all()
+		tween.stop()
 		if (escoria.main as Node).has_node(tween.name):
 			(escoria.main as Node).remove_child(tween)
 
-	var tween = Tween.new()
-	(escoria.main as Node).add_child(tween)
+	var tween = escoria.main.get_tree().create_tween()
 
-	tween.connect("tween_completed", Callable(self, "_on_tween_completed"))
+	tween.finished.connect(_on_tween_completed)
 
 	var duration = source.node.position.distance_to(
 		destination.node.position
@@ -115,7 +114,7 @@ func run(command_params: Array) -> int:
 # Function called when the command is interrupted.
 func interrupt():
 	for tween in _tweens:
-		tween.stop_all()
+		tween.stop()
 
 
 func _on_tween_completed(tween: Tween, _key: NodePath):
