@@ -1,14 +1,12 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://d4imqf6qckhe8"]
 
-[ext_resource path="res://addons/escoria-core/game/scenes/transitions/esc_transition_player.gd" type="Script" id=1]
-[ext_resource path="res://addons/escoria-core/game/scenes/transitions/shaders/curtain.material" type="Material" id=2]
+[ext_resource type="Script" path="res://addons/escoria-core/game/scenes/transitions/esc_transition_player.gd" id="1"]
+[ext_resource type="Material" uid="uid://byxsyeebrt0h5" path="res://addons/escoria-core/game/scenes/transitions/shaders/curtain.material" id="2"]
 
 [node name="scene_transition" type="ColorRect"]
-material = ExtResource( 2 )
+material = ExtResource("2")
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("1")

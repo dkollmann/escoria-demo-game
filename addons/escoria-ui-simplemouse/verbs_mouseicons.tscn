@@ -1,91 +1,69 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=7 format=3 uid="uid://6i71f6c04h18"]
 
-[ext_resource path="res://addons/escoria-ui-simplemouse/verbs_mouseicons.gd" type="Script" id=1]
-[ext_resource path="res://addons/escoria-ui-simplemouse/cursors/cursor_examine.png" type="Texture2D" id=2]
-[ext_resource path="res://addons/escoria-ui-simplemouse/cursors/cursor_tool.png" type="Texture2D" id=3]
-[ext_resource path="res://addons/escoria-ui-simplemouse/cursors/cursor_dialog.png" type="Texture2D" id=4]
-[ext_resource path="res://addons/escoria-ui-simplemouse/cursors/cursor_foot.png" type="Texture2D" id=5]
-[ext_resource path="res://addons/escoria-ui-simplemouse/cursors/cursor_hand.png" type="Texture2D" id=6]
+[ext_resource type="Script" path="res://addons/escoria-ui-simplemouse/verbs_mouseicons.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://g8ks2ctyqnxs" path="res://addons/escoria-ui-simplemouse/cursors/cursor_examine.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://jyutshshgr23" path="res://addons/escoria-ui-simplemouse/cursors/cursor_tool.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://432cxttbycs0" path="res://addons/escoria-ui-simplemouse/cursors/cursor_dialog.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://bn3smn180vnnd" path="res://addons/escoria-ui-simplemouse/cursors/cursor_foot.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://4mta8j7gnxgy" path="res://addons/escoria-ui-simplemouse/cursors/cursor_hand.png" id="6"]
 
 [node name="verbs_menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("1")
 
 [node name="actions" type="HBoxContainer" parent="."]
 visible = false
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="walk" type="TextureRect" parent="actions"]
-offset_left = 94.0
-offset_top = 418.0
-offset_right = 158.0
-offset_bottom = 482.0
+layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
-texture = ExtResource( 5 )
+texture = ExtResource("5")
 
 [node name="look" type="TextureRect" parent="actions"]
-offset_left = 350.0
-offset_top = 418.0
-offset_right = 414.0
-offset_bottom = 482.0
+layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
-texture = ExtResource( 2 )
+texture = ExtResource("2")
 
 [node name="pickup" type="TextureRect" parent="actions"]
-offset_left = 607.0
-offset_top = 418.0
-offset_right = 671.0
-offset_bottom = 482.0
+layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
-texture = ExtResource( 6 )
+texture = ExtResource("6")
 
 [node name="use" type="TextureRect" parent="actions"]
-offset_left = 864.0
-offset_top = 418.0
-offset_right = 928.0
-offset_bottom = 482.0
+layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
-texture = ExtResource( 3 )
+texture = ExtResource("3")
 
 [node name="talk" type="TextureRect" parent="actions"]
-offset_left = 1121.0
-offset_top = 418.0
-offset_right = 1185.0
-offset_bottom = 482.0
+layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
-texture = ExtResource( 4 )
+texture = ExtResource("4")
 
 [node name="mouse_position" type="Control" parent="."]
+anchors_preset = 0
 offset_left = 546.519
 offset_top = 524.76
 offset_right = 546.519
 offset_bottom = 524.76
 mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="tool" type="TextureRect" parent="mouse_position"]
+layout_mode = 0
 offset_left = 46.4475
 offset_top = 45.6984
 offset_right = 86.4475
 offset_bottom = 85.6984
 mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}

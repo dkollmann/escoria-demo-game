@@ -1,41 +1,24 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=2 format=3 uid="uid://ddjlxtfa77rng"]
 
-[ext_resource path="res://addons/escoria-core/game/scenes/esc_prompt/esc_prompt_popup.gd" type="Script" id=1]
+[ext_resource type="Script" path="res://addons/escoria-core/game/scenes/esc_prompt/esc_prompt_popup.gd" id="1"]
 
 [node name="esc_prompt_popup" type="Window"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 64.0
-offset_top = 68.0
-offset_right = -617.0
-offset_bottom = -456.0
-window_title = "ESC debug prompt"
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("1")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="past_actions" type="TextEdit" parent="VBoxContainer"]
-offset_right = 599.0
-offset_bottom = 240.0
+layout_mode = 2
 size_flags_vertical = 3
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
-offset_top = 244.0
-offset_right = 599.0
-offset_bottom = 248.0
+layout_mode = 2
 
 [node name="command" type="LineEdit" parent="VBoxContainer"]
-offset_top = 252.0
-offset_right = 599.0
-offset_bottom = 276.0
+layout_mode = 2
 caret_blink = true
 
 [connection signal="about_to_popup" from="." to="." method="_on_esc_prompt_popup_about_to_show"]

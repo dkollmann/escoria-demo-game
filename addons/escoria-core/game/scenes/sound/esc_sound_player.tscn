@@ -1,20 +1,19 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=2 format=3 uid="uid://cn004meoj6a16"]
 
-[ext_resource path="res://addons/escoria-core/game/scenes/sound/esc_sound_player.gd" type="Script" id=1]
+[ext_resource type="Script" path="res://addons/escoria-core/game/scenes/sound/esc_sound_player.gd" id="1"]
 
 [node name="bg_sound" type="Control"]
 process_mode = 3
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = -1680.0
 offset_bottom = -1050.0
 mouse_filter = 2
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("1")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-bus = "SFX"
+bus = &"SFX"
 
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_sound_finished"]
