@@ -185,7 +185,7 @@ func voice_audio_finished():
 
 # The dialog line was printed, start the waiting time and then finish
 # the dialog
-func _on_dialog_line_typed(object, key):
+func _on_dialog_line_typed():
 	if avatar_node.texture is AnimatedTexture:
 		avatar_node.texture.current_frame = 0
 		avatar_node.texture.pause = true

@@ -215,7 +215,7 @@ func voice_audio_finished():
 
 # The dialog line was printed, start the waiting time and then finish
 # the dialog
-func _on_dialog_line_typed(object, key):
+func _on_dialog_line_typed():
 	_stop_character_talking()
 	text_node.visible_characters = -1
 
