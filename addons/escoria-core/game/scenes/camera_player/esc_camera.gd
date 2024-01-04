@@ -111,7 +111,8 @@ func set_target(p_target, p_time : float = 0.0):
 		_convert_current_global_pos_for_disabled_drag_margin()
 		_target = _convert_pos_for_disabled_drag_margin(_target)
 
-		_tween.interpolate_property(
+		Tween3.interpolate_property(
+			_tween,
 			self,
 			"global_position",
 			self.global_position,
@@ -120,7 +121,7 @@ func set_target(p_target, p_time : float = 0.0):
 			Tween.TRANS_LINEAR,
 			Tween.EASE_IN_OUT
 		)
-		_tween.start()
+		_tween.play()
 
 
 # Set the camera zoom level
@@ -158,7 +159,8 @@ func set_camera_zoom(p_zoom_level: float, p_time: float):
 
 		_convert_current_global_pos_for_disabled_drag_margin()
 
-		_tween.interpolate_property(
+		Tween3.interpolate_property(
+			_tween,
 			self,
 			"zoom",
 			self.zoom,
@@ -167,7 +169,7 @@ func set_camera_zoom(p_zoom_level: float, p_time: float):
 			Tween.TRANS_LINEAR,
 			Tween.EASE_IN_OUT
 		)
-		_tween.start()
+		_tween.play()
 
 
 # Push the camera towards the target in terms of position and zoom level
@@ -210,7 +212,8 @@ func push(p_target, p_time: float = 0.0, p_type: int = 0):
 			_tween.stop_all()
 
 		if _zoom_target != Vector2():
-			_tween.interpolate_property(
+			Tween3.interpolate_property(
+				_tween,
 				self,
 				"zoom",
 				self.zoom,
@@ -224,7 +227,8 @@ func push(p_target, p_time: float = 0.0, p_type: int = 0):
 
 		_convert_current_global_pos_for_disabled_drag_margin()
 
-		_tween.interpolate_property(
+		Tween3.interpolate_property(
+			_tween,
 			self,
 			"global_position",
 			self.global_position,
@@ -234,7 +238,7 @@ func push(p_target, p_time: float = 0.0, p_type: int = 0):
 			Tween.EASE_IN_OUT
 		)
 
-		_tween.start()
+		_tween.play()
 
 
 # Shift the camera by the given vector in a given time and using a specific
@@ -271,7 +275,8 @@ func shift(p_target: Vector2, p_time: float, p_type: int):
 
 	_convert_current_global_pos_for_disabled_drag_margin()
 
-	_tween.interpolate_property(
+	Tween3.interpolate_property(
+		_tween,
 		self,
 		"global_position",
 		self.global_position,
@@ -280,7 +285,7 @@ func shift(p_target: Vector2, p_time: float, p_type: int):
 		p_type,
 		Tween.EASE_IN_OUT
 	)
-	_tween.start()
+	_tween.play()
 
 
 # Checks whether the given point is contained within the viewport's limits.

@@ -98,10 +98,12 @@ func transition(
 	if _tween.is_active():
 		_was_canceled = true
 		_tween.stop_all()
-		_tween.remove_all()
+		_tween.kill()
+		_tween = get_tree().create_tween()
 		transition_done.emit(transition_id-1)
 
-	_tween.interpolate_property(
+	Tween3.interpolate_property(
+		_tween,
 		$".",
 		"material:shader_param/cutoff",
 		start,
@@ -109,7 +111,7 @@ func transition(
 		duration
 	)
 	_was_canceled = false
-	_tween.start()
+	_tween.play()
 	return transition_id
 
 
@@ -152,6 +154,7 @@ func reset_shader_cutoff() -> void:
 func _on_tween_completed():
 	if not _was_canceled:
 		_tween.stop_all()
-		_tween.remove_all()
+		_tween.kill()
+		_tween = get_tree().create_tween()
 		escoria.logger.debug(self, "Transition %s done." % str(transition_id))
 		transition_done.emit(transition_id)

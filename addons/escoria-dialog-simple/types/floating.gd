@@ -175,13 +175,13 @@ func say(character: String, line: String) :
 
 	_current_character.start_talking()
 
-	text_node.percent_visible = 0.0
+	text_node.visible_ratio = 0.0
 	var time_show_full_text = _text_time_per_character / 1000 * len(_current_line)
 
-	tween.interpolate_property(text_node, "percent_visible",
+	Tween3.interpolate_property(tween, text_node, "visible_ratio",
 		0.0, 1.0, time_show_full_text,
 		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	tween.start()
+	tween.play()
 	set_process(true)
 
 
@@ -191,19 +191,21 @@ func speedup():
 		_is_speeding_up = true
 		var time_show_full_text = _fast_text_time_per_character / 1000 * len(_current_line)
 
-		tween.remove_all()
-		tween.interpolate_property(text_node, "percent_visible",
-			text_node.percent_visible, 1.0, time_show_full_text,
+		tween.kill()
+		tween = get_tree().create_tween()
+		Tween3.interpolate_property(tween, text_node, "visible_ratio",
+			text_node.visible_ratio, 1.0, time_show_full_text,
 			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-		tween.start()
+		tween.play()
 
 
 # Called by the dialog player when user wants to finish dialogue immediately.
 func finish():
-	tween.remove_all()
-	tween.interpolate_property(text_node, "percent_visible",
-		text_node.percent_visible, 1.0, 0.0)
-	tween.start()
+	tween.kill()
+	tween = get_tree().create_tween()
+	Tween3.interpolate_property(tween, text_node, "visible_ratio",
+		text_node.visible_ratio, 1.0, 0.0)
+	tween.play()
 
 
 # To be called if voice audio has finished.
@@ -218,8 +220,8 @@ func _on_dialog_line_typed(object, key):
 	text_node.visible_characters = -1
 
 	var time_to_disappear: float = _calculate_time_to_disappear()
+	$Timer.timeout.connect(_on_dialog_finished)
 	$Timer.start(time_to_disappear)
-	$Timer.connect("timeout", Callable(self, "_on_dialog_finished"))
 
 	say_visible.emit()
 
