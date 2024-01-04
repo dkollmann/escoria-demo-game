@@ -279,9 +279,10 @@ func _perform_script_events(room: ESCRoom) -> int:
 		room.global_id = room.name
 
 	# Manage player location at room start
-	if room.player != null \
-			and escoria.object_manager.get_start_location() != null:
-		room.player.teleport(escoria.object_manager.get_start_location().node)
+	if room.player != null:
+		var startloc := escoria.object_manager.get_start_location()
+		if startloc != null:
+			room.player.teleport(startloc)
 
 	# We make sure 'room' is set as the new current_scene, but without making
 	# it visible/the current scene tree.

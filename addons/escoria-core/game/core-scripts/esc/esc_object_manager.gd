@@ -395,10 +395,10 @@ func save_game(p_savegame: ESCSaveGame) -> void:
 func get_start_location() -> ESCLocation:
 	if _room_exists(current_room_key):
 		for object in _get_room_objects_objects(current_room_key).values():
-			if is_instance_valid(object.node) \
-					and object.node is ESCLocation \
-					and object.node.is_start_location:
-				return object as ESCLocation
+			if is_instance_valid(object.node):
+				var loc := object.node as ESCLocation
+				if loc and loc.is_start_location:
+					return loc
 
 	escoria.logger.warn(
 		self,
