@@ -100,16 +100,28 @@ func transition(
 		transition_done.emit(transition_id-1)
 
 	_tween.reset()
-	_tween.interpolate_property(
-		$".",
-		"material:shader_param/cutoff",
+	_tween.tween_method(
+		_set_cutoff,
 		start,
 		end,
 		duration
 	)
+	
+	#_tween.interpolate_property(
+	#	$".",
+	#	"material:shader_param/cutoff",
+	#	start,
+	#	end,
+	#	duration
+	#)
+	
 	_was_canceled = false
 	_tween.play()
 	return transition_id
+
+
+func _set_cutoff(cutoff: float):
+	material.set("shader_parameter/cutoff", cutoff)
 
 
 # Returns the full path for a transition shader based on its name
@@ -123,8 +135,8 @@ func get_transition(name: String) -> String:
 	for directory in ESCProjectSettingsManager.get_setting(
 		ESCProjectSettingsManager.TRANSITION_PATHS
 	):
-		if ResourceLoader.exists(directory.plus_file("%s.material" % name)):
-			return directory.plus_file("%s.material" % name)
+		if ResourceLoader.exists(directory.path_join("%s.material" % name)):
+			return directory.path_join("%s.material" % name)
 	return ""
 
 

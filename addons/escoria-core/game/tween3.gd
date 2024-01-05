@@ -53,6 +53,10 @@ func reset():
 	
 	_create_tween()
 
+func tween_method(method: Callable, from: Variant, to: Variant, duration: float) -> void:
+	_duration = maxf(_duration, duration)
+	_tween.tween_method(method, from, to, duration)
+
 func interpolate_property(
 				object: Object, property: NodePath,
 				initial_val: Variant, final_val: Variant,

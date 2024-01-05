@@ -66,7 +66,7 @@ func _slide_object(
 	source: ESCObject,
 	destination: ESCObject,
 	speed: int = -1
-) -> Tween:
+) -> Tween3:
 	if speed == -1:
 		speed = source.node.speed
 
@@ -76,7 +76,7 @@ func _slide_object(
 		if (escoria.main as Node).has_node(tween.name):
 			(escoria.main as Node).remove_child(tween)
 
-	var tween = escoria.main.get_tree().create_tween()
+	var tween := Tween3.new(escoria.main)
 
 	tween.finished.connect(_on_tween_completed)
 
@@ -84,8 +84,7 @@ func _slide_object(
 		destination.node.position
 	) / speed
 
-	Tween3.tween_interpolate_property(
-		tween,
+	tween.interpolate_property(
 		source.node,
 		"global_position",
 		source.node.global_position,
