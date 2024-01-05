@@ -67,7 +67,7 @@ func interpolate_property(
 	return tween_interpolate_property(_tween, object, property, initial_val, final_val, duration, trans_type, ease_type, delay)
 
 func play():
-	assert(_duration > 0)
+	#assert(_duration > 0)
 	_tween.play()
 
 func resume():
