@@ -84,7 +84,7 @@ func _slide_object(
 		destination.node.position
 	) / speed
 
-	Tween3.interpolate_property(
+	Tween3.tween_interpolate_property(
 		tween,
 		source.node,
 		"global_position",

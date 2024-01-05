@@ -12,6 +12,7 @@ static func tween_interpolate_property(
 				trans_type: Tween.TransitionType = 0, ease_type: Tween.EaseType = 2,
 				delay: float = 0) -> bool:
 	var t := tween.tween_property(object, property, final_val, duration)
+	assert(t != null, "Cannot interpolate property \"%s\" in \"%s\"! Did you reset the tween?" % [property, str(object)])
 	
 	if initial_val == null:
 		t.as_relative()
@@ -27,6 +28,7 @@ static func tween_interpolate_property(
 
 var _tween_parent: Node
 var _tween: Tween
+var _duration: float
 
 signal finished()
 
@@ -35,6 +37,7 @@ func _on_finished():
 
 func _init(tween_parent: Node):
 	_tween_parent = tween_parent
+	_duration = 0
 	
 	_create_tween()
 
@@ -44,6 +47,7 @@ func _create_tween():
 	_tween.finished.connect(_on_finished)
 
 func reset():
+	_duration = 0
 	_tween.stop()
 	_tween.kill()
 	
@@ -55,9 +59,11 @@ func interpolate_property(
 				duration: float,
 				trans_type: Tween.TransitionType = 0, ease_type: Tween.EaseType = 2,
 				delay: float = 0) -> bool:
+	_duration = maxf(_duration, duration)
 	return tween_interpolate_property(_tween, object, property, initial_val, final_val, duration, trans_type, ease_type, delay)
 
 func play():
+	assert(_duration > 0)
 	_tween.play()
 
 func resume():
@@ -67,8 +73,17 @@ func resume():
 func pause():
 	_tween.pause()
 
+func stop():
+	_tween.stop()
+
 func is_running():
 	return _tween.is_running()
 
 func is_valid():
 	return _tween.is_valid()
+
+func get_total_elapsed_time():
+	return _tween.get_total_elapsed_time()
+
+func get_duration():
+	return _duration

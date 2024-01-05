@@ -21,7 +21,7 @@ class_name CameraSetTargetBlockCommand
 
 
 # Tween for blocking
-var _camera_tween: Tween
+var _camera_tween: Tween3
 
 
 # Return the descriptor of the arguments of this command
@@ -55,13 +55,13 @@ func validate(arguments: Array):
 # Run the command
 func run(command_params: Array) -> int:
 	(escoria.object_manager.get_object(escoria.object_manager.CAMERA).node as ESCCamera)\
-		super.set_target(
+		.set_target(
 			escoria.object_manager.get_object(command_params[1]).node,
 			command_params[0]
 		)
 
 	if command_params[0] > 0.0:
-		await _camera_tween.tween_completed
+		await _camera_tween.finished
 	escoria.logger.debug(
 			self,
 			"camera_set_target_block tween complete."

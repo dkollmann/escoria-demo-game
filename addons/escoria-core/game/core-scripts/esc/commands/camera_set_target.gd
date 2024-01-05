@@ -45,7 +45,7 @@ func validate(arguments: Array):
 # Run the command
 func run(command_params: Array) -> int:
 	(escoria.object_manager.get_object(escoria.object_manager.CAMERA).node as ESCCamera)\
-		super.set_target(
+		.set_target(
 			escoria.object_manager.get_object(command_params[1]).node,
 			command_params[0]
 		)

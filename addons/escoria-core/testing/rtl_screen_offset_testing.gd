@@ -137,8 +137,8 @@ func update_size():
 	var nblines = nb_visible_lines
 	if nblines >= 1:
 
-		await get_tree().idle_frame
-		await get_tree().idle_frame
+		await get_tree().process_frame
+		await get_tree().process_frame
 		var text_height = rtl_node.get_content_height()
 		if text_height > MAX_HEIGHT:
 			text_height = MAX_HEIGHT

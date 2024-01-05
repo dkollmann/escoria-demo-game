@@ -84,7 +84,7 @@ func validate(arguments: Array):
 # Run the command
 func run(command_params: Array) -> int:
 	(escoria.object_manager.get_object(escoria.object_manager.CAMERA).node as ESCCamera)\
-		super.push(
+		.push(
 			escoria.object_manager.get_object(command_params[0]).node,
 			command_params[1],
 			ClassDB.class_get_integer_constant("Tween", "TRANS_%s" % command_params[2])

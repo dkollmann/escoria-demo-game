@@ -1324,7 +1324,7 @@ func export_player(scene_name) -> void:
 	var rectangle_shape = RectangleShape2D.new()
 	var collision_shape = CollisionShape2D.new()
 	progress_bar_update("Creating collision shape")
-	await get_tree().idle_frame
+	await get_tree().process_frame
 
 	collision_shape.shape = rectangle_shape
 	collision_shape.shape.extents = export_largest_sprite / 2
@@ -1332,7 +1332,7 @@ func export_player(scene_name) -> void:
 
 	new_character.add_child(collision_shape)
 	progress_bar_update("Setting up dialog position")
-	await get_tree().idle_frame
+	await get_tree().process_frame
 
 	# Add Dialog Position to the ESCPlayer
 	var dialog_position = ESCLocation.new()
@@ -1349,11 +1349,11 @@ func export_player(scene_name) -> void:
 		interaction_position.set_owner(new_character)
 
 	progress_bar_update("Configuring animations")
-	await get_tree().idle_frame
+	await get_tree().process_frame
 	# Make it so all the nodes can be seen in the scene tree
 	new_character.animations = animations_resource
 	progress_bar_update("Adding child to scene tree")
-	await get_tree().idle_frame
+	await get_tree().process_frame
 	get_tree().edited_scene_root.add_child(new_character)
 	new_character.set_owner(get_tree().edited_scene_root)
 
@@ -1368,16 +1368,16 @@ func export_player(scene_name) -> void:
 	var packed_scene = PackedScene.new()
 
 	progress_bar_update("Packing scene - this might take up to 30 seconds")
-	await get_tree().idle_frame
+	await get_tree().process_frame
 	packed_scene.pack(get_tree().edited_scene_root.get_node(new_character.name))
 
 	progress_bar_update("Resource saving - this might take up to 30 seconds")
-	await get_tree().idle_frame
+	await get_tree().process_frame
 	# Flag suggestions from https://godotengine.org/qa/50437/how-to-turn-a-node-into-a-packedscene-via-gdscript
 	ResourceSaver.save(scene_name, packed_scene, ResourceSaver.FLAG_CHANGE_PATH|ResourceSaver.FLAG_REPLACE_SUBRESOURCE_PATHS|ResourceSaver.FLAG_COMPRESS)
 
 	progress_bar_update("Releasing resources - this might take up to 30 seconds")
-	await get_tree().idle_frame
+	await get_tree().process_frame
 	new_character.queue_free()
 
 	get_tree().edited_scene_root.get_node(new_character.name).queue_free()
@@ -1424,7 +1424,7 @@ func export_generate_animations(character_node, num_directions) -> void:
 			# UI continues to update while the export is running
 			var current_ticks = Time.get_ticks_msec()
 			if current_ticks - display_refresh_timer > 30:
-				await get_tree().idle_frame
+				await get_tree().process_frame
 
 				display_refresh_timer = current_ticks
 

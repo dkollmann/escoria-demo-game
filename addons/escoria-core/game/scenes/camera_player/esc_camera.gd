@@ -4,7 +4,7 @@ class_name ESCCamera
 
 
 # Reference to the tween node for animating camera movements
-var _tween: Tween
+var _tween: Tween3
 
 # Target position of the camera
 var _target: Vector2 = Vector2()
@@ -18,14 +18,12 @@ var _zoom_target: Vector2
 
 # Prepare the tween
 func _ready():
-	_tween = get_tree().create_tween()
+	_tween = Tween3.new(self)
 	_tween.finished.connect(_target_reached)
 
 
 func _exit_tree():
-	if is_instance_valid(_tween):
-		_tween.kill()
-		_tween = null
+	_tween = null
 
 
 # Update the position if the followed target is moving
@@ -55,7 +53,7 @@ func register(room = null):
 # Returns the camera's tween.
 #
 # **Returns** the tween owned by this camera.
-func get_tween() -> Tween:
+func get_tween() -> Tween3:
 	return _tween
 
 
@@ -94,25 +92,25 @@ func set_target(p_target, p_time : float = 0.0):
 	else:
 		# Need to wait a frame in order to ensure the screen centre position is
 		# recalculated. Also to allow any close-calls with the tween to finish.
-		await get_tree().idle_frame
+		await get_tree().process_frame
 
 		if _tween.is_running():
 			escoria.logger.debug(
 				self,
 				"set_target tween is still active: %f seconds of %f completed." % [
-					_tween.tell(),
-					_tween.get_runtime()
+					_tween.get_total_elapsed_time(),
+					_tween.get_duration()
 				]
 			)
-			_tween.stop()
 
+		_tween.reset()
+		
 		set_drag_margin_enabled(false, false)
 
 		_convert_current_global_pos_for_disabled_drag_margin()
 		_target = _convert_pos_for_disabled_drag_margin(_target)
 
-		Tween3.tween_interpolate_property(
-			_tween,
+		_tween.interpolate_property(
 			self,
 			"global_position",
 			self.global_position,
@@ -143,24 +141,24 @@ func set_camera_zoom(p_zoom_level: float, p_time: float):
 	else:
 		# Need to wait a frame in order to ensure the screen centre position is
 		# recalculated. Also to allow any close-calls with the tween to finish.
-		await get_tree().idle_frame
+		await get_tree().process_frame
 
 		if _tween.is_running():
 			escoria.logger.debug(
 				self,
 				"set_camera_zoom tween is still active: %f seconds of %f completed." % [
-					_tween.tell(),
-					_tween.get_runtime()
+					_tween.get_total_elapsed_time(),
+					_tween.get_duration()
 				]
 			)
-			_tween.stop()
 
+		_tween.reset()
+		
 		set_drag_margin_enabled(false, false)
 
 		_convert_current_global_pos_for_disabled_drag_margin()
 
-		Tween3.tween_interpolate_property(
-			_tween,
+		_tween.interpolate_property(
 			self,
 			"zoom",
 			self.zoom,
@@ -199,21 +197,21 @@ func push(p_target, p_time: float = 0.0, p_type: int = 0):
 	else:
 		# Need to wait a frame in order to ensure the screen centre position is
 		# recalculated. Also to allow any close-calls with the tween to finish.
-		await get_tree().idle_frame
+		await get_tree().process_frame
 
 		if _tween.is_running():
 			escoria.logger.debug(
 				self,
 				"camera push tween is still active: %f seconds of %f completed." % [
-					_tween.tell(),
-					_tween.get_runtime()
+					_tween.get_total_elapsed_time(),
+					_tween.get_duration()
 				]
 			)
-			_tween.stop()
 
+		_tween.reset()
+		
 		if _zoom_target != Vector2():
-			Tween3.tween_interpolate_property(
-				_tween,
+			_tween.interpolate_property(
 				self,
 				"zoom",
 				self.zoom,
@@ -227,8 +225,7 @@ func push(p_target, p_time: float = 0.0, p_type: int = 0):
 
 		_convert_current_global_pos_for_disabled_drag_margin()
 
-		Tween3.tween_interpolate_property(
-			_tween,
+		_tween.interpolate_property(
 			self,
 			"global_position",
 			self.global_position,
@@ -260,23 +257,23 @@ func shift(p_target: Vector2, p_time: float, p_type: int):
 	if _tween.is_running():
 		# Need to wait a frame in order to ensure the screen centre position is
 		# recalculated. Also to allow any close-calls with the tween to finish.
-		await get_tree().idle_frame
+		await get_tree().process_frame
 
 		escoria.logger.debug(
 			self,
 			"camera shift tween is still active: %f seconds of %f completed." % [
-				_tween.tell(),
-				_tween.get_runtime()
+				_tween.get_total_elapsed_time(),
+				_tween.get_duration()
 			]
 		)
-		_tween.stop()
+	
+	_tween.reset()
 
 	set_drag_margin_enabled(false, false)
 
 	_convert_current_global_pos_for_disabled_drag_margin()
 
-	Tween3.tween_interpolate_property(
-		_tween,
+	_tween.interpolate_property(
 		self,
 		"global_position",
 		self.global_position,
