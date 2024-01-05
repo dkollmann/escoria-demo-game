@@ -19,6 +19,8 @@ layer = 20
 [node name="debug_layer" type="CanvasLayer" parent="layers"]
 
 [node name="esc_prompt_popup" parent="layers/debug_layer" instance=ExtResource("2")]
+position = Vector2i(10, 30)
+size = Vector2i(200, 100)
 
 [node name="bg_music" parent="." instance=ExtResource("3")]
 grow_horizontal = 2
