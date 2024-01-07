@@ -1,8 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://c07a6sc7lhc6o"]
+[gd_scene load_steps=9 format=3 uid="uid://c07a6sc7lhc6o"]
 
 [ext_resource type="PackedScene" uid="uid://ceqnfbjjsvp0t" path="res://addons/escoria-ui-simplemouse/inventory/inventory_ui.tscn" id="1"]
 [ext_resource type="Script" path="res://addons/escoria-core/game/scenes/dialogs/esc_dialog_player.gd" id="2"]
-[ext_resource type="PackedScene" uid="uid://ddc727e12uvnf" path="res://addons/escoria-core/game/scenes/camera_player/camera.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://6i71f6c04h18" path="res://addons/escoria-ui-simplemouse/verbs_mouseicons.tscn" id="4"]
 [ext_resource type="Script" path="res://addons/escoria-ui-simplemouse/game.gd" id="5"]
 [ext_resource type="PackedScene" uid="uid://c4nh5a5oh75tv" path="res://addons/escoria-ui-simplemouse/tooltip/target_tooltip.tscn" id="6"]
@@ -16,8 +15,6 @@ main_menu = NodePath("CanvasLayer/main_menu")
 pause_menu = NodePath("CanvasLayer/pause_menu")
 editor_debug_mode = 1
 ui_parent_control_node = NodePath("CanvasLayer/ui")
-
-[node name="camera" parent="." instance=ExtResource("3")]
 
 [node name="dialog_layer" type="CanvasLayer" parent="."]
 layer = 3
@@ -87,7 +84,6 @@ text = "[center][color=#000000][/color][/center]"
 layer = 2
 
 [node name="verbs_menu" parent="mouse_layer" instance=ExtResource("4")]
-layout_mode = 3
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
