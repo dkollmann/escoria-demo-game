@@ -68,7 +68,7 @@ func _ready():
 	if get_parent() == get_tree().root \
 			and ESCProjectSettingsManager.get_setting(
 				"application/run/main_scene"
-			) != self.filename:
+			) != self.scene_file_path:
 		is_run_directly = true
 
 	if Engine.is_editor_hint():

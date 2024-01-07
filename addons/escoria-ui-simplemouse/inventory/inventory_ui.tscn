@@ -19,26 +19,27 @@ size_flags_vertical = 3
 script = ExtResource("1")
 inventory_ui_container = NodePath("FloatingInventory/panel/MarginContainer/ScrollContainer/container")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="inventory_button" type="TextureButton" parent="HBoxContainer"]
+[node name="inventory_button" type="TextureButton" parent="."]
 layout_mode = 2
+offset_right = 64.0
+offset_bottom = 64.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_normal = ExtResource("6")
+ignore_texture_size = true
+stretch_mode = 0
 
-[node name="frame" type="TextureRect" parent="HBoxContainer/inventory_button"]
-layout_mode = 0
+[node name="frame" type="TextureRect" parent="inventory_button"]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("5")
 expand_mode = 1
-stretch_mode = 1
 
 [node name="FloatingInventory" type="CanvasLayer" parent="."]
 
@@ -83,14 +84,4 @@ mouse_filter = 2
 theme_override_constants/separation = 20
 script = ExtResource("3")
 
-[node name="InventoryTween" type="Tween" parent="FloatingInventory"]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-editor_description = ""
-script = null
-
-[connection signal="pressed" from="HBoxContainer/inventory_button" to="." method="_on_inventory_button_pressed"]
+[connection signal="pressed" from="inventory_button" to="." method="_on_inventory_button_pressed"]

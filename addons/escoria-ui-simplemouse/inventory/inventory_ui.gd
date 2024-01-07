@@ -4,6 +4,7 @@ extends ESCInventory
 # Whether the inventory is visible currently
 var inventory_visible: bool = false
 
+@onready var _tween: Tween3 = Tween3.new(self)
 
 func _ready() -> void:
 	# Hide inventory by default
@@ -11,7 +12,7 @@ func _ready() -> void:
 		ProjectSettings.get_setting("display/window/size/viewport_width")
 
 func _on_inventory_button_pressed():
-	if $FloatingInventory/InventoryTween.is_active():
+	if _tween.is_running():
 		return
 	if inventory_visible:
 		hide_inventory()
@@ -20,36 +21,34 @@ func _on_inventory_button_pressed():
 
 
 func show_inventory():
-	$FloatingInventory/InventoryTween.stop_all()
-	$FloatingInventory/InventoryTween.remove_all()
-	$FloatingInventory/InventoryTween.interpolate_property(
+	_tween.reset()
+	_tween.interpolate_property(
 		$FloatingInventory/panel,
 		"position:x",
 		$FloatingInventory/panel.position.x,
 		$FloatingInventory/panel.position.x - \
 				$FloatingInventory/panel.size.x - \
-				$HBoxContainer/inventory_button.size.x,
+				$inventory_button.size.x,
 		0.6
 	)
-	$FloatingInventory/InventoryTween.start()
-	await $FloatingInventory/InventoryTween.tween_all_completed
-	$FloatingInventory/InventoryTween.stop_all()
+	_tween.play()
+	await _tween.finished
+	_tween.stop()
 	inventory_visible = true
 
 
 func hide_inventory():
-	$FloatingInventory/InventoryTween.stop_all()
-	$FloatingInventory/InventoryTween.remove_all()
-	$FloatingInventory/InventoryTween.interpolate_property(
+	_tween.reset()
+	_tween.interpolate_property(
 		$FloatingInventory/panel,
 		"position:x",
 		$FloatingInventory/panel.position.x,
 		$FloatingInventory/panel.position.x + \
 				$FloatingInventory/panel.size.x + \
-				$HBoxContainer/inventory_button.size.x,
+				$inventory_button.size.x,
 		0.6
 	)
-	$FloatingInventory/InventoryTween.start()
-	await $FloatingInventory/InventoryTween.tween_all_completed
-	$FloatingInventory/InventoryTween.stop_all()
+	_tween.play()
+	await _tween.finished
+	_tween.stop()
 	inventory_visible = false
