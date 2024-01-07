@@ -43,6 +43,7 @@ func _init(tween_parent: Node):
 
 func _create_tween():
 	_tween = _tween_parent.get_tree().create_tween()
+	_tween.pause()  # prevent autoplay
 	
 	_tween.finished.connect(_on_finished)
 
