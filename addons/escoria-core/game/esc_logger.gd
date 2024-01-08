@@ -93,6 +93,7 @@ class ESCLoggerFile extends ESCLoggerBase:
 
 	# Constructor
 	func _init():
+		super()
 		# This is left alone as this constructor is called from escoria.gd's own
 		# constructor
 		var log_file_path = ProjectSettings.get_setting(
