@@ -138,11 +138,12 @@ func say(character: String, line: String) :
 	var dialog_location_count:int = 0
 
 	for c in escoria.object_manager.get_object(character).node.get_children():
-		if c is Marker2D:
-			# Identify any Postion2D nodes
-			if c.is_class("ESCDialogLocation"):
-				dialog_location_count += 1
-				dialog_location_node = c
+		# get_class cannot be overwritten in Godot4 any more.
+		# See https://github.com/godotengine/godot/issues/21789
+		# We have to directly check by internal "is" function
+		if c is ESCDialogLocation:
+			dialog_location_count += 1
+			dialog_location_node = c
 
 	if dialog_location_count > 0:
 		if dialog_location_count > 1:
