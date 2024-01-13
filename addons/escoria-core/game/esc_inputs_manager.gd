@@ -90,8 +90,8 @@ func register_background(background: ESCBackground):
 	background.left_click_on_bg.connect(_on_left_click_on_bg)
 	background.right_click_on_bg.connect(_on_right_click_on_bg)
 	background.double_left_click_on_bg.connect(_on_double_left_click_on_bg)
-	background.mouse_wheel_up.connect(_on_mousewheel_action.bind([1]))
-	background.mouse_wheel_down.connect(_on_mousewheel_action.bind([-1]))
+	background.mouse_wheel_up.connect(_on_mousewheel_action.bind(1))
+	background.mouse_wheel_down.connect(_on_mousewheel_action.bind(-1))
 
 
 # Registers a function that can be used to intercept and process input events.
