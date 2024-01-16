@@ -35,7 +35,7 @@ func CharacterCreator_pressed() -> void:
 		get_node(GENERIC_ERROR_NODE).dialog_text = "Warning!\n\nExporting your character will fail when\n"
 		get_node(GENERIC_ERROR_NODE).dialog_text += "running the character creator directly rather than\n"
 		get_node(GENERIC_ERROR_NODE).dialog_text += "as a plugin.\n\nPlease open this as a plugin."
-		get_node(GENERIC_ERROR_NODE).popup()
+		get_node(GENERIC_ERROR_NODE).popup_centered()
 
 
 func InventoryItem_pressed() -> void:

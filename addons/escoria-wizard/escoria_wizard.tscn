@@ -24,7 +24,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("1")
 expand_mode = 1
-stretch_mode = 2
+stretch_mode = 1
 
 [node name="Menu" type="MarginContainer" parent="."]
 layout_mode = 2

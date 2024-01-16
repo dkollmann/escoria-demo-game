@@ -16,7 +16,9 @@ var settings_modified: bool
 func _ready() -> void:
 	$"InformationWindows/PlayerSceneFileDialog".get_cancel_button().connect("pressed", Callable(self, "PlayerSceneCancelled"))
 	$"InformationWindows/BackgroundImageFileDialog".get_cancel_button().connect("pressed", Callable(self, "BackgroundFileCancelled"))
-
+	
+	for c in $InformationWindows.get_children():
+		c.hide()
 
 func PlayerSceneCancelled() -> void:
 	if %PlayerScene.text == PLAYER_SELECT_TEXT:

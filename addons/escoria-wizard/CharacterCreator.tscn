@@ -39,7 +39,7 @@
 [ext_resource type="Script" path="res://addons/escoria-wizard/CharacterCreator.gd" id="37"]
 [ext_resource type="PackedScene" uid="uid://bf0rh5rxgm32" path="res://addons/escoria-wizard/help_window.tscn" id="38"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_qqsqs"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_e5c4d"]
 animations = [{
 "frames": [],
 "loop": true,
@@ -565,7 +565,7 @@ size_flags_vertical = 3
 [node name="anim_preview_sprite" type="AnimatedSprite2D" parent="VBoxContainer/HBoxContainer/configuration/VBoxContainer/animation/HBoxContainer2/preview/MarginContainer"]
 visible = false
 scale = Vector2(0.05, 0.05)
-sprite_frames = SubResource("SpriteFrames_qqsqs")
+sprite_frames = SubResource("SpriteFrames_e5c4d")
 animation = &"in_progress"
 centered = false
 
@@ -968,6 +968,7 @@ mode = 2
 popup_window = true
 
 [node name="InformationWindows" type="Control" parent="."]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -1101,6 +1102,8 @@ character by changing the parent node to an ESCPlayer node.
 visible = false
 
 [node name="ConfirmationDialog" type="ConfirmationDialog" parent="InformationWindows"]
+size = Vector2i(405, 132)
+visible = true
 popup_window = true
 dialog_text = "WARNING!
 

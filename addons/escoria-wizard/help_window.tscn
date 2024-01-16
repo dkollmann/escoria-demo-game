@@ -20,16 +20,20 @@
 [ext_resource type="Script" path="res://addons/escoria-wizard/help_window.gd" id="18"]
 
 [node name="help_window" type="Window"]
-initial_position = 1
+title = "Help"
 size = Vector2i(910, 650)
+visible = false
+transient = true
+unresizable = true
 popup_window = true
 script = ExtResource("18")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 908.0
-offset_bottom = 638.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Background" type="TextureRect" parent="VBoxContainer"]
 layout_mode = 2
@@ -246,14 +250,8 @@ offset_bottom = 40.0
 [node name="page1" type="Label" parent="text" groups=["pagetext"]]
 visible = false
 layout_mode = 0
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 229.0
-offset_top = 137.0
-offset_right = 699.0
-offset_bottom = 440.0
+offset_right = 564.0
+offset_bottom = 465.0
 text = "Escoria Player Creator
 
 Game characters in Escoria are Godot scenes with an ESCPlayer node.
@@ -554,5 +552,6 @@ If they are an NPC, add the scene to your scene tree, and
 program them in your ESC scripts using the global_id you
 have configured."
 
+[connection signal="close_requested" from="." to="." method="_on_close_requested"]
 [connection signal="pressed" from="VBoxContainer/CenterContainer/HBoxContainer/prev_button" to="." method="help_on_prev_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/CenterContainer/HBoxContainer/next_button" to="." method="help_on_next_button_pressed"]

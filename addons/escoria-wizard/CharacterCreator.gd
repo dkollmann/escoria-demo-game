@@ -124,7 +124,9 @@ func _ready() -> void:
 	load_settings()
 	character_creator_reset()
 	$InformationWindows/help_window.current_page = 1
-	get_node(EXPORT_PROGRESS_NODE).hide()
+	
+	for c in $InformationWindows.get_children():
+		c.hide()
 
 	if test_mode:
 		setup_test_data()
@@ -621,7 +623,7 @@ func check_if_controls_have_changed():
 func has_spritesheet_been_loaded() -> bool:
 	if source_image == null:
 		get_node(GENERIC_ERROR_NODE).dialog_text = "Please load a spritesheet to begin."
-		get_node(GENERIC_ERROR_NODE).popup()
+		get_node(GENERIC_ERROR_NODE).popup_centered()
 		return false
 	return true
 
@@ -670,7 +672,7 @@ func animation_on_dir_upleft_pressed() -> void:
 func animation_on_mirror_checkbox_toggled(button_pressed: bool) -> void:
 	if not has_spritesheet_been_loaded():
 		get_node(GENERIC_ERROR_NODE).dialog_text = "No animation has been configured."
-		get_node(GENERIC_ERROR_NODE).popup()
+		get_node(GENERIC_ERROR_NODE).popup_centered()
 		get_node(MIRROR_NODE).button_pressed = false
 		return
 
@@ -682,14 +684,14 @@ func animation_on_mirror_checkbox_toggled(button_pressed: bool) -> void:
 		if anim_metadata[metadata_array_offset][METADATA_IS_MIRROR]:
 			get_node(GENERIC_ERROR_NODE).dialog_text = \
 				"You can't mirror a direction that is already mirrored."
-			get_node(GENERIC_ERROR_NODE).popup()
+			get_node(GENERIC_ERROR_NODE).popup_centered()
 			get_node(MIRROR_NODE).set_pressed_no_signal(false)
 			return
 
 		if anim_metadata[metadata_array_offset][METADATA_SPRITESHEET_FIRST_FRAME] == 0:
 			get_node(GENERIC_ERROR_NODE).dialog_text = \
 				"You can't mirror an animation that hasn't been set up."
-			get_node(GENERIC_ERROR_NODE).popup()
+			get_node(GENERIC_ERROR_NODE).popup_centered()
 			get_node(MIRROR_NODE).set_pressed_no_signal(false)
 			return
 
@@ -708,7 +710,7 @@ func controls_on_anim_speed_scroll_bar_value_changed(value: float) -> void:
 	if anim_metadata[get_metadata_array_offset()][METADATA_IS_MIRROR] and not currently_changing_direction:
 		get_node(ANIM_CONTROLS_NODE).get_node("anim_speed_scroll_bar").value = current_animation_speed
 		get_node(GENERIC_ERROR_NODE).dialog_text = "You cannot change a mirrored animation."
-		get_node(GENERIC_ERROR_NODE).popup()
+		get_node(GENERIC_ERROR_NODE).popup_centered()
 		return
 
 	current_animation_speed = int(value)
@@ -733,7 +735,7 @@ func controls_on_start_frame_value_changed(value: float) -> void:
 	if anim_metadata[get_metadata_array_offset()][METADATA_IS_MIRROR] and not currently_changing_direction:
 		get_node(ANIM_CONTROLS_NODE).get_node("start_frame").value = spritesheet_settings[2]
 		get_node(GENERIC_ERROR_NODE).dialog_text = "You cannot change a mirrored animation."
-		get_node(GENERIC_ERROR_NODE).popup()
+		get_node(GENERIC_ERROR_NODE).popup_centered()
 		return
 	spritesheet_settings[2] = get_node(ANIM_CONTROLS_NODE).get_node("start_frame").value
 	if get_node(ANIM_CONTROLS_NODE).get_node("start_frame").value > 0:
@@ -755,7 +757,7 @@ func controls_on_end_frame_value_changed(value: float) -> void:
 	if anim_metadata[get_metadata_array_offset()][METADATA_IS_MIRROR] and not currently_changing_direction:
 		get_node(ANIM_CONTROLS_NODE).get_node("end_frame").value = spritesheet_settings[3]
 		get_node(GENERIC_ERROR_NODE).dialog_text = "You cannot change a mirrored animation."
-		get_node(GENERIC_ERROR_NODE).popup()
+		get_node(GENERIC_ERROR_NODE).popup_centered()
 		return
 
 	spritesheet_settings[3] = get_node(ANIM_CONTROLS_NODE).get_node("end_frame").value
@@ -783,7 +785,7 @@ func controls_on_h_frames_spin_box_value_changed(value: float) -> void:
 	if anim_metadata[get_metadata_array_offset()][METADATA_IS_MIRROR] and not currently_changing_direction:
 		get_node(ANIM_CONTROLS_NODE).get_node("h_frames_spin_box").value = spritesheet_settings[0]
 		get_node(GENERIC_ERROR_NODE).dialog_text = "You cannot change a mirrored animation."
-		get_node(GENERIC_ERROR_NODE).popup()
+		get_node(GENERIC_ERROR_NODE).popup_centered()
 		return
 
 	spritesheet_settings[0] = get_node(ANIM_CONTROLS_NODE).get_node("h_frames_spin_box").value
@@ -808,7 +810,7 @@ func controls_on_v_frames_spin_box_value_changed(value: float) -> void:
 	if anim_metadata[get_metadata_array_offset()][METADATA_IS_MIRROR] and not currently_changing_direction:
 		get_node(ANIM_CONTROLS_NODE).get_node("v_frames_spin_box").value = spritesheet_settings[1]
 		get_node(GENERIC_ERROR_NODE).dialog_text = "You cannot change a mirrored animation."
-		get_node(GENERIC_ERROR_NODE).popup()
+		get_node(GENERIC_ERROR_NODE).popup_centered()
 		return
 
 	spritesheet_settings[1] = get_node(ANIM_CONTROLS_NODE).get_node("v_frames_spin_box").value
@@ -844,7 +846,7 @@ func spritesheet_on_export_button_pressed() -> void:
 		get_node(GENERIC_ERROR_NODE).dialog_text = \
 			"Scene file '%s' already exists.\nPlease change Global_ID or path,\nor delete scene before continuing.\n" \
 			% scene_name
-		get_node(GENERIC_ERROR_NODE).popup()
+		get_node(GENERIC_ERROR_NODE).popup_centered()
 		return
 
 	if get_node(DIR_COUNT_NODE).get_node("four_directions").pressed:
@@ -888,7 +890,7 @@ func spritesheet_on_export_button_pressed() -> void:
 			get_node(GENERIC_ERROR_NODE).dialog_text += \
 				"%s idle animations not configured." % missing_idle_animations
 
-		get_node(GENERIC_ERROR_NODE).popup()
+		get_node(GENERIC_ERROR_NODE).popup_centered()
 
 		return
 
@@ -915,7 +917,7 @@ func spritesheet_on_zoom_scrollbar_value_changed(value: float) -> void:
 
 # Show the file manager when the load spritesheet button is pressed
 func spritesheet_on_load_spritesheet_button_pressed() -> void:
-	get_node(FILE_DIALOG_NODE).popup()
+	get_node(FILE_DIALOG_NODE).popup_centered()
 
 
 # Reset zoom settings when the reset button is pushed. Also called when a new
@@ -1020,7 +1022,7 @@ func check_activate_direction(direction) -> void:
 	if get_node(STORE_ANIM_NODE).visible:
 		get_node(ARROWS_NODE).get_node("Container_%s" % direction).get_node("set_dir_%s" % direction).button_pressed = false
 		get_node(ARROWS_NODE).get_node("Container_%s" % direction).get_node("unset_dir_%s" % direction).button_pressed = false
-		$InformationWindows/unstored_changes_window.popup()
+		$InformationWindows/unstored_changes_window.popup_centered()
 	else:
 		activate_direction(direction)
 
@@ -1235,7 +1237,7 @@ func export_player(scene_name) -> void:
 	var plugin_reference = get_node("..").plugin_reference
 
 	disconnect_selector_signals()
-	get_node(EXPORT_PROGRESS_NODE).popup()
+	get_node(EXPORT_PROGRESS_NODE).popup_centered()
 	get_node(EXPORT_PROGRESS_NODE).get_node("progress_bar").value = 0
 	get_node(EXPORT_PROGRESS_NODE).get_node("progress_bar").visible = true
 	get_node(EXPORT_PROGRESS_NODE).get_node("progress_label").visible = true
@@ -1385,7 +1387,7 @@ func export_player(scene_name) -> void:
 	plugin_reference.open_scene(scene_name)
 	plugin_reference._make_visible(false)
 	get_node(EXPORT_PROGRESS_NODE).hide()
-	get_node(EXPORT_COMPLETE_NODE).popup()
+	get_node(EXPORT_COMPLETE_NODE).popup_centered()
 
 	connect_selector_signals()
 
@@ -1507,14 +1509,14 @@ func export_generate_animations(character_node, num_directions) -> void:
 
 # Open the help window
 func spritesheet_on_help_button_pressed() -> void:
-	$InformationWindows/help_window.popup()
+	$InformationWindows/help_window.popup_centered()
 	$InformationWindows/help_window.show_page()
 
 
 func spritesheet_on_reset_button_pressed() -> void:
 	$InformationWindows/ConfirmationDialog.dialog_text = "WARNING!\n\n" + \
 		"If you continue you will lose the current character."
-	$InformationWindows/ConfirmationDialog.popup()
+	$InformationWindows/ConfirmationDialog.popup_centered()
 
 
 func spritesheet_on_reset_confirmed() -> void:
@@ -1531,7 +1533,7 @@ func spritesheet_on_MainMenuConfirmation_confirmed() -> void:
 
 
 func spritesheet_on_main_menu_button_up() -> void:
-	$InformationWindows/MainMenuConfirmation.popup()
+	$InformationWindows/MainMenuConfirmation.popup_centered()
 
 
 func load_settings() -> void:
@@ -1663,7 +1665,7 @@ func animation_on_walk_checkbox_pressed() -> void:
 		if animation_type_selected == "idle":
 			get_node(ANIM_TYPE_NODE).get_node("idle_checkbox").button_pressed = true
 		animation_type_requested="walk"
-		get_node(UNSTORED_ANIMTYPE_CHANGE_NODE).popup()
+		get_node(UNSTORED_ANIMTYPE_CHANGE_NODE).popup_centered()
 	else:
 		change_animation_type("walk")
 
@@ -1684,7 +1686,7 @@ func animation_on_talk_checkbox_pressed() -> void:
 		if animation_type_selected == "walk":
 			get_node(ANIM_TYPE_NODE).get_node("walk_checkbox").button_pressed = true
 		animation_type_requested="talk"
-		get_node(UNSTORED_ANIMTYPE_CHANGE_NODE).popup()
+		get_node(UNSTORED_ANIMTYPE_CHANGE_NODE).popup_centered()
 	else:
 		change_animation_type("talk")
 
@@ -1705,7 +1707,7 @@ func animation_on_idle_checkbox_pressed() -> void:
 		if animation_type_selected == "walk":
 			get_node(ANIM_TYPE_NODE).get_node("walk_checkbox").button_pressed = true
 		animation_type_requested="idle"
-		get_node(UNSTORED_ANIMTYPE_CHANGE_NODE).popup()
+		get_node(UNSTORED_ANIMTYPE_CHANGE_NODE).popup_centered()
 	else:
 		change_animation_type("idle")
 

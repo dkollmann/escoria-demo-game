@@ -58,3 +58,5 @@ func show_page() -> void:
 		14:	$masks/rightall.visible = false
 
 
+func _on_close_requested():
+	hide()

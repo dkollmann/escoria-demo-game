@@ -29,7 +29,7 @@ func background_on_ItemName_text_changed(new_text: String) -> void:
 
 
 func load_button_pressed() -> void:
-	$LoadObjectGraphic/LoadObjectFileDialog.popup()
+	$LoadObjectGraphic/LoadObjectFileDialog.popup_centered()
 
 
 func LoadObjectFileDialog_file_selected(path: String) -> void:
@@ -63,12 +63,12 @@ func _on_CreateButton_pressed() -> void:
 	if ! image_has_been_loaded:
 		get_node(err_window).dialog_text = \
 			"No image has been loaded."
-		get_node(err_window).popup()
+		get_node(err_window).popup_centered()
 		return
 	if $Content/GridContainer/ItemName.text == "replace_me":
 		get_node(err_window).dialog_text = \
 			"Please change the object name."
-		get_node(err_window).popup()
+		get_node(err_window).popup_centered()
 		return
 
 	var item = ESCItem.new()
