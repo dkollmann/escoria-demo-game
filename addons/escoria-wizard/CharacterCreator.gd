@@ -7,6 +7,9 @@
 
 extends Control
 
+const ESCItem = preload("res://addons/escoria-core/game/core-scripts/esc_item.gd")
+const ESCPlayer = preload("res://addons/escoria-core/game/core-scripts/esc_player.gd")
+
 const METADATA_ANIM_NAME = "anim_name"
 const METADATA_SPRITESHEET_SOURCE_FILE = "spritesheet_source_file"
 const METADATA_SPRITESHEET_FRAMES_HORIZ = "spritesheet_frames_horiz"
