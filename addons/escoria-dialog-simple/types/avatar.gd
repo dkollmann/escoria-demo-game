@@ -1,5 +1,5 @@
 # A dialog GUI showing a dialog box and character portraits
-extends Popup
+extends Control
 
 
 # Signal emitted when text has been said
@@ -140,21 +140,26 @@ func say(character: String, line: String):
 	_current_line = line
 
 	_is_speeding_up = false
-	popup_centered()
+	show()
+	# calculate position 
+	var pos = get_viewport_rect().get_center()
+	# correct center with half width of dialog box
+	pos += Vector2(-size.x/2, 0)
+	set_position(pos)
 	set_current_character(character)
 
 	text_node.text = tr(line)
 
 	text_node.visible_ratio = 0.0
 	var time_show_full_text = _text_time_per_character / 1000 * len(line)
-
+	tween.reset()
 	tween.interpolate_property(text_node, "visible_ratio",
 		0.0, 1.0, time_show_full_text,
 		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	tween.play()
 
 
-# Called by the dialog player when the
+# Called by the dialog player when user wants to finish dialogue fast.
 func speedup():
 	if not _is_speeding_up:
 		_is_speeding_up = true
@@ -227,11 +232,6 @@ func _on_paused():
 # Handler managing resume notification from Escoria
 func _on_resumed():
 	if not tween.is_running():
-		# We can't rely on "show()" to make an invisible popup reappear, as per the docs for
-		# CanvasItem. Instead, we need to use one of the popup_* methods.
-		if is_inside_tree():
-			popup_centered()
-
 		is_paused = false
 		tween.play()
 

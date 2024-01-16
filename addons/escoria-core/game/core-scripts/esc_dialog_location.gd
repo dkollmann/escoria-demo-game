@@ -7,7 +7,3 @@
 # `ESCLocation`s and refer to the parent node.
 extends ESCLocation
 class_name ESCDialogLocation
-
-# p_classname: String class to compare against
-func is_class(p_classname: String) -> bool:
-	return p_classname == "ESCDialogLocation"

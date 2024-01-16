@@ -32,17 +32,6 @@ const MULTIPLE_START_LOCATIONS_WARNING = \
 
 var _multiple_start_locations_exist: bool = false: set = set_multiple_locations_exist
 
-
-# Used by "is" keyword to check whether a node's class_name
-# is the same as p_classname.
-#
-# ## Parameters
-#
-# p_classname: String class to compare against
-func is_class(p_classname: String) -> bool:
-	return p_classname == "ESCLocation"
-
-
 # Ready function
 func _ready():
 	if not Engine.is_editor_hint():

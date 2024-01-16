@@ -274,6 +274,7 @@ texture = ExtResource("2")
 visible = false
 position = Vector2(630, 471)
 sprite_frames = SubResource("7")
+autoplay = "default"
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 modulate = Color(1, 1, 1, 0)
