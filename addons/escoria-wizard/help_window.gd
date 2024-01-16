@@ -11,6 +11,10 @@ const LAST_PAGE = 15
 @export var current_page = 1
 
 
+func _ready():
+	visible = false
+
+
 func help_on_prev_button_pressed() -> void:
 	current_page -= 1
 	if current_page < 1:

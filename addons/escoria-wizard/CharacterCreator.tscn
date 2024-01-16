@@ -959,18 +959,23 @@ layout_mode = 2
 text = "Main Menu"
 
 [node name="ImageFileDialog" type="FileDialog" parent="."]
+popup_window = true
 access = 2
 filters = PackedStringArray("*.png, *.jpg, *.jpeg ; Supported Images")
 
 [node name="CharacterPathFileDialog" type="FileDialog" parent="."]
 mode = 2
+popup_window = true
 
 [node name="InformationWindows" type="Control" parent="."]
-visible = false
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
 
 [node name="unstored_changes_window" type="Window" parent="InformationWindows"]
-exclusive = true
+visible = false
+popup_window = true
 
 [node name="Label" type="Label" parent="InformationWindows/unstored_changes_window"]
 offset_left = 86.0
@@ -1006,7 +1011,8 @@ offset_bottom = 270.0
 text = "Cancel and keep editing"
 
 [node name="unstored_changes_window_anim_change" type="Window" parent="InformationWindows"]
-exclusive = true
+visible = false
+popup_window = true
 
 [node name="Label" type="Label" parent="InformationWindows/unstored_changes_window_anim_change"]
 offset_left = 86.0
@@ -1042,10 +1048,12 @@ offset_bottom = 270.0
 text = "Cancel and keep editing"
 
 [node name="generic_error_window" type="AcceptDialog" parent="InformationWindows"]
+popup_window = true
 dialog_text = "Please load a spritesheet to begin."
 
 [node name="export_progress" type="Window" parent="InformationWindows"]
-exclusive = true
+visible = false
+popup_window = true
 
 [node name="progress_label" type="Label" parent="InformationWindows/export_progress"]
 anchors_preset = 5
@@ -1090,8 +1098,10 @@ character by changing the parent node to an ESCPlayer node.
 "
 
 [node name="help_window" parent="InformationWindows" instance=ExtResource("38")]
+visible = false
 
 [node name="ConfirmationDialog" type="ConfirmationDialog" parent="InformationWindows"]
+popup_window = true
 dialog_text = "WARNING!
 
 If you continue you will lose the current character."

@@ -58,6 +58,7 @@ visible = false
 layout_mode = 2
 
 [node name="generic_error_window" type="AcceptDialog" parent="Menu/InformationWindows"]
+popup_window = true
 dialog_text = "Warning!
 
 Exporting your character will fail when

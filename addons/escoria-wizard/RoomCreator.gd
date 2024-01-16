@@ -1,23 +1,6 @@
 @tool
 extends Control
 
-const ROOM_NAME                = "MarginContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer/RoomName"
-const GLOBAL_ID                = "MarginContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer/GlobalID"
-const PLAYER_SCENE             = "MarginContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer/PlayerScene"
-const SELECT_PLAYER_SCENE       = "MarginContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer/SelectPlayerScene"
-const SELECT_PLAYER_SCENE_SPACER = "MarginContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer/SelectPlayerSceneSpacer"
-const USE_EMPTY_PLAYER_BUTTON    = "MarginContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer/UseEmptyPlayerButton"
-const ESC_SCRIPT               = "MarginContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer/ESCScript"
-const USE_EMPTY_ROOM_SCRIPT      = "MarginContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer/UseEmptyRoomScript"
-const USE_EMPTY_ROOM_SPACER      = "MarginContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer/UseEmptyRoomSpacer"
-const BACKGROUND_IMAGE         = "MarginContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer/BackgroundImage"
-const USE_EMPTY_BACKGROUND      = "MarginContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer/UseEmptyBackground"
-const SELECT_BACKGROUND        = "MarginContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer/SelectBackground"
-const SELECT_BACKGROUNDSPACER  = "MarginContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer/SelectBackgroundSpacer"
-const ROOM_FOLDER_PATH          = "MarginContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer/RoomFolder"
-const ROOM_BACKGROUND          = "MarginContainer/MarginContainer/VBoxContainer/PreviewSection/CenterContainer/RoomBackground"
-const BACKGROUND_PREVIEW       = "MarginContainer/MarginContainer/VBoxContainer/PreviewSection/Control/BackgroundPreview"
-
 const SCRIPT_BLANK_TEXT         = "Room will not have a script configured."
 const SCRIPT_SELECT_TEXT        = "Please select script."
 const PLAYER_BLANK_TEXT         = "Scene will be left blank."
@@ -36,40 +19,42 @@ func _ready() -> void:
 
 
 func PlayerSceneCancelled() -> void:
-	if get_node(PLAYER_SCENE).text == PLAYER_SELECT_TEXT:
-		get_node(USE_EMPTY_PLAYER_BUTTON).button_pressed = true
+	if %PlayerScene.text == PLAYER_SELECT_TEXT:
+		%UseEmptyPlayerButton.button_pressed = true
 
 
 func BackgroundFileCancelled() -> void:
-	if get_node(BACKGROUND_IMAGE).text == BACKGROUND_SELECT_TEXT:
-		get_node(USE_EMPTY_BACKGROUND).button_pressed = true
+	if %BackgroundImage.text == BACKGROUND_SELECT_TEXT:
+		%UseEmptyBackground.button_pressed = true
 
 
 func room_creator_reset() -> void:
-	get_node(ROOM_NAME).text = ""
-	get_node(GLOBAL_ID).text = ""
-	get_node(PLAYER_SCENE).text = PLAYER_BLANK_TEXT
-	get_node(SELECT_PLAYER_SCENE).visible = false
-	get_node(SELECT_PLAYER_SCENE_SPACER).visible = true
-	get_node(USE_EMPTY_PLAYER_BUTTON).button_pressed = true
-	get_node(ESC_SCRIPT).editable = false
-	get_node(ESC_SCRIPT).text = SCRIPT_BLANK_TEXT
-	get_node(USE_EMPTY_ROOM_SCRIPT).button_pressed = true
-	get_node(BACKGROUND_IMAGE).text = BACKGROUND_BLANK_TEXT
-	get_node(USE_EMPTY_ROOM_SPACER).visible = true
-	get_node(USE_EMPTY_BACKGROUND).button_pressed = true
-	get_node(SELECT_BACKGROUND).visible = false
-	get_node(SELECT_BACKGROUNDSPACER).visible = true
-	get_node(BACKGROUND_PREVIEW).visible = true
-	get_node(ROOM_BACKGROUND).visible = true
-	get_node(BACKGROUND_PREVIEW).texture = null
-	get_node(ROOM_FOLDER_PATH).text = ProjectSettings.get_setting(ROOM_PATH_SETTING)
-	$InformationWindows/RoomFolderDialog.current_dir = ProjectSettings.get_setting(ROOM_PATH_SETTING)
+	var roompath = ProjectSettings.get_setting(ROOM_PATH_SETTING)
+	
+	%RoomName.text = ""
+	%GlobalID.text = ""
+	%PlayerScene.text = PLAYER_BLANK_TEXT
+	%SelectPlayerScene.visible = false
+	%SelectPlayerSceneSpacer.visible = true
+	%UseEmptyPlayerButton.button_pressed = true
+	%ESCScript.editable = false
+	%ESCScript.text = SCRIPT_BLANK_TEXT
+	%UseEmptyRoomScript.button_pressed = true
+	%BackgroundImage.text = BACKGROUND_BLANK_TEXT
+	%UseEmptyRoomSpacer.visible = true
+	%UseEmptyBackground.button_pressed = true
+	%SelectBackground.visible = false
+	%SelectBackgroundSpacer.visible = true
+	%BackgroundPreview.visible = true
+	%RoomBackground.visible = true
+	%BackgroundPreview.texture = null
+	%RoomFolder.text = roompath if roompath else ""
+	$InformationWindows/RoomFolderDialog.current_dir = roompath if roompath else ""
 	settings_modified = false
 
 
 func _on_RoomName_text_changed(new_text: String) -> void:
-	get_node(GLOBAL_ID).text = new_text
+	%GlobalID.text = new_text
 	settings_modified = true
 
 
@@ -79,13 +64,13 @@ func _on_GlobalID_text_changed(new_text: String) -> void:
 
 func _on_UseEmptyPlayerButton_toggled(button_pressed: bool) -> void:
 	if button_pressed == true:
-		get_node(SELECT_PLAYER_SCENE).visible = false
-		get_node(SELECT_PLAYER_SCENE_SPACER).visible = true
-		get_node(PLAYER_SCENE).text = PLAYER_BLANK_TEXT
+		%SelectPlayerScene.visible = false
+		%SelectPlayerSceneSpacer.visible = true
+		%PlayerScene.text = PLAYER_BLANK_TEXT
 	else:
-		get_node(SELECT_PLAYER_SCENE).visible = true
-		get_node(SELECT_PLAYER_SCENE_SPACER).visible = false
-		get_node(PLAYER_SCENE).text = PLAYER_SELECT_TEXT
+		%SelectPlayerScene.visible = true
+		%SelectPlayerSceneSpacer.visible = false
+		%PlayerScene.text = PLAYER_SELECT_TEXT
 		$"InformationWindows/PlayerSceneFileDialog".popup_centered()
 
 
@@ -96,16 +81,16 @@ func _on_SelectPlayerScene_pressed() -> void:
 
 func _on_PlayerSceneFileDialog_file_selected(path: String) -> void:
 	settings_modified = true
-	get_node(PLAYER_SCENE).text = path
+	%PlayerScene.text = path
 
 
 func _on_UseEmptyRoomScript_toggled(button_pressed: bool) -> void:
 	if button_pressed == true:
-		get_node(ESC_SCRIPT).editable = false
-		get_node(ESC_SCRIPT).text = SCRIPT_BLANK_TEXT
+		%ESCScript.editable = false
+		%ESCScript.text = SCRIPT_BLANK_TEXT
 	else:
-		get_node(ESC_SCRIPT).editable = true
-		get_node(ESC_SCRIPT).text = "%s.esc" % get_node(GLOBAL_ID).text
+		%ESCScript.editable = true
+		%ESCScript.text = "%s.esc" % %GlobalID.text
 
 
 func _on_SelectRoomScript_pressed() -> void:
@@ -115,20 +100,20 @@ func _on_SelectRoomScript_pressed() -> void:
 
 func _on_ESCScriptFileDialog_file_selected(path: String) -> void:
 	settings_modified = true
-	get_node(ESC_SCRIPT).text = path
+	%ESCScript.text = path
 
 
 func _on_UseEmptyBackground_toggled(button_pressed: bool) -> void:
 	if button_pressed == true:
-		get_node(SELECT_BACKGROUND).visible = false
-		get_node(SELECT_BACKGROUNDSPACER).visible = true
-		get_node(BACKGROUND_IMAGE).text = BACKGROUND_BLANK_TEXT
-		get_node(BACKGROUND_PREVIEW).texture = null
-		get_node(ROOM_BACKGROUND).visible = true
+		%SelectBackground.visible = false
+		%SelectBackgroundSpacer.visible = true
+		%BackgroundImage.text = BACKGROUND_BLANK_TEXT
+		%BackgroundPreview.texture = null
+		%RoomBackground.visible = true
 	else:
-		get_node(SELECT_BACKGROUND).visible = true
-		get_node(SELECT_BACKGROUNDSPACER).visible = false
-		get_node(BACKGROUND_IMAGE).text = BACKGROUND_SELECT_TEXT
+		%SelectBackground.visible = true
+		%SelectBackgroundSpacer.visible = false
+		%BackgroundImage.text = BACKGROUND_SELECT_TEXT
 
 		var viewport_centre: Vector2 = get_viewport_rect().size / 2
 		var dialog_start: Vector2 = $"InformationWindows/BackgroundImageFileDialog".size / 2
@@ -151,14 +136,14 @@ func _on_SelectBackground_pressed() -> void:
 func _on_BackgroundImageFileDialog_file_selected(path: String) -> void:
 	settings_modified = true
 
-	get_node(BACKGROUND_IMAGE).text = path
+	%BackgroundImage.text = path
 
 	var image_stream_texture:CompressedTexture2D
 
 	image_stream_texture = load(path)
 
-	get_node(BACKGROUND_PREVIEW).texture = image_stream_texture
-	get_node(ROOM_BACKGROUND).visible = false
+	%BackgroundPreview.texture = image_stream_texture
+	%RoomBackground.visible = false
 	set_preview_scale()
 
 
@@ -166,19 +151,19 @@ func set_preview_scale() -> void:
 	var preview_scale = Vector2.ONE
 	# Calculate the scale to make the preview as big as possible in the preview window depending on
 	# the height to width ratio of the frame
-	var preview_size = get_node(ROOM_BACKGROUND).get_size()
-#	get_node(BACKGROUND_PREVIEW).rect_scale = Vector2.ONE
-	var image_size = get_node(BACKGROUND_PREVIEW).texture.get_size()
+	var preview_size = %RoomBackground.get_size()
+#	%BackgroundPreview.rect_scale = Vector2.ONE
+	var image_size = %BackgroundPreview.texture.get_size()
 
 	preview_scale.x =  preview_size.x / image_size.x
 	preview_scale.y =  preview_size.y / image_size.y
 
 #	print("scale = "+str(preview_scale)+", preview size = "+str(preview_size)+", image_size = "+str(image_size))
 	if preview_scale.y > preview_scale.x:
-		get_node(BACKGROUND_PREVIEW).scale = Vector2(preview_scale.x, preview_scale.x)
+		%BackgroundPreview.scale = Vector2(preview_scale.x, preview_scale.x)
 	else:
 		# Image width will hit the preview boundary before the height will
-		get_node(BACKGROUND_PREVIEW).scale = Vector2(preview_scale.y, preview_scale.y)
+		%BackgroundPreview.scale = Vector2(preview_scale.y, preview_scale.y)
 
 
 func _on_ClearButton_pressed() -> void:
@@ -214,27 +199,27 @@ func _on_RoomFolderDialog_dir_selected(dir: String) -> void:
 		"type": TYPE_STRING
 	}
 	ProjectSettings.add_property_info(property_info)
-	get_node(ROOM_FOLDER_PATH).text = dir
+	%RoomFolder.text = dir
 
 
 func _on_CreateButton_pressed() -> void:
-	var RoomName = get_node(ROOM_NAME).text
+	var RoomName = %RoomName.text
 
 	if RoomName.length() < 1:
 		$"InformationWindows/GenericErrorDialog".dialog_text = "Error!\n\nRoom name must be specified."
 		$"InformationWindows/GenericErrorDialog".popup_centered()
 		return
 
-	var ScriptName = get_node(ESC_SCRIPT).text
+	var ScriptName = %ESCScript.text
 
-	if get_node(USE_EMPTY_ROOM_SCRIPT).button_pressed == false:
+	if %UseEmptyRoomScript.button_pressed == false:
 		if ScriptName.length() < 5 or ! ScriptName.substr(ScriptName.length() - 4) == ".esc":
 			$"InformationWindows/GenericErrorDialog".dialog_text = "Error!\n\n" \
 			+ "Room ESC script must be a filename ending in '.esc'"
 			$"InformationWindows/GenericErrorDialog".popup_centered()
 			return
 
-	if "/" in get_node(ESC_SCRIPT).text:
+	if "/" in %ESCScript.text:
 			$"InformationWindows/GenericErrorDialog".dialog_text = "Error!\n\n" \
 			+ "Please remove any '/' characters from the name of the Room ESC script."
 			$"InformationWindows/GenericErrorDialog".popup_centered()
@@ -245,13 +230,13 @@ func _on_CreateButton_pressed() -> void:
 	var NewRoom = ESCRoom.new()
 
 	NewRoom.name = RoomName
-	NewRoom.global_id = get_node(GLOBAL_ID).text
+	NewRoom.global_id = %GlobalID.text
 
-	if ! get_node(ESC_SCRIPT).text == SCRIPT_SELECT_TEXT and ! get_node(ESC_SCRIPT).text == SCRIPT_BLANK_TEXT:
-		NewRoom.esc_script = "%s/%s/scripts/%s" % [BaseDir, RoomName, get_node(ESC_SCRIPT).text]
+	if ! %ESCScript.text == SCRIPT_SELECT_TEXT and ! %ESCScript.text == SCRIPT_BLANK_TEXT:
+		NewRoom.esc_script = "%s/%s/scripts/%s" % [BaseDir, RoomName, %ESCScript.text]
 
-	if ! get_node(PLAYER_SCENE).text == PLAYER_SELECT_TEXT and ! get_node(PLAYER_SCENE).text == PLAYER_BLANK_TEXT:
-		var player_scene = load(get_node(PLAYER_SCENE).text)
+	if ! %PlayerScene.text == PLAYER_SELECT_TEXT and ! %PlayerScene.text == PLAYER_BLANK_TEXT:
+		var player_scene = load(%PlayerScene.text)
 		NewRoom.player_scene = player_scene
 
 	var Background = ESCBackground.new()
@@ -259,8 +244,8 @@ func _on_CreateButton_pressed() -> void:
 
 	var BackgroundSize = Vector2.ONE
 
-	if ! get_node(BACKGROUND_IMAGE).text == BACKGROUND_SELECT_TEXT and ! get_node(BACKGROUND_IMAGE).text == BACKGROUND_BLANK_TEXT:
-		Background.texture = get_node(BACKGROUND_PREVIEW).texture
+	if ! %BackgroundImage.text == BACKGROUND_SELECT_TEXT and ! %BackgroundImage.text == BACKGROUND_BLANK_TEXT:
+		Background.texture = %BackgroundPreview.texture
 		BackgroundSize = Background.texture.get_size()
 	else:
 		# Set TextureRect to have the same size as the Viewport so that the room
@@ -304,7 +289,7 @@ func _on_CreateButton_pressed() -> void:
 	DirAccess.make_dir_recursive_absolute("%s/%s/scripts" % [BaseDir, RoomName])
 	DirAccess.make_dir_recursive_absolute("%s/%s/objects" % [BaseDir, RoomName])
 	DirAccess.copy_absolute("res://addons/escoria-wizard/room_script_template.esc", "%s/%s/scripts/%s" % \
-		[BaseDir, RoomName, get_node(ESC_SCRIPT).text])
+		[BaseDir, RoomName, %ESCScript.text])
 
 	# Export scene
 	var packed_scene = PackedScene.new()

@@ -274,6 +274,7 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="LoadObjectFileDialog" type="FileDialog" parent="LoadObjectGraphic"]
+popup_window = true
 filters = PackedStringArray("*.png", "*.bmp", "*.jpg", "*.jpeg", "*.webp", "*.tga")
 
 [node name="Windows" type="CenterContainer" parent="."]
@@ -281,18 +282,21 @@ visible = false
 layout_mode = 2
 
 [node name="ConfirmationDialog" type="ConfirmationDialog" parent="Windows"]
+popup_window = true
 dialog_text = "WARNING!
 
 If you continue you will lose the current object."
 
 [node name="ErrorDialog" type="AcceptDialog" parent="Windows"]
+popup_window = true
 
 [node name="CreateCompleteDialog" type="AcceptDialog" parent="Windows"]
+popup_window = true
 
 [node name="FileDialog" type="FileDialog" parent="Windows"]
 mode = 2
 size = Vector2i(392, 159)
-visible = true
+popup_window = true
 
 [connection signal="toggled" from="VBoxContainer/Control/CenterContainer/HBoxContainer/BackgroundObjectCheckBox" to="." method="_on_BackgroundObjectCheckBox_toggled"]
 [connection signal="toggled" from="VBoxContainer/Control/CenterContainer/HBoxContainer/InventoryItemCheckBox" to="." method="_on_InventoryItemCheckBox_toggled"]

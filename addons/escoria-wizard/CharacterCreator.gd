@@ -124,6 +124,7 @@ func _ready() -> void:
 	load_settings()
 	character_creator_reset()
 	$InformationWindows/help_window.current_page = 1
+	get_node(EXPORT_PROGRESS_NODE).hide()
 
 	if test_mode:
 		setup_test_data()
