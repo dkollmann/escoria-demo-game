@@ -71,7 +71,7 @@ const GROUP_ITEM_CAN_COLLIDE = "item_can_collide"
 @export var global_id: String
 
 # The ESC script for this item
-@export var esc_script: String # (String, FILE, "*.esc")
+@export_file("*.esc") var esc_script: String # (String, FILE, "*.esc")
 
 # If true, the ESC script may have an ``:exit_scene`` event to manage scene changes.
 # For simple exits that do not require scripted actions, the ``ESCExit`` node may be

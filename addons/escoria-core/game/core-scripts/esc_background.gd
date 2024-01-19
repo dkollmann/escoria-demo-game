@@ -43,7 +43,7 @@ signal mouse_wheel_down
 
 
 # The ESC script connected to this background
-@export var esc_script = "" # (String, FILE, "*.esc")
+@export_file("*.esc") var esc_script = "" # (String, FILE, "*.esc")
 
 
 # Create the underlying Area2D as an input device
