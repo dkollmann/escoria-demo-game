@@ -3,6 +3,8 @@ extends Resource
 class_name ESCActionManager
 
 
+const ESCPlayer = preload("res://addons/escoria-core/game/core-scripts/esc_player.gd")
+
 # The current action verb was changed
 signal action_changed
 

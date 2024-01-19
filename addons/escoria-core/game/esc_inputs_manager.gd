@@ -4,6 +4,8 @@ extends Resource
 class_name ESCInputsManager
 
 
+const ESCPlayer = preload("res://addons/escoria-core/game/core-scripts/esc_player.gd")
+
 # Valid input flags
 # * INPUT_ALL: All input is allowed
 # * INPUT_NONE: No input is allowed at all
